@@ -20,7 +20,7 @@
  */
 @file:Suppress(
     "DEPRECATION", "SetTextI18n", "SetWorldReadable", "WorldReadableFiles",
-    "LocalVariableName"
+    "LocalVariableName", "SameParameterValue"
 )
 
 package com.fankes.tsbattery
