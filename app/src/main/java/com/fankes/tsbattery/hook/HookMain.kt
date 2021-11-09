@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
@@ -27,6 +27,7 @@ import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.Keep
 import com.fankes.tsbattery.utils.XPrefUtils
 import de.robv.android.xposed.*
@@ -35,6 +36,65 @@ import java.util.*
 
 @Keep
 class HookMain : IXposedHookLoadPackage {
+
+    /** 仅作用于替换的 Hook 方法体 */
+    private val replaceToNull = object : XC_MethodReplacement() {
+        override fun replaceHookedMethod(param: MethodHookParam?): Any? {
+            return null
+        }
+    }
+
+    /** 仅作用于替换的 Hook 方法体 */
+    private val replaceToTrue = object : XC_MethodReplacement() {
+        override fun replaceHookedMethod(param: MethodHookParam?): Any {
+            return true
+        }
+    }
+
+    /**
+     * 干掉目标方法体封装
+     * @param clazz 类名缩写
+     * @param name 方法名
+     */
+    private fun XC_LoadPackage.LoadPackageParam.replaceToNull(clazz: String, name: String) {
+        XposedHelpers.findAndHookMethod(
+            "com.tencent.mobileqq.$clazz",
+            classLoader,
+            name,
+            replaceToNull
+        )
+    }
+
+    /**
+     * 这个类 BaseChatPie 是控制聊天界面的
+     * 里面有两个随机混淆的方法
+     * 这两个方法一个是挂起电源锁常驻亮屏
+     * 一个是停止常驻亮屏
+     * 不由分说每个版本混淆的方法名都会变
+     * 所以说每个版本重新适配 - 也可以提交分支帮我适配
+     * 8.8.17 版本是 bd be
+     * 8.8.23 版本是 bf bg
+     * 8.8.38 版本是 bi bj
+     * ⚠️ Hook 错了方法会造成闪退！
+     * @param version QQ 版本
+     */
+    private fun XC_LoadPackage.LoadPackageParam.hookBaseChatPie(version: String) {
+        when (version) {
+            "8.8.17" -> {
+                replaceToNull("activity.aio.core.BaseChatPie", "bd")
+                replaceToNull("activity.aio.core.BaseChatPie", "be")
+            }
+            "8.8.23" -> {
+                replaceToNull("activity.aio.core.BaseChatPie", "bf")
+                replaceToNull("activity.aio.core.BaseChatPie", "bg")
+            }
+            "8.8.38" -> {
+                replaceToNull("activity.aio.core.BaseChatPie", "bi")
+                replaceToNull("activity.aio.core.BaseChatPie", "bj")
+            }
+            else -> logD("$version not supported!")
+        }
+    }
 
     /**
      * Print the log
@@ -57,29 +117,23 @@ class HookMain : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
         if (lpparam == null) return
         when (lpparam.packageName) {
-            /*Hook 自身*/
+            /** Hook 自身 */
             "com.fankes.tsbattery" ->
                 XposedHelpers.findAndHookMethod(
-                    "com.fankes.tsbattery.MainActivity",
+                    "com.fankes.tsbattery.hook.HookMedium",
                     lpparam.classLoader,
                     "isHooked",
-                    object : XC_MethodReplacement() {
-                        override fun replaceHookedMethod(param: MethodHookParam?): Any {
-                            return true
-                        }
-                    })
-            /*经过测试 QQ 与 TIM 这两个是一个模子里面的东西，所以他们的类名也基本上是一样的*/
+                    replaceToTrue
+                )
+            /** 经过测试 QQ 与 TIM 这两个是一个模子里面的东西，所以他们的类名也基本上是一样的 */
             "com.tencent.mobileqq", "com.tencent.tim" -> {
                 try {
                     XposedHelpers.findAndHookMethod(
                         "android.os.PowerManager\$WakeLock",
                         lpparam.classLoader,
                         "acquire",
-                        object : XC_MethodReplacement() {
-                            override fun replaceHookedMethod(param: MethodHookParam?): Any? {
-                                return null
-                            }
-                        })
+                        replaceToNull
+                    )
                 } catch (e: Throwable) {
                     logE("handleLoadPackage: hook wakeLock acquire() Failed", e)
                 }
@@ -89,16 +143,33 @@ class HookMain : IXposedHookLoadPackage {
                         lpparam.classLoader,
                         "acquire",
                         Long::class.java,
-                        object : XC_MethodReplacement() {
-                            override fun replaceHookedMethod(param: MethodHookParam?): Any? {
-                                return null
-                            }
-                        })
+                        replaceToNull
+                    )
                 } catch (e: Throwable) {
                     logE("handleLoadPackage: hook wakeLock acquire(time) Failed", e)
                 }
-                /*判断是否开启提示模块运行信息*/
-                if (XPrefUtils.getBoolean("_tip_run_info"))
+                /** 增加通知栏文本显示守护状态 */
+                try {
+                    XposedHelpers.findAndHookMethod(
+                        "android.app.Notification\$Builder",
+                        lpparam.classLoader,
+                        "setContentText",
+                        CharSequence::class.java,
+                        object : XC_MethodHook() {
+                            override fun beforeHookedMethod(param: MethodHookParam?) {
+                                when (param?.args?.get(0) as? CharSequence?) {
+                                    "QQ正在后台运行" ->
+                                        param.args?.set(0, "QQ正在后台运行 - TSBattery 守护中")
+                                    "TIM正在后台运行" ->
+                                        param.args?.set(0, "TIM正在后台运行 - TSBattery 守护中")
+                                }
+                            }
+                        })
+                } catch (e: Throwable) {
+                    logE("handleLoadPackage: hook Notification Failed", e)
+                }
+                /** 判断是否开启提示模块运行信息 */
+                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
                     try {
                         /**
                          * Hook 启动界面的第一个 [Activity]
@@ -113,56 +184,50 @@ class HookMain : IXposedHookLoadPackage {
                             object : XC_MethodHook() {
 
                                 override fun afterHookedMethod(param: MethodHookParam?) {
-                                    val self = param!!.thisObject as Activity
-                                    AlertDialog.Builder(
-                                        self,
-                                        android.R.style.Theme_Material_Dialog_Alert
-                                    ).setCancelable(false)
-                                        .setTitle("TSBattery 已激活")
-                                        .setMessage(
-                                            "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                    "当前模式：${if (XPrefUtils.getBoolean("_white_mode")) "保守模式" else "完全模式"}" +
-                                                    "\n\n包名：${self.packageName}\n版本：${
-                                                        self.packageManager.getPackageInfo(
-                                                            self.packageName,
-                                                            0
-                                                        ).versionName
-                                                    }(${
-                                                        self.packageManager.getPackageInfo(
-                                                            self.packageName,
-                                                            0
-                                                        ).versionCode
-                                                    })" + "\n\nPS：模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n" +
-                                                    "如果你不想看到此提示。请在模块设置中关闭运行信息提醒，此设置默认关闭。\n" +
-                                                    "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                        )
-                                        .setPositiveButton("我知道了", null)
-                                        .show()
+                                    val self = param?.thisObject as? Activity ?: return
+                                    try {
+                                        AlertDialog.Builder(
+                                            self,
+                                            android.R.style.Theme_Material_Light_Dialog
+                                        ).setCancelable(false)
+                                            .setTitle("TSBattery 已激活")
+                                            .setMessage(
+                                                "[提示模块运行信息功能已打开]\n" +
+                                                        "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                                        "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                        "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                                        "\n\n包名：${self.packageName}\n版本：${
+                                                            self.packageManager.getPackageInfo(
+                                                                self.packageName,
+                                                                0
+                                                            ).versionName
+                                                        }(${
+                                                            self.packageManager.getPackageInfo(
+                                                                self.packageName,
+                                                                0
+                                                            ).versionCode
+                                                        })" + "\n\nPS：模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n" +
+                                                        "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n" +
+                                                        "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                            )
+                                            .setPositiveButton("我知道了", null)
+                                            .show()
+                                    } catch (e: Exception) {
+                                        Toast.makeText(
+                                            self,
+                                            "模块已激活，但显示信息弹窗失败了\n$e",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             })
                     } catch (e: Exception) {
                         logE("handleLoadPackage: hook SplashActivity Failed", e)
                     }
-                /*关闭保守模式后不再仅仅作用于系统电源锁*/
-                if (!XPrefUtils.getBoolean("_white_mode")) {
-                    val replaceMent = object : XC_MethodReplacement() {
-                        override fun replaceHookedMethod(param: MethodHookParam?): Any? {
-                            return null
-                        }
-                    }
-                    /**
-                     * 这个类 BaseChatPie 是控制聊天界面的
-                     * 里面有两个随机混淆的方法
-                     * 这两个方法一个是挂起电源锁常驻亮屏
-                     * 一个是停止常驻亮屏
-                     * 不由分说每个版本混淆的方法名都会变
-                     * 所以说每个版本重新适配 - 也可以提交分支帮我适配
-                     * 8.8.17 版本是 bd be
-                     * 8.8.23 版本是 bf bg
-                     * ⚠️ Hook 错了方法会造成闪退！
-                     */
+                /** 关闭保守模式后不再仅仅作用于系统电源锁 */
+                if (!XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) {
                     try {
-                        /*通过在 SplashActivity 里取到应用的版本号*/
+                        /** 通过在 SplashActivity 里取到应用的版本号 */
                         XposedHelpers.findAndHookMethod(
                             "com.tencent.mobileqq.activity.SplashActivity",
                             lpparam.classLoader,
@@ -171,45 +236,14 @@ class HookMain : IXposedHookLoadPackage {
                             object : XC_MethodHook() {
 
                                 override fun beforeHookedMethod(param: MethodHookParam?) {
-                                    val self = param!!.thisObject as Activity
+                                    val self = param?.thisObject as? Activity ?: return
                                     val name = self.packageName
                                     val version =
                                         self.packageManager.getPackageInfo(name, 0).versionName
-                                    /*这个地方我们只处理 QQ*/
+                                    /** 这个地方我们只处理 QQ */
                                     try {
-                                        if (name == "com.tencent.mobileqq") {
-                                            when (version) {
-                                                "8.8.17" -> {
-                                                    XposedHelpers.findAndHookMethod(
-                                                        "com.tencent.mobileqq.activity.aio.core.BaseChatPie",
-                                                        lpparam.classLoader,
-                                                        "bd",
-                                                        replaceMent
-                                                    )
-                                                    XposedHelpers.findAndHookMethod(
-                                                        "com.tencent.mobileqq.activity.aio.core.BaseChatPie",
-                                                        lpparam.classLoader,
-                                                        "be",
-                                                        replaceMent
-                                                    )
-                                                }
-                                                "8.8.23" -> {
-                                                    XposedHelpers.findAndHookMethod(
-                                                        "com.tencent.mobileqq.activity.aio.core.BaseChatPie",
-                                                        lpparam.classLoader,
-                                                        "bf",
-                                                        replaceMent
-                                                    )
-                                                    XposedHelpers.findAndHookMethod(
-                                                        "com.tencent.mobileqq.activity.aio.core.BaseChatPie",
-                                                        lpparam.classLoader,
-                                                        "bg",
-                                                        replaceMent
-                                                    )
-                                                }
-                                                //TODO 后面的版本逐个适配 此方法没封装 目前比较笨蛋 主要是我懒得写
-                                            }
-                                        }
+                                        if (name == "com.tencent.mobileqq")
+                                            lpparam.hookBaseChatPie(version)
                                     } catch (e: Exception) {
                                         logE("handleLoadPackage: hook BaseChatPie Failed", e)
                                     }
@@ -227,7 +261,7 @@ class HookMain : IXposedHookLoadPackage {
                             "com.tencent.mars.ilink.comm.WakerLock",
                             lpparam.classLoader,
                             "lock", Long::class.java,
-                            replaceMent
+                            replaceToNull
                         )
                     } catch (e: Exception) {
                         logE("handleLoadPackage: hook WakerLock Failed", e)
@@ -246,7 +280,7 @@ class HookMain : IXposedHookLoadPackage {
                                 private var origDevice = ""
 
                                 override fun beforeHookedMethod(param: MethodHookParam?) {
-                                    /*由于在 onCreate 里有一行判断只要型号是 xiaomi 的设备就开电源锁，所以说这里临时替换成菊花厂*/
+                                    /** 由于在 onCreate 里有一行判断只要型号是 xiaomi 的设备就开电源锁，所以说这里临时替换成菊花厂 */
                                     origDevice = Build.MANUFACTURER
                                     if (Build.MANUFACTURER.toLowerCase(Locale.ROOT) == "xiaomi")
                                         XposedHelpers.setStaticObjectField(
@@ -258,7 +292,7 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun afterHookedMethod(param: MethodHookParam?) {
                                     (param?.thisObject as? Activity)?.finish()
-                                    /*这里再把型号替换回去 - 不影响应用变量等 Xposed 模块修改的型号*/
+                                    /** 这里再把型号替换回去 - 不影响应用变量等 Xposed 模块修改的型号 */
                                     XposedHelpers.setStaticObjectField(
                                         Build::class.java,
                                         "MANUFACTURER",
@@ -276,7 +310,7 @@ class HookMain : IXposedHookLoadPackage {
                             "com.tencent.mobileqq.activity.QQLSActivity\$14",
                             lpparam.classLoader,
                             "run",
-                            replaceMent
+                            replaceToNull
                         )
                     } catch (e: Exception) {
                         logE("handleLoadPackage: hook QQLSActivity Failed", e)
@@ -345,15 +379,15 @@ class HookMain : IXposedHookLoadPackage {
                                         "writeReport",
                                         Boolean::class.java
                                     ).apply { isAccessible = true }
-                                XposedBridge.hookMethod(onHook, replaceMent)
-                                XposedBridge.hookMethod(doReport, replaceMent)
-                                XposedBridge.hookMethod(afterHookedMethod, replaceMent)
-                                XposedBridge.hookMethod(beforeHookedMethod, replaceMent)
-                                XposedBridge.hookMethod(onAppBackground, replaceMent)
-                                XposedBridge.hookMethod(onOtherProcReport, replaceMent)
-                                XposedBridge.hookMethod(onProcessRun30Min, replaceMent)
-                                XposedBridge.hookMethod(onProcessBG5Min, replaceMent)
-                                XposedBridge.hookMethod(writeReport, replaceMent)
+                                XposedBridge.hookMethod(onHook, replaceToNull)
+                                XposedBridge.hookMethod(doReport, replaceToNull)
+                                XposedBridge.hookMethod(afterHookedMethod, replaceToNull)
+                                XposedBridge.hookMethod(beforeHookedMethod, replaceToNull)
+                                XposedBridge.hookMethod(onAppBackground, replaceToNull)
+                                XposedBridge.hookMethod(onOtherProcReport, replaceToNull)
+                                XposedBridge.hookMethod(onProcessRun30Min, replaceToNull)
+                                XposedBridge.hookMethod(onProcessBG5Min, replaceToNull)
+                                XposedBridge.hookMethod(writeReport, replaceToNull)
                             }
                     } catch (e: Throwable) {
                         logE("handleLoadPackage: hook WakerLockMonitor Failed", e)

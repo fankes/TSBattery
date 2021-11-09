@@ -16,23 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * This file is Created by zpp0196 on 2018/4/11.
+ * This file is Created by fankes on 2021/9/4.
  */
-package com.fankes.tsbattery.utils
+@file:Suppress("unused")
 
-import de.robv.android.xposed.XSharedPreferences
+package com.fankes.tsbattery.application
 
-object XPrefUtils {
+import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 
-    fun getBoolean(key: String) = pref.getBoolean(key, false)
+class TSApplication : Application() {
 
-    fun getString(key: String) = pref.getString(key, "unknown")
-
-    private val pref: XSharedPreferences
-        get() {
-            val preferences = XSharedPreferences("com.fankes.tsbattery")
-            preferences.makeWorldReadable()
-            preferences.reload()
-            return preferences
-        }
+    override fun onCreate() {
+        super.onCreate()
+        /** 禁止系统夜间模式对自己造成干扰 - 模块要什么夜间模式？😅 (其实是我懒) */
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
 }
