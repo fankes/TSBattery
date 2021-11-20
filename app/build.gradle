@@ -6,7 +6,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('/Users/fankes/ProjectPath/AndroidStudioProjects/TSBattery/keystore/public')
+            storeFile file('../keystore/public')
             storePassword '123456'
             keyAlias 'public'
             keyPassword '123456'
