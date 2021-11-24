@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
 
         private const val moduleVersion = BuildConfig.VERSION_NAME
-        private const val moduleSupport = "QQ 8.5.5~8.8.38、TIM 2+"
+        private const val moduleSupport = "QQ 8.5.5~8.8.50、TIM 2+"
 
         /** 声明当前实例 */
         var instance: MainActivity? = null
