@@ -92,6 +92,11 @@ class HookMain : IXposedHookLoadPackage {
                 replaceToNull("activity.aio.core.BaseChatPie", "bi")
                 replaceToNull("activity.aio.core.BaseChatPie", "bj")
             }
+            // JiZhi适配
+            "8.8.50" -> {
+                replaceToNull("activity.aio.core.BaseChatPie", "bj")//remainScreenOn
+                replaceToNull("activity.aio.core.BaseChatPie", "bk")//cancelRemainScreenOn
+            }
             else -> logD("$version not supported!")
         }
     }
