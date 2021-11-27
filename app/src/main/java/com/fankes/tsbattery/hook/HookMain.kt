@@ -27,7 +27,6 @@ import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.Keep
 import com.fankes.tsbattery.utils.XPrefUtils
 import de.robv.android.xposed.*
@@ -36,6 +35,11 @@ import java.util.*
 
 @Keep
 class HookMain : IXposedHookLoadPackage {
+
+    companion object {
+
+        private const val BASE_CHAT_PIE = "activity.aio.core.BaseChatPie"
+    }
 
     /** 仅作用于替换的 Hook 方法体 */
     private val replaceToNull = object : XC_MethodReplacement() {
@@ -66,36 +70,50 @@ class HookMain : IXposedHookLoadPackage {
     }
 
     /**
+     * 忽略异常运行
+     * @param it 正常回调
+     */
+    private fun runWithoutError(error: String, it: () -> Unit) {
+        try {
+            it()
+        } catch (e: Error) {
+            logE("hookFailed: $error", e)
+        } catch (e: Exception) {
+            logE("hookFailed: $error", e)
+        } catch (e: Throwable) {
+            logE("hookFailed: $error", e)
+        }
+    }
+
+    /**
      * 这个类 BaseChatPie 是控制聊天界面的
-     * 里面有两个随机混淆的方法
+     * 里面有两个随机混淆的方法 ⬇️
+     * remainScreenOn、cancelRemainScreenOn
      * 这两个方法一个是挂起电源锁常驻亮屏
      * 一个是停止常驻亮屏
      * 不由分说每个版本混淆的方法名都会变
      * 所以说每个版本重新适配 - 也可以提交分支帮我适配
-     * 8.8.17 版本是 bd be
-     * 8.8.23 版本是 bf bg
-     * 8.8.38 版本是 bi bj
      * ⚠️ Hook 错了方法会造成闪退！
      * @param version QQ 版本
      */
     private fun XC_LoadPackage.LoadPackageParam.hookBaseChatPie(version: String) {
         when (version) {
             "8.8.17" -> {
-                replaceToNull("activity.aio.core.BaseChatPie", "bd")
-                replaceToNull("activity.aio.core.BaseChatPie", "be")
+                replaceToNull(BASE_CHAT_PIE, "bd")
+                replaceToNull(BASE_CHAT_PIE, "be")
             }
             "8.8.23" -> {
-                replaceToNull("activity.aio.core.BaseChatPie", "bf")
-                replaceToNull("activity.aio.core.BaseChatPie", "bg")
+                replaceToNull(BASE_CHAT_PIE, "bf")
+                replaceToNull(BASE_CHAT_PIE, "bg")
             }
             "8.8.38" -> {
-                replaceToNull("activity.aio.core.BaseChatPie", "bi")
-                replaceToNull("activity.aio.core.BaseChatPie", "bj")
+                replaceToNull(BASE_CHAT_PIE, "bi")
+                replaceToNull(BASE_CHAT_PIE, "bj")
             }
-            // JiZhi适配
+            /** 贡献者：JiZhi-Error */
             "8.8.50" -> {
-                replaceToNull("activity.aio.core.BaseChatPie", "bj")//remainScreenOn
-                replaceToNull("activity.aio.core.BaseChatPie", "bk")//cancelRemainScreenOn
+                replaceToNull(BASE_CHAT_PIE, "bj")
+                replaceToNull(BASE_CHAT_PIE, "bk")
             }
             else -> logD("$version not supported!")
         }
@@ -132,17 +150,15 @@ class HookMain : IXposedHookLoadPackage {
                 )
             /** 经过测试 QQ 与 TIM 这两个是一个模子里面的东西，所以他们的类名也基本上是一样的 */
             "com.tencent.mobileqq", "com.tencent.tim" -> {
-                try {
+                runWithoutError("wakeLock acquire()") {
                     XposedHelpers.findAndHookMethod(
                         "android.os.PowerManager\$WakeLock",
                         lpparam.classLoader,
                         "acquire",
                         replaceToNull
                     )
-                } catch (e: Throwable) {
-                    logE("handleLoadPackage: hook wakeLock acquire() Failed", e)
                 }
-                try {
+                runWithoutError("hook wakeLock acquire(time)") {
                     XposedHelpers.findAndHookMethod(
                         "android.os.PowerManager\$WakeLock",
                         lpparam.classLoader,
@@ -150,11 +166,9 @@ class HookMain : IXposedHookLoadPackage {
                         Long::class.java,
                         replaceToNull
                     )
-                } catch (e: Throwable) {
-                    logE("handleLoadPackage: hook wakeLock acquire(time) Failed", e)
                 }
                 /** 增加通知栏文本显示守护状态 */
-                try {
+                runWithoutError("Notification") {
                     XposedHelpers.findAndHookMethod(
                         "android.app.Notification\$Builder",
                         lpparam.classLoader,
@@ -170,12 +184,10 @@ class HookMain : IXposedHookLoadPackage {
                                 }
                             }
                         })
-                } catch (e: Throwable) {
-                    logE("handleLoadPackage: hook Notification Failed", e)
                 }
                 /** 判断是否开启提示模块运行信息 */
                 if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
-                    try {
+                    runWithoutError("SplashActivity") {
                         /**
                          * Hook 启动界面的第一个 [Activity]
                          * QQ 和 TIM 都是一样的类
@@ -190,7 +202,7 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun afterHookedMethod(param: MethodHookParam?) {
                                     val self = param?.thisObject as? Activity ?: return
-                                    try {
+                                    runWithoutError("模块已激活，但显示信息弹窗失败了") {
                                         AlertDialog.Builder(
                                             self,
                                             android.R.style.Theme_Material_Light_Dialog
@@ -217,21 +229,13 @@ class HookMain : IXposedHookLoadPackage {
                                             )
                                             .setPositiveButton("我知道了", null)
                                             .show()
-                                    } catch (e: Exception) {
-                                        Toast.makeText(
-                                            self,
-                                            "模块已激活，但显示信息弹窗失败了\n$e",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
                                     }
                                 }
                             })
-                    } catch (e: Exception) {
-                        logE("handleLoadPackage: hook SplashActivity Failed", e)
                     }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
                 if (!XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) {
-                    try {
+                    runWithoutError("BaseChatPie(first time)") {
                         /** 通过在 SplashActivity 里取到应用的版本号 */
                         XposedHelpers.findAndHookMethod(
                             "com.tencent.mobileqq.activity.SplashActivity",
@@ -246,18 +250,14 @@ class HookMain : IXposedHookLoadPackage {
                                     val version =
                                         self.packageManager.getPackageInfo(name, 0).versionName
                                     /** 这个地方我们只处理 QQ */
-                                    try {
+                                    runWithoutError("BaseChatPie") {
                                         if (name == "com.tencent.mobileqq")
                                             lpparam.hookBaseChatPie(version)
-                                    } catch (e: Exception) {
-                                        logE("handleLoadPackage: hook BaseChatPie Failed", e)
                                     }
                                 }
                             })
-                    } catch (e: Exception) {
-                        logE("handleLoadPackage: hook BaseChatPie(first time) Failed", e)
                     }
-                    try {
+                    runWithoutError("WakerLock") {
                         /**
                          * 一个不知道是什么作用的电源锁
                          * 同样直接干掉
@@ -268,10 +268,8 @@ class HookMain : IXposedHookLoadPackage {
                             "lock", Long::class.java,
                             replaceToNull
                         )
-                    } catch (e: Exception) {
-                        logE("handleLoadPackage: hook WakerLock Failed", e)
                     }
-                    try {
+                    runWithoutError("QQLSActivity") {
                         /**
                          * Hook 掉一个一像素保活 [Activity] 真的我怎么都想不到讯哥的程序员做出这种事情
                          * 这个东西经过测试会在锁屏的时候吊起来，解锁的时候自动 finish()，无限耍流氓耗电
@@ -317,10 +315,8 @@ class HookMain : IXposedHookLoadPackage {
                             "run",
                             replaceToNull
                         )
-                    } catch (e: Exception) {
-                        logE("handleLoadPackage: hook QQLSActivity Failed", e)
                     }
-                    try {
+                    runWithoutError("WakerLockMonitor") {
                         /**
                          * 这个是毒瘤核心类
                          * WakeLockMonitor
@@ -394,10 +390,8 @@ class HookMain : IXposedHookLoadPackage {
                                 XposedBridge.hookMethod(onProcessBG5Min, replaceToNull)
                                 XposedBridge.hookMethod(writeReport, replaceToNull)
                             }
-                    } catch (e: Throwable) {
-                        logE("handleLoadPackage: hook WakerLockMonitor Failed", e)
                     }
-                    logD("handleLoadPackage: hook Complete!")
+                    logD("hook Completed!")
                 }
             }
         }

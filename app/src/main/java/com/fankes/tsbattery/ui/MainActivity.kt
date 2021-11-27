@@ -23,7 +23,7 @@
     "LocalVariableName", "SameParameterValue"
 )
 
-package com.fankes.tsbattery
+package com.fankes.tsbattery.ui
 
 import android.content.ComponentName
 import android.content.Context
@@ -40,6 +40,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.utils.widget.ImageFilterView
+import com.fankes.tsbattery.BuildConfig
+import com.fankes.tsbattery.R
 import com.fankes.tsbattery.hook.HookMedium
 import com.fankes.tsbattery.utils.FileUtils
 import com.gyf.immersionbar.ImmersionBar

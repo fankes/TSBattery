@@ -29,8 +29,10 @@
             android:value="82" />
 
         <activity
-            android:name="com.fankes.tsbattery.MainActivity"
+            android:name="com.fankes.tsbattery.ui.MainActivity"
+            android:exported="true"
             android:label="@string/app_name">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
@@ -40,8 +42,10 @@
         <activity-alias
             android:name="com.fankes.tsbattery.Home"
             android:enabled="true"
+            android:exported="true"
             android:label="@string/app_name"
-            android:targetActivity="com.fankes.tsbattery.MainActivity">
+            android:targetActivity="com.fankes.tsbattery.ui.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
