@@ -26,7 +26,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.Keep
-import com.fankes.tsbattery.MainActivity
+import com.fankes.tsbattery.ui.MainActivity
 
 @Keep
 object HookMedium {
