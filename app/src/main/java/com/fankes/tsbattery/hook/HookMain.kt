@@ -124,7 +124,7 @@ class HookMain : IXposedHookLoadPackage {
      * @param content
      */
     private fun logD(content: String) {
-        XposedBridge.log(content)
+        XposedBridge.log("[TSBattery][D]>$content")
         Log.d("TSBattery", content)
     }
 
@@ -133,7 +133,8 @@ class HookMain : IXposedHookLoadPackage {
      * @param content
      */
     private fun logE(content: String, e: Throwable? = null) {
-        XposedBridge.log(content)
+        XposedBridge.log("[TSBattery][E]>$content")
+        XposedBridge.log(e)
         Log.e("TSBattery", content, e)
     }
 
