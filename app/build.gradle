@@ -21,7 +21,7 @@ android {
         applicationId "com.fankes.tsbattery"
         minSdkVersion 22
         //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 7
         versionName "2.4"
 
