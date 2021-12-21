@@ -52,7 +52,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
 
         private const val moduleVersion = BuildConfig.VERSION_NAME
-        private const val moduleSupport = "QQ 8.5.5~8.8.50、TIM 2+"
+        private const val qqSupportVersion = "8.8.17、8.8.23、8.8.35、8.8.38、8.8.50 (8.5.5~8.8.50)"
+        private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)"
+        private const val wechatSupportVersion = "敬请期待"
 
         /** 声明当前实例 */
         var instance: MainActivity? = null
@@ -86,7 +88,8 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("模块没有激活")
                 .setMessage(
                     "检测到模块没有激活，模块需要 Xposed 环境依赖，同时需要系统拥有 Root 权限(太极阴可以免 Root)，请自行查看本页面使用帮助与说明第三条。\n" +
-                            "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
+                            "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
+                            "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
                             "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
                 )
                 .setPositiveButton("我知道了", null)
@@ -94,7 +97,36 @@ class MainActivity : AppCompatActivity() {
                 .show()
         /** 设置文本 */
         findViewById<TextView>(R.id.main_text_version).text = "当前版本：$moduleVersion"
-        findViewById<TextView>(R.id.main_text_support).text = "支持 $moduleSupport"
+        findViewById<TextView>(R.id.main_text_support_qq).apply {
+            text = qqSupportVersion
+            setOnClickListener {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("兼容的 QQ 版本")
+                    .setMessage(qqSupportVersion)
+                    .setPositiveButton("我知道了", null)
+                    .show()
+            }
+        }
+        findViewById<TextView>(R.id.main_text_support_tim).apply {
+            text = timSupportVersion
+            setOnClickListener {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("兼容的 TIM 版本")
+                    .setMessage(timSupportVersion)
+                    .setPositiveButton("我知道了", null)
+                    .show()
+            }
+        }
+        findViewById<TextView>(R.id.main_text_support_wechat).apply {
+            text = wechatSupportVersion
+            setOnClickListener {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("兼容的微信版本")
+                    .setMessage(wechatSupportVersion)
+                    .setPositiveButton("我知道了", null)
+                    .show()
+            }
+        }
         /** 初始化 View */
         val protectModeSwitch = findViewById<SwitchCompat>(R.id.protect_mode_switch)
         val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
@@ -218,6 +250,11 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Toast.makeText(this, "无法写入模块设置，请检查权限\n如果此提示一直显示，请不要双开模块", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onBackPressed() {
+        setWorldReadable()
+        super.onBackPressed()
     }
 
     override fun onDestroy() {

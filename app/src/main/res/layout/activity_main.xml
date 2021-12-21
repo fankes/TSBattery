@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.MainActivity"
-    tools:ignore="HardcodedText">
+    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,27 +61,120 @@
                 android:id="@+id/main_text_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
+                android:layout_marginBottom="10dp"
                 android:alpha="0.8"
                 android:text="当前版本：%1"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
-            <TextView
-                android:id="@+id/main_text_support"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:alpha="0.8"
-                android:text="支持 %1"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:layout_marginBottom="7dp"
+                android:gravity="center|start"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@mipmap/qq_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:text="兼容"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/main_text_support_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="%1"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:gravity="center|start"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@mipmap/tim_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:text="兼容"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/main_text_support_tim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="%1"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center|start"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@mipmap/wechat_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:text="兼容"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/main_text_support_wechat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="%1"
+                    android:textColor="@color/white"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
-                android:text="理论在小更新内还会生效，如果失效请看下方的联系方式"
+                android:lineSpacingExtra="5dp"
+                android:text="上述列出的版本号为最佳兼容版本，在适配范围内的版本都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 tools:ignore="SmallSp" />
@@ -366,8 +459,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:src="@mipmap/qr_pay"
-                    tools:ignore="ContentDescription" />
+                    android:src="@mipmap/qr_pay" />
 
                 <TextView
                     android:layout_width="match_parent"
