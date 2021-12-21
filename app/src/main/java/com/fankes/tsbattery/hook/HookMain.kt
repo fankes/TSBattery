@@ -86,7 +86,7 @@ class HookMain : IXposedHookLoadPackage {
     }
 
     /**
-     * 这个类 BaseChatPie 是控制聊天界面的
+     * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
      * 里面有两个随机混淆的方法 ⬇️
      * remainScreenOn、cancelRemainScreenOn
      * 这两个方法一个是挂起电源锁常驻亮屏
@@ -96,7 +96,7 @@ class HookMain : IXposedHookLoadPackage {
      * ⚠️ Hook 错了方法会造成闪退！
      * @param version QQ 版本
      */
-    private fun XC_LoadPackage.LoadPackageParam.hookBaseChatPie(version: String) {
+    private fun XC_LoadPackage.LoadPackageParam.hookQQBaseChatPie(version: String) {
         when (version) {
             "8.8.17" -> {
                 replaceToNull(BASE_CHAT_PIE, "bd")
@@ -139,6 +139,27 @@ class HookMain : IXposedHookLoadPackage {
         Log.e("TSBattery", content, e)
     }
 
+    /** Hook 系统电源锁 */
+    private fun XC_LoadPackage.LoadPackageParam.hookSystemWakeLock() {
+        runWithoutError("wakeLock acquire()") {
+            XposedHelpers.findAndHookMethod(
+                "android.os.PowerManager\$WakeLock",
+                classLoader,
+                "acquire",
+                replaceToNull
+            )
+        }
+        runWithoutError("hook wakeLock acquire(time)") {
+            XposedHelpers.findAndHookMethod(
+                "android.os.PowerManager\$WakeLock",
+                classLoader,
+                "acquire",
+                Long::class.java,
+                replaceToNull
+            )
+        }
+    }
+
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
         if (lpparam == null) return
         when (lpparam.packageName) {
@@ -152,23 +173,7 @@ class HookMain : IXposedHookLoadPackage {
                 )
             /** 经过测试 QQ 与 TIM 这两个是一个模子里面的东西，所以他们的类名也基本上是一样的 */
             "com.tencent.mobileqq", "com.tencent.tim" -> {
-                runWithoutError("wakeLock acquire()") {
-                    XposedHelpers.findAndHookMethod(
-                        "android.os.PowerManager\$WakeLock",
-                        lpparam.classLoader,
-                        "acquire",
-                        replaceToNull
-                    )
-                }
-                runWithoutError("hook wakeLock acquire(time)") {
-                    XposedHelpers.findAndHookMethod(
-                        "android.os.PowerManager\$WakeLock",
-                        lpparam.classLoader,
-                        "acquire",
-                        Long::class.java,
-                        replaceToNull
-                    )
-                }
+                lpparam.hookSystemWakeLock()
                 /** 增加通知栏文本显示守护状态 */
                 runWithoutError("Notification") {
                     XposedHelpers.findAndHookMethod(
@@ -254,7 +259,7 @@ class HookMain : IXposedHookLoadPackage {
                                     /** 这个地方我们只处理 QQ */
                                     runWithoutError("BaseChatPie") {
                                         if (name == "com.tencent.mobileqq")
-                                            lpparam.hookBaseChatPie(version)
+                                            lpparam.hookQQBaseChatPie(version)
                                     }
                                 }
                             })
@@ -395,6 +400,12 @@ class HookMain : IXposedHookLoadPackage {
                     }
                     logD("hook Completed!")
                 }
+            }
+            /** 微信 */
+            "com.tencent.mm" -> {
+                lpparam.hookSystemWakeLock()
+                // TODO 新建文件夹
+                logD("それが機能するかどうかはわかりません")
             }
         }
     }
