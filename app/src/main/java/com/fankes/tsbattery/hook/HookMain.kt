@@ -404,6 +404,51 @@ class HookMain : IXposedHookLoadPackage {
             /** 微信 */
             "com.tencent.mm" -> {
                 lpparam.hookSystemWakeLock()
+                /** 判断是否开启提示模块运行信息 */
+                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                    runWithoutError("LauncherUI") {
+                        /**
+                         * Hook 启动界面的第一个 [Activity]
+                         * 在里面加入提示运行信息的对话框测试模块是否激活
+                         */
+                        XposedHelpers.findAndHookMethod(
+                            "com.tencent.mm.ui.LauncherUI",
+                            lpparam.classLoader,
+                            "onCreate",
+                            Bundle::class.java,
+                            object : XC_MethodHook() {
+
+                                override fun afterHookedMethod(param: MethodHookParam?) {
+                                    val self = param?.thisObject as? Activity ?: return
+                                    runWithoutError("模块已激活，但显示信息弹窗失败了") {
+                                        AlertDialog.Builder(
+                                            self,
+                                            android.R.style.Theme_Material_Light_Dialog
+                                        ).setCancelable(false)
+                                            .setTitle("TSBattery 已激活")
+                                            .setMessage(
+                                                "[提示模块运行信息功能已打开]\n" +
+                                                        "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                                        "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                        "当前模式：基础省电" +
+                                                        "\n\n包名：${self.packageName}\n版本：${
+                                                            self.packageManager.getPackageInfo(
+                                                                self.packageName,
+                                                                0
+                                                            ).versionName
+                                                        }(${
+                                                            self.packageManager.getPackageInfo(
+                                                                self.packageName,
+                                                                0
+                                                            ).versionCode
+                                                        })" + "\n\nPS：当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。"
+                                            )
+                                            .setPositiveButton("我知道了", null)
+                                            .show()
+                                    }
+                                }
+                            })
+                    }
                 // TODO 新建文件夹
                 logD("それが機能するかどうかはわかりません")
             }

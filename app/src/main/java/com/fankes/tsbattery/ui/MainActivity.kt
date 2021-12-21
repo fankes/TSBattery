@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         private const val moduleVersion = BuildConfig.VERSION_NAME
         private const val qqSupportVersion = "8.8.17、8.8.23、8.8.35、8.8.38、8.8.50 (8.5.5~8.8.50)"
         private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)"
-        private const val wechatSupportVersion = "敬请期待"
+        private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能敬请期待"
 
         /** 声明当前实例 */
         var instance: MainActivity? = null
