@@ -106,7 +106,7 @@ class HookMain : IXposedHookLoadPackage {
                 replaceToNull(BASE_CHAT_PIE, "bf")
                 replaceToNull(BASE_CHAT_PIE, "bg")
             }
-            "8.8.38" -> {
+            "8.8.35", "8.8.38" -> {
                 replaceToNull(BASE_CHAT_PIE, "bi")
                 replaceToNull(BASE_CHAT_PIE, "bj")
             }
