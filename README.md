@@ -2,7 +2,7 @@
 
 ![Eclipse Marketplace](https://img.shields.io/badge/build-passing-brightgreen)
 ![Eclipse Marketplace](https://img.shields.io/badge/license-GPL3.0-blue)
-![Eclipse Marketplace](https://img.shields.io/badge/version-v2.4-green)
+![Eclipse Marketplace](https://img.shields.io/badge/version-v2.5-green)
 <br/><br/>
 TSBattery a new way to save your battery avoid cancer apps hacker it.<br/>
 TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块
@@ -10,7 +10,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 # 开始使用
 
 点击下载最新版本
-<a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v2.4-green)</a>
+<a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v2.5-green)</a>
 <br/><br/>
 ⚠️适配说明：此模块支持原生 Xposed、Lsposed(作用域 QQ、TIM、微信 如果不起作用勾选系统框架)、EdXposed(不推荐)、太极无极(阴和阳)、Pine(梦境模块)
 
