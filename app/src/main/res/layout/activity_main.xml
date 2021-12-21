@@ -28,7 +28,10 @@
         android:id="@+id/main_lin_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/dark_round"
         android:elevation="3dp"
         android:gravity="center">
@@ -174,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
                 android:lineSpacingExtra="5dp"
-                android:text="上述列出的版本号为最佳兼容版本，在适配范围内的版本都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
+                android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些版本在适配范围内的应用都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 tools:ignore="SmallSp" />
@@ -222,7 +225,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 和 TIM 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 或 TIM 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ 或 TIM。"
+                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 和 TIM 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 或 TIM 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ 或 TIM，暂不支持微信。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -254,7 +257,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="模块工作正常情况下不要开启，如果你想测试模块是否正常激活，可以打开此提示，开启后将会在启动 QQ 或 TIM 的时候提示运行信息。"
+                    android:text="模块工作正常情况下不要开启，如果你想测试模块是否正常激活，可以打开此提示，开启后将会在启动 QQ、TIM 或微信的时候提示运行信息。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -366,6 +369,16 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.激活后一定可以非常省电吗？\nA.并不，模块只能减少 QQ、TIM 的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时毒瘤不会消耗过多的无用的电量，仅此而已。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q.关于目前微信的适配情况？\nA.微信适配尚在实验阶段，敬请期待。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
 

@@ -21,7 +21,7 @@
         <!-- 模块描述 -->
         <meta-data
             android:name="xposeddescription"
-            android:value="抵制毒瘤，拒绝疯狂耗电，Tencent 社交毒瘤一键省电模块(目前支持 QQ、TIM)，通过干掉电源锁常驻减少电量消耗，理论支持最新版本。by 酷安 @星夜不荟" />
+            android:value="抵制毒瘤，拒绝疯狂耗电，Tencent 社交毒瘤一键省电模块(目前支持 QQ、TIM、微信)，通过干掉电源锁常驻减少电量消耗，理论支持最新版本。by 酷安 @星夜不荟" />
 
         <!-- 最低xposed版本号 -->
         <meta-data
