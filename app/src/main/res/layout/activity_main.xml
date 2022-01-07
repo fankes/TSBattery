@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,9 +14,9 @@
         android:background="@color/white"
         android:elevation="0dp"
         android:paddingLeft="15dp"
-        android:paddingTop="10dp"
+        android:paddingTop="13dp"
         android:paddingRight="15dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -93,7 +94,7 @@
                     android:id="@+id/main_text_qq_noinstall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/red_round"
                     android:paddingLeft="2dp"
@@ -143,7 +144,7 @@
                     android:id="@+id/main_text_tim_noinstall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/red_round"
                     android:paddingLeft="2dp"
@@ -192,7 +193,7 @@
                     android:id="@+id/main_text_wechat_noinstall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/red_round"
                     android:paddingLeft="2dp"
@@ -233,7 +234,6 @@
         android:layout_marginBottom="10dp"
         android:fadingEdgeLength="10dp"
         android:fillViewport="true"
-        android:overScrollMode="never"
         android:requiresFadingEdge="vertical">
 
         <LinearLayout
@@ -251,7 +251,7 @@
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="15dp">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
                     android:layout_width="15dp"
@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
                     android:lineSpacingExtra="5dp"
-                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些版本在适配范围内的应用都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
+                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些标注过的版本在适配范围内的 APP 都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
                     android:textColor="#FF323B42"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
@@ -285,7 +285,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/protect_mode_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -317,7 +317,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/notify_module_info_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/hide_icon_in_launcher_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -378,13 +378,11 @@
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:padding="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center|start">
 
@@ -462,6 +460,15 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
+                    android:text="Q.如何对单独的 APP 生效模块？\nA.请在 LsPosed 中勾选对应定义域即可，我们不建议使用 EdXposed。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
                     android:text="Q.如何反馈问题？\nA.酷安关注 @星夜不荟"
                     android:textColor="#777777"
                     android:textSize="12sp" />
@@ -478,13 +485,11 @@
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:padding="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center|start">
 
@@ -509,7 +514,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="本软件是免费开源项目，遵循 GPL 协议，你可以点击这里前往 Github 查看源码以及获取模块更新。\n严禁以任何形式贩卖、商用本软件，否则开发者有权追究其法律责任。"
@@ -532,21 +536,29 @@
                 android:paddingRight="15dp">
 
                 <TextView
+                    android:id="@+id/link_with_follow_me"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:lineSpacingExtra="6dp"
-                    android:text="恰饭时间\n酷安关注我，获取我的更多应用"
+                    android:text="恰饭时间\n点击前往酷安关注我，获取我的更多应用"
                     android:textColor="#FF323B42"
                     android:textSize="16sp" />
 
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:src="@mipmap/qr_pay" />
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/qr_pay" />
+                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"

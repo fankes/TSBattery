@@ -24,6 +24,9 @@ package com.fankes.tsbattery.utils
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+
 
 /**
  * 构造对话框
@@ -85,5 +88,14 @@ class DialogBuilder(private val context: Context) {
         instance?.setNeutralButton(content) { _, _ -> it() }
 
     /** 显示对话框 */
-    internal fun show() = instance?.create()?.show()
+    internal fun show() = instance?.create()?.apply {
+        window?.setBackgroundDrawable(GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(Color.WHITE, Color.WHITE)
+        ).apply {
+            shape = GradientDrawable.RECTANGLE
+            gradientType = GradientDrawable.LINEAR_GRADIENT
+            cornerRadius = 15.dp(this@DialogBuilder.context)
+        })
+    }?.show()
 }

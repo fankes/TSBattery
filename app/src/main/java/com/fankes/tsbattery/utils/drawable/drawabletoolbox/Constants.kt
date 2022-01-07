@@ -16,31 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * This file is Created by fankes on 2021/11/9.
+ * This file is Created by fankes on 2022/1/8.
  */
-@file:Suppress("unused")
 
-package com.fankes.tsbattery.application
+package com.fankes.tsbattery.utils.drawable.drawabletoolbox
 
-import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
-
-class TSApplication : Application() {
+class Constants {
 
     companion object {
-
-        /** 全局静态实例 */
-        private var context: TSApplication? = null
-
-        /** 调用全局静态实例 */
-        val appContext get() = context ?: error("App is death")
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        /** 设置静态实例 */
-        context = this
-        /** 禁止系统夜间模式对自己造成干扰 - 模块要什么夜间模式？😅 (其实是我懒) */
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        const val DEFAULT_COLOR = 0xFFBA68C8.toInt()
     }
 }
