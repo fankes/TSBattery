@@ -331,7 +331,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="模块工作正常情况下不要开启，如果你想测试模块是否正常激活，可以打开此提示，开启后将会在启动 QQ、TIM 或微信的时候提示运行信息。"
+                    android:text="模块工作正常情况下无需开启，如果你想测试模块是否正常激活，可以打开此提示，开启后将会在启动 QQ、TIM 或微信的时候提示运行信息。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>
