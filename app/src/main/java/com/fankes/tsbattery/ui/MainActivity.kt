@@ -253,6 +253,7 @@ class MainActivity : AppCompatActivity() {
         ).edit().putString(key, value).apply()
         setWorldReadable()
         /** 延迟继续设置强制允许 SP 可读可写 */
+        /////
         Handler().postDelayed({ setWorldReadable() }, 500)
         Handler().postDelayed({ setWorldReadable() }, 1000)
         Handler().postDelayed({ setWorldReadable() }, 1500)
