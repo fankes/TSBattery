@@ -36,7 +36,6 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.utils.widget.ImageFilterView
@@ -44,6 +43,7 @@ import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.hook.HookMedium
 import com.fankes.tsbattery.utils.FileUtils
+import com.fankes.tsbattery.utils.showDialog
 import com.gyf.immersionbar.ImmersionBar
 import java.io.File
 
@@ -84,47 +84,48 @@ class MainActivity : AppCompatActivity() {
             /** 写入激活的模块版本 */
             putString(HookMedium.ENABLE_MODULE_VERSION, moduleVersion)
         } else
-            AlertDialog.Builder(this)
-                .setTitle("模块没有激活")
-                .setMessage(
-                    "检测到模块没有激活，模块需要 Xposed 环境依赖，同时需要系统拥有 Root 权限(太极阴可以免 Root)，请自行查看本页面使用帮助与说明第三条。\n" +
-                            "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
-                            "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
-                            "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
-                )
-                .setPositiveButton("我知道了", null)
-                .setCancelable(false)
-                .show()
+            showDialog {
+                title = "模块没有激活"
+                content = "检测到模块没有激活，模块需要 Xposed 环境依赖，" +
+                        "同时需要系统拥有 Root 权限(太极阴可以免 Root)，" +
+                        "请自行查看本页面使用帮助与说明第三条。\n" +
+                        "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后" +
+                        "可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
+                        "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
+                        "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
+                addConfirmButton("我知道了")
+                noCancelable()
+            }
         /** 设置文本 */
         findViewById<TextView>(R.id.main_text_version).text = "当前版本：$moduleVersion"
         findViewById<TextView>(R.id.main_text_support_qq).apply {
             text = qqSupportVersion
             setOnClickListener {
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("兼容的 QQ 版本")
-                    .setMessage(qqSupportVersion)
-                    .setPositiveButton("我知道了", null)
-                    .show()
+                showDialog {
+                    title = "兼容的 QQ 版本"
+                    content = qqSupportVersion
+                    addConfirmButton("我知道了")
+                }
             }
         }
         findViewById<TextView>(R.id.main_text_support_tim).apply {
             text = timSupportVersion
             setOnClickListener {
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("兼容的 TIM 版本")
-                    .setMessage(timSupportVersion)
-                    .setPositiveButton("我知道了", null)
-                    .show()
+                showDialog {
+                    title = "兼容的 TIM 版本"
+                    content = timSupportVersion
+                    addConfirmButton("我知道了")
+                }
             }
         }
         findViewById<TextView>(R.id.main_text_support_wechat).apply {
             text = wechatSupportVersion
             setOnClickListener {
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle("兼容的微信版本")
-                    .setMessage(wechatSupportVersion)
-                    .setPositiveButton("我知道了", null)
-                    .show()
+                showDialog {
+                    title = "兼容的微信版本"
+                    content = wechatSupportVersion
+                    addConfirmButton("我知道了")
+                }
             }
         }
         /** 初始化 View */

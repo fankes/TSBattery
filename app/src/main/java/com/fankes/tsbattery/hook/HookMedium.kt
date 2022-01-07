@@ -36,6 +36,11 @@ object HookMedium {
     const val ENABLE_WHITE_MODE = "_white_mode"
     const val ENABLE_MODULE_VERSION = "_module_version"
 
+    const val SELF_PACKAGE_NAME = "com.fankes.tsbattery"
+    const val QQ_PACKAGE_NAME = "com.tencent.mobileqq"
+    const val TIM_PACKAGE_NAME = "com.tencent.tim"
+    const val WECHAT_PACKAGE_NAME = "com.tencent.mm"
+
     /**
      * 判断模块是否激活
      * 在 [HookMain] 中 Hook 掉此方法
