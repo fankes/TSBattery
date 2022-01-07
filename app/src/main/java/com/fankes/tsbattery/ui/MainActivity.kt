@@ -39,10 +39,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.utils.widget.ImageFilterView
+import androidx.core.view.isGone
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.hook.HookMedium
+import com.fankes.tsbattery.hook.HookMedium.QQ_PACKAGE_NAME
+import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
+import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.utils.FileUtils
+import com.fankes.tsbattery.utils.isInstall
 import com.fankes.tsbattery.utils.showDialog
 import com.gyf.immersionbar.ImmersionBar
 import java.io.File
@@ -97,6 +102,10 @@ class MainActivity : AppCompatActivity() {
                 addConfirmButton("我知道了")
                 noCancelable()
             }
+        /** 设置安装状态 */
+        findViewById<View>(R.id.main_text_qq_noinstall).isGone = QQ_PACKAGE_NAME.isInstall
+        findViewById<View>(R.id.main_text_tim_noinstall).isGone = TIM_PACKAGE_NAME.isInstall
+        findViewById<View>(R.id.main_text_wechat_noinstall).isGone = WECHAT_PACKAGE_NAME.isInstall
         /** 设置文本 */
         findViewById<TextView>(R.id.main_text_version).text = "当前版本：$moduleVersion"
         findViewById<TextView>(R.id.main_text_support_qq).apply {
@@ -154,12 +163,28 @@ class MainActivity : AppCompatActivity() {
             if (!btn.isPressed) return@setOnCheckedChangeListener
             putBoolean(HookMedium.ENABLE_RUN_INFO, b)
         }
+        /** 恰饭！ */
+        findViewById<View>(R.id.link_with_follow_me).setOnClickListener {
+            try {
+                startActivity(Intent().apply {
+                    setPackage("com.coolapk.market")
+                    action = "android.intent.action.VIEW"
+                    data = Uri.parse("https://www.coolapk.com/u/876977")
+                    /** 防止顶栈一样重叠在自己的 APP 中 */
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                })
+            } catch (e: Exception) {
+                Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show()
+            }
+        }
         /** 项目地址点击事件 */
         findViewById<View>(R.id.link_with_project_address).setOnClickListener {
             try {
                 startActivity(Intent().apply {
                     action = "android.intent.action.VIEW"
                     data = Uri.parse("https://github.com/fankes/TSBattery")
+                    /** 防止顶栈一样重叠在自己的 APP 中 */
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
             } catch (e: Exception) {
                 Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show()

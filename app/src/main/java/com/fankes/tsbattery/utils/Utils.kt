@@ -24,13 +24,37 @@ package com.fankes.tsbattery.utils
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import com.fankes.tsbattery.application.TSApplication.Companion.appContext
 
 /** 得到安装包信息 */
 val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?: PackageInfo()
+
+/** 判断应用是否安装 */
+val String.isInstall
+    get() =
+        try {
+            appContext.packageManager.getPackageInfo(
+                this,
+                PackageManager.GET_UNINSTALLED_PACKAGES
+            )
+            true
+        } catch (e: Exception) {
+            false
+        }
 
 /** 得到版本信息 */
 val Context.versionName get() = packageInfo.versionName ?: ""
 
 /** 得到版本号 */
 val Context.versionCode get() = packageInfo.versionCode
+
+/** dp 转换为 px */
+val Number.dp get() = (toFloat() * appContext.resources.displayMetrics.density).toInt()
+
+/**
+ * dp 转换为 px
+ * @param context 使用的实例
+ */
+fun Number.dp(context: Context) = toFloat() * context.resources.displayMetrics.density
 
