@@ -116,6 +116,10 @@ class HookMain : IXposedHookLoadPackage {
                 replaceToNull(BASE_CHAT_PIE, "bj")
                 replaceToNull(BASE_CHAT_PIE, "bk")
             }
+            "8.8.55" -> {
+                replaceToNull(BASE_CHAT_PIE, "bk")
+                replaceToNull(BASE_CHAT_PIE, "bl")
+            }
             else -> logD("$version not supported!")
         }
     }
