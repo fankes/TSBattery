@@ -11,8 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="5dp"
-        android:padding="15dp">
+        android:elevation="0dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -20,7 +23,7 @@
             android:singleLine="true"
             android:text="TSBattery"
             android:textColor="#FF323B42"
-            android:textSize="18sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -29,11 +32,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/dark_round"
-        android:elevation="3dp"
+        android:elevation="0dp"
         android:gravity="center">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -49,7 +52,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/main_text_status"
@@ -82,6 +88,22 @@
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
                     android:src="@mipmap/qq_icon" />
+
+                <TextView
+                    android:id="@+id/main_text_qq_noinstall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/red_round"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="1dp"
+                    android:text="未安装"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,6 +140,22 @@
                     android:src="@mipmap/tim_icon" />
 
                 <TextView
+                    android:id="@+id/main_text_tim_noinstall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/red_round"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="1dp"
+                    android:text="未安装"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    tools:ignore="SmallSp" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
@@ -141,7 +179,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:gravity="center|start"
                 android:orientation="horizontal">
 
@@ -150,6 +187,22 @@
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
                     android:src="@mipmap/wechat_icon" />
+
+                <TextView
+                    android:id="@+id/main_text_wechat_noinstall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/red_round"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="1dp"
+                    android:text="未安装"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    tools:ignore="SmallSp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -171,16 +224,6 @@
                     android:textColor="@color/white"
                     android:textSize="11sp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.6"
-                android:lineSpacingExtra="5dp"
-                android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些版本在适配范围内的应用都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -204,8 +247,39 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <androidx.constraintlayout.utils.widget.ImageFilterView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:alpha="0.85"
+                    android:src="@mipmap/about"
+                    android:tint="#FF777777" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="5dp"
+                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些版本在适配范围内的应用都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
+                    android:textColor="#FF323B42"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
@@ -236,8 +310,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
@@ -268,8 +342,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
@@ -289,7 +363,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="隐藏模块图标后，模块不会再在桌面显示，你可以在 EdXposed、太极、LsPosed 中找到模块设置并打开。"
+                    android:text="隐藏模块图标后，模块不会再在桌面显示，你可以在 EdXposed、太极、LsPosed 中找到模块设置并打开，对原生系统无效。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -300,8 +374,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
@@ -400,8 +474,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
@@ -450,8 +524,8 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/white_round"
-                android:elevation="2dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
