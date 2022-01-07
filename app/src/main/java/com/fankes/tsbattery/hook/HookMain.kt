@@ -221,13 +221,14 @@ class HookMain : IXposedHookLoadPackage {
                                     (param?.thisObject as? Activity?)?.apply {
                                         showDialog {
                                             title = "TSBattery 已激活"
-                                            content = "[提示模块运行信息功能已打开]\n" +
+                                            content = "[提示模块运行信息功能已打开]\n\n" +
                                                     "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
                                                     "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
                                                     "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                                     "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                                    "\n\nPS：模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n" +
-                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n" +
+                                                    "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
+                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                                    "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
                                                     "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
                                             addConfirmButton("我知道了")
                                             noCancelable()
@@ -417,13 +418,14 @@ class HookMain : IXposedHookLoadPackage {
                                     (param?.thisObject as? Activity?)?.apply {
                                         showDialog {
                                             title = "TSBattery 已激活"
-                                            content = "[提示模块运行信息功能已打开]\n" +
+                                            content = "[提示模块运行信息功能已打开]\n\n" +
                                                     "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
                                                     "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
                                                     "当前模式：基础省电" +
                                                     "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                                    "\n\nPS：当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n" +
-                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n" +
+                                                    "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
+                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                                    "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
                                                     "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
                                             addConfirmButton("我知道了")
                                             noCancelable()
