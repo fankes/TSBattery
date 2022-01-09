@@ -2,7 +2,7 @@
 
 ![Eclipse Marketplace](https://img.shields.io/badge/build-passing-brightgreen)
 ![Eclipse Marketplace](https://img.shields.io/badge/license-GPL3.0-blue)
-![Eclipse Marketplace](https://img.shields.io/badge/version-v2.5-green)
+![Eclipse Marketplace](https://img.shields.io/badge/version-v3.0-green)
 <br/><br/>
 ![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
 TSBattery a new way to save your battery avoid cancer apps hacker it.<br/>
