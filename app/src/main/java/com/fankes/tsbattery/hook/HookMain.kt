@@ -230,7 +230,7 @@ class HookMain : IXposedHookLoadPackage {
                                                     "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
                                                     "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
                                                     "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                            addConfirmButton("我知道了")
+                                            confirmButton("我知道了")
                                             noCancelable()
                                         }
                                     }
@@ -427,7 +427,7 @@ class HookMain : IXposedHookLoadPackage {
                                                     "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
                                                     "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
                                                     "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                            addConfirmButton("我知道了")
+                                            confirmButton("我知道了")
                                             noCancelable()
                                         }
                                     }
