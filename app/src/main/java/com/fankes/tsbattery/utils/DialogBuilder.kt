@@ -68,7 +68,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun confirmButton(text: String, it: () -> Unit = {}) =
+    fun confirmButton(text: String = "确定", it: () -> Unit = {}) =
         instance?.setPositiveButton(text) { _, _ -> it() }
 
     /**
@@ -76,7 +76,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun cancelButton(text: String, it: () -> Unit = {}) =
+    fun cancelButton(text: String = "取消", it: () -> Unit = {}) =
         instance?.setNegativeButton(text) { _, _ -> it() }
 
     /**
@@ -84,7 +84,7 @@ class DialogBuilder(private val context: Context) {
      * @param text 按钮文本内容
      * @param it 点击事件
      */
-    fun neutralButton(text: String, it: () -> Unit = {}) =
+    fun neutralButton(text: String = "更多", it: () -> Unit = {}) =
         instance?.setNeutralButton(text) { _, _ -> it() }
 
     /** 显示对话框 */
