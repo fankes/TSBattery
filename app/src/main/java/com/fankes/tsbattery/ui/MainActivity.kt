@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * 判断模块是否激活
-     * @return 激活状态
+     * @return [Boolean] 激活状态
      */
     private fun isHooked() = HookMedium.isHooked()
 
@@ -216,7 +216,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * 获取保存的值
      * @param key 名称
-     * @return 保存的值
+     * @return [Boolean] 保存的值
      */
     private fun getBoolean(key: String) =
         getSharedPreferences(

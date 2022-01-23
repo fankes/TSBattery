@@ -32,7 +32,10 @@ class TSApplication : Application() {
         /** 全局静态实例 */
         private var context: TSApplication? = null
 
-        /** 调用全局静态实例 */
+        /**
+         * 调用全局静态实例
+         * @return [TSApplication]
+         */
         val appContext get() = context ?: error("App is death")
     }
 
