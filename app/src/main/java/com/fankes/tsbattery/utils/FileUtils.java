@@ -21,7 +21,6 @@
 package com.fankes.tsbattery.utils;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.fankes.tsbattery.BuildConfig;
 
@@ -82,13 +81,5 @@ public class FileUtils {
 
     public static File getDefaultPrefFile(Context context) {
         return new File(getPrefDir(context), FILE_PREF_NAME);
-    }
-
-    public static File getBackupPrefsFile() {
-        return new File(getBackupDir(), FILE_PREF_NAME);
-    }
-
-    private static File getBackupDir() {
-        return new File(Environment.getExternalStorageDirectory(), "QQPurify");
     }
 }
