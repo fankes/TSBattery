@@ -221,7 +221,7 @@ class HookMain : IXposedHookLoadPackage {
                                     (param?.thisObject as? Activity?)?.apply {
                                         showDialog {
                                             title = "TSBattery 已激活"
-                                            content = "[提示模块运行信息功能已打开]\n\n" +
+                                            msg = "[提示模块运行信息功能已打开]\n\n" +
                                                     "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
                                                     "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
                                                     "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) "保守模式" else "完全模式"}" +
@@ -418,7 +418,7 @@ class HookMain : IXposedHookLoadPackage {
                                     (param?.thisObject as? Activity?)?.apply {
                                         showDialog {
                                             title = "TSBattery 已激活"
-                                            content = "[提示模块运行信息功能已打开]\n\n" +
+                                            msg = "[提示模块运行信息功能已打开]\n\n" +
                                                     "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
                                                     "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
                                                     "当前模式：基础省电" +

@@ -56,8 +56,8 @@ class DialogBuilder(private val context: Context) {
             instance?.setTitle(value)
         }
 
-    /** 设置对话框内容 */
-    var content
+    /** 设置对话框消息内容 */
+    var msg
         get() = ""
         set(value) {
             instance?.setMessage(value)
