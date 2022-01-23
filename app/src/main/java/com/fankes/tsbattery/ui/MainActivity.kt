@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                         "可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
                         "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
                         "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
-                confirmButton("我知道了")
+                confirmButton(text = "我知道了")
                 noCancelable()
             }
         /** 设置安装状态 */
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                 showDialog {
                     title = "兼容的 QQ 版本"
                     msg = qqSupportVersion
-                    confirmButton("我知道了")
+                    confirmButton(text = "我知道了")
                 }
             }
         }
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 showDialog {
                     title = "兼容的 TIM 版本"
                     msg = timSupportVersion
-                    confirmButton("我知道了")
+                    confirmButton(text = "我知道了")
                 }
             }
         }
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 showDialog {
                     title = "兼容的微信版本"
                     msg = wechatSupportVersion
-                    confirmButton("我知道了")
+                    confirmButton(text = "我知道了")
                 }
             }
         }
