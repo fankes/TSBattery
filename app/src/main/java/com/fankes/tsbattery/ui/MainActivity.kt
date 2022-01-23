@@ -143,9 +143,9 @@ class MainActivity : AppCompatActivity() {
         val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
         val notifyModuleInfoSwitch = findViewById<SwitchCompat>(R.id.notify_module_info_switch)
         /** 获取 Sp 存储的信息 */
-        protectModeSwitch.isChecked = getBoolean("_white_mode")
-        hideIconInLauncherSwitch.isChecked = getBoolean("_hide_icon")
-        notifyModuleInfoSwitch.isChecked = getBoolean("_tip_run_info")
+        protectModeSwitch.isChecked = getBoolean(HookMedium.ENABLE_WHITE_MODE)
+        hideIconInLauncherSwitch.isChecked = getBoolean(HookMedium.ENABLE_HIDE_ICON)
+        notifyModuleInfoSwitch.isChecked = getBoolean(HookMedium.ENABLE_RUN_INFO)
         protectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             putBoolean(HookMedium.ENABLE_WHITE_MODE, b)
