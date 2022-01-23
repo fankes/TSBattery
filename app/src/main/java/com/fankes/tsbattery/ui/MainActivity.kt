@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                     file.setExecutable(true, false)
                 }
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Toast.makeText(this, "无法写入模块设置，请检查权限\n如果此提示一直显示，请不要双开模块", Toast.LENGTH_SHORT).show()
         }
     }
