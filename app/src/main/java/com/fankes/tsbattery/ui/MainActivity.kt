@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         } else
             showDialog {
                 title = "模块没有激活"
-                content = "检测到模块没有激活，模块需要 Xposed 环境依赖，" +
+                msg = "检测到模块没有激活，模块需要 Xposed 环境依赖，" +
                         "同时需要系统拥有 Root 权限(太极阴可以免 Root)，" +
                         "请自行查看本页面使用帮助与说明第三条。\n" +
                         "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后" +
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             setOnClickListener {
                 showDialog {
                     title = "兼容的 QQ 版本"
-                    content = qqSupportVersion
+                    msg = qqSupportVersion
                     addConfirmButton("我知道了")
                 }
             }
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
             setOnClickListener {
                 showDialog {
                     title = "兼容的 TIM 版本"
-                    content = timSupportVersion
+                    msg = timSupportVersion
                     addConfirmButton("我知道了")
                 }
             }
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             setOnClickListener {
                 showDialog {
                     title = "兼容的微信版本"
-                    content = wechatSupportVersion
+                    msg = wechatSupportVersion
                     addConfirmButton("我知道了")
                 }
             }
