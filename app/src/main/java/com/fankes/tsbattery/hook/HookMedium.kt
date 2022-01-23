@@ -44,7 +44,7 @@ object HookMedium {
     /**
      * 判断模块是否激活
      * 在 [HookMain] 中 Hook 掉此方法
-     * @return 激活状态
+     * @return [Boolean] 激活状态
      */
     fun isHooked(): Boolean {
         Log.d("TSBattery", "isHooked: true")
@@ -52,8 +52,8 @@ object HookMedium {
     }
 
     /**
-     * 新增太极判断方式
-     * @return 是否激活
+     * 太极激活判断方式
+     * @return [Boolean] 是否激活
      */
     private fun isExpModuleActive(): Boolean {
         var isExp = false

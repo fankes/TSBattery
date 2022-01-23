@@ -27,10 +27,16 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import com.fankes.tsbattery.application.TSApplication.Companion.appContext
 
-/** 得到安装包信息 */
+/**
+ * 得到安装包信息
+ * @return [PackageInfo]
+ */
 val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?: PackageInfo()
 
-/** 判断应用是否安装 */
+/**
+ * 判断应用是否安装
+ * @return [Boolean]
+ */
 val String.isInstall
     get() =
         try {
@@ -43,18 +49,28 @@ val String.isInstall
             false
         }
 
-/** 得到版本信息 */
+/**
+ * 得到版本信息
+ * @return [String]
+ */
 val Context.versionName get() = packageInfo.versionName ?: ""
 
-/** 得到版本号 */
+/**
+ * 得到版本号
+ * @return [Int]
+ */
 val Context.versionCode get() = packageInfo.versionCode
 
-/** dp 转换为 px */
+/**
+ * dp 转换为 px
+ * @return [Int]
+ */
 val Number.dp get() = (toFloat() * appContext.resources.displayMetrics.density).toInt()
 
 /**
  * dp 转换为 px
  * @param context 使用的实例
+ * @return [Float]
  */
 fun Number.dp(context: Context) = toFloat() * context.resources.displayMetrics.density
 
