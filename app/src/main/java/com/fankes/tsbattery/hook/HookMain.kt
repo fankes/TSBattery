@@ -23,6 +23,8 @@
 package com.fankes.tsbattery.hook
 
 import android.app.Activity
+import android.app.Service
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -237,6 +239,30 @@ class HookMain : IXposedHookLoadPackage {
                                 }
                             })
                     }
+                /** Hook CoreService 全部方法 */
+                runWithoutError("CoreServiceAllMethods") {
+                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
+                        lpparam.classLoader.loadClass("$QQ_PACKAGE_NAME.app.CoreService")
+                            .methods.forEach {
+                                if (it.name != "onCreate" && it.name != "onDestroy" && it.name != "onBind")
+                                    XposedBridge.hookMethod(it, replaceToNull)
+                            }
+                }
+                /** Hook CoreService 启动方法 */
+                runWithoutError("CoreService") {
+                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService",
+                            lpparam.classLoader, "onCreate",
+                            object : XC_MethodHook() {
+
+                                override fun afterHookedMethod(param: MethodHookParam?) {
+                                    (param?.thisObject as? Service)?.apply {
+                                        stopService(Intent(applicationContext, javaClass))
+                                    }
+                                }
+                            })
+                }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
                 if (!XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
                     runWithoutError("BaseChatPie(first time)") {
@@ -401,6 +427,8 @@ class HookMain : IXposedHookLoadPackage {
             }
             /** 微信 */
             WECHAT_PACKAGE_NAME -> {
+                /** 判断是否关闭 Hook */
+                if (XPrefUtils.getBoolean(HookMedium.DISABLE_WECHAT_HOOK)) return
                 lpparam.hookSystemWakeLock()
                 /** 判断是否开启提示模块运行信息 */
                 if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))

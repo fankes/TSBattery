@@ -139,16 +139,34 @@ class MainActivity : AppCompatActivity() {
             }
         }
         /** 初始化 View */
-        val protectModeSwitch = findViewById<SwitchCompat>(R.id.protect_mode_switch)
+        val qqTimProtectModeSwitch = findViewById<SwitchCompat>(R.id.qqtim_protect_mode_switch)
+        val qqTimCoreServiceSwitch = findViewById<SwitchCompat>(R.id.shut_core_sv_qqtim_switch)
+        val qqTimCoreServiceKnSwitch = findViewById<SwitchCompat>(R.id.shut_core_sv_kn_qqtim_switch)
+        val wechatDisableHookSwitch = findViewById<SwitchCompat>(R.id.disable_wechat_sv_switch)
         val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
         val notifyModuleInfoSwitch = findViewById<SwitchCompat>(R.id.notify_module_info_switch)
         /** 获取 Sp 存储的信息 */
-        protectModeSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)
+        qqTimProtectModeSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)
+        qqTimCoreServiceSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)
+        qqTimCoreServiceKnSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
+        wechatDisableHookSwitch.isChecked = getBoolean(HookMedium.DISABLE_WECHAT_HOOK)
         hideIconInLauncherSwitch.isChecked = getBoolean(HookMedium.ENABLE_HIDE_ICON)
         notifyModuleInfoSwitch.isChecked = getBoolean(HookMedium.ENABLE_RUN_INFO)
-        protectModeSwitch.setOnCheckedChangeListener { btn, b ->
+        qqTimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             putBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE, b)
+        }
+        qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
+            if (!btn.isPressed) return@setOnCheckedChangeListener
+            putBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN, b)
+        }
+        qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
+            if (!btn.isPressed) return@setOnCheckedChangeListener
+            putBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
+        }
+        wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
+            if (!btn.isPressed) return@setOnCheckedChangeListener
+            putBoolean(HookMedium.DISABLE_WECHAT_HOOK, b)
         }
         hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener

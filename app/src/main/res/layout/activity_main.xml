@@ -313,7 +313,7 @@
                 </LinearLayout>
 
                 <com.fankes.tsbattery.view.MaterialSwitch
-                    android:id="@+id/protect_mode_switch"
+                    android:id="@+id/qqtim_protect_mode_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="启用保守模式"

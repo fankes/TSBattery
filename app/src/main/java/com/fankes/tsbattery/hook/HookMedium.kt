@@ -34,9 +34,9 @@ object HookMedium {
     const val ENABLE_HIDE_ICON = "_hide_icon"
     const val ENABLE_RUN_INFO = "_tip_run_info"
     const val ENABLE_QQTIM_WHITE_MODE = "_qqtim_white_mode"
-    const val ENABLE_QQTIM_CORESERVICE = "_qqtim_core_service"
-    const val ENABLE_QQTIM_CORESERVICE_CHILD = "_qqtim_core_service_child"
-    const val ENABLE_WECHAT_HOOK = "_wechat_hook"
+    const val ENABLE_QQTIM_CORESERVICE_BAN = "_qqtim_core_service_ban"
+    const val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = "_qqtim_core_service_child_ban"
+    const val DISABLE_WECHAT_HOOK = "_disable_wechat_hook"
     const val ENABLE_MODULE_VERSION = "_module_version"
 
     const val SELF_PACKAGE_NAME = "com.fankes.tsbattery"
