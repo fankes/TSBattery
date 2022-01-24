@@ -240,13 +240,36 @@ class HookMain : IXposedHookLoadPackage {
                             })
                     }
                 /** Hook CoreService 全部方法 */
-                runWithoutError("CoreServiceAllMethods") {
-                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
-                        lpparam.classLoader.loadClass("$QQ_PACKAGE_NAME.app.CoreService")
-                            .methods.forEach {
-                                if (it.name != "onCreate" && it.name != "onDestroy" && it.name != "onBind")
-                                    XposedBridge.hookMethod(it, replaceToNull)
-                            }
+                if (lpparam.packageName == TIM_PACKAGE_NAME)
+                    runWithoutError("CoreServiceAllMethods") {
+                        if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
+                            lpparam.classLoader.loadClass("$QQ_PACKAGE_NAME.app.CoreService")
+                                .methods.forEach {
+                                    if (it.name != "onCreate" && it.name != "onDestroy" && it.name != "onBind")
+                                        XposedBridge.hookMethod(it, replaceToNull)
+                                }
+                    }
+                /** Hook CoreService 指定方法 */
+                else runWithoutError("CoreServiceKnownMethods") {
+                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService",
+                            lpparam.classLoader, "startTempService", replaceToNull
+                        )
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService",
+                            lpparam.classLoader, "startCoreService", Boolean::class.java, replaceToNull
+                        )
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService",
+                            lpparam.classLoader,
+                            "onStartCommand",
+                            Intent::class.java, Int::class.java, Int::class.java,
+                            object : XC_MethodReplacement() {
+
+                                override fun replaceHookedMethod(param: MethodHookParam?) = 2
+                            })
+                    }
                 }
                 /** Hook CoreService 启动方法 */
                 runWithoutError("CoreService") {
