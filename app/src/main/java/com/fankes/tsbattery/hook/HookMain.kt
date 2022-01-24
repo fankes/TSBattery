@@ -263,6 +263,31 @@ class HookMain : IXposedHookLoadPackage {
                                 }
                             })
                 }
+                /** Hook CoreService$KernelService 启动方法 */
+                runWithoutError("CoreService\$KernelService") {
+                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)) {
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
+                            lpparam.classLoader, "onCreate",
+                            object : XC_MethodHook() {
+
+                                override fun afterHookedMethod(param: MethodHookParam?) {
+                                    (param?.thisObject as? Service)?.apply {
+                                        stopService(Intent(applicationContext, javaClass))
+                                    }
+                                }
+                            })
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
+                            lpparam.classLoader,
+                            "onStartCommand",
+                            Intent::class.java, Int::class.java, Int::class.java,
+                            object : XC_MethodReplacement() {
+
+                                override fun replaceHookedMethod(param: MethodHookParam?) = 2
+                            })
+                    }
+                }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
                 if (!XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
                     runWithoutError("BaseChatPie(first time)") {
