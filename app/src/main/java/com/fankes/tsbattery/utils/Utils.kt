@@ -23,8 +23,12 @@
 package com.fankes.tsbattery.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
+import android.widget.Toast
 import com.fankes.tsbattery.application.TSApplication.Companion.appContext
 
 /**
@@ -73,4 +77,20 @@ val Number.dp get() = (toFloat() * appContext.resources.displayMetrics.density).
  * @return [Float]
  */
 fun Number.dp(context: Context) = toFloat() * context.resources.displayMetrics.density
+
+/**
+ * 跳转 APP 自身设置界面
+ * @param packageName 包名
+ */
+fun Context.openSelfSetting(packageName: String) {
+    try {
+        startActivity(Intent().apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
+    } catch (_: Exception) {
+        Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
+    }
+}
 
