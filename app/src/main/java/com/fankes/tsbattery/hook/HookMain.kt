@@ -242,12 +242,14 @@ class HookMain : IXposedHookLoadPackage {
                 /** Hook CoreService 全部方法 */
                 if (lpparam.packageName == TIM_PACKAGE_NAME)
                     runWithoutError("CoreServiceAllMethods") {
-                        if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
+                        if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
                             lpparam.classLoader.loadClass("$QQ_PACKAGE_NAME.app.CoreService")
                                 .methods.forEach {
                                     if (it.name != "onCreate" && it.name != "onDestroy" && it.name != "onBind")
                                         XposedBridge.hookMethod(it, replaceToNull)
                                 }
+                            logD("hook CoreService OK!")
+                        }
                     }
                 /** Hook CoreService 指定方法 */
                 else runWithoutError("CoreServiceKnownMethods") {
@@ -269,11 +271,12 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun replaceHookedMethod(param: MethodHookParam?) = 2
                             })
+                        logD("hook CoreService OK!")
                     }
                 }
                 /** Hook CoreService 启动方法 */
                 runWithoutError("CoreService") {
-                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN))
+                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
                         XposedHelpers.findAndHookMethod(
                             "$QQ_PACKAGE_NAME.app.CoreService",
                             lpparam.classLoader, "onCreate",
@@ -281,10 +284,15 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun afterHookedMethod(param: MethodHookParam?) {
                                     (param?.thisObject as? Service)?.apply {
-                                        stopService(Intent(applicationContext, javaClass))
+                                        runWithoutError("StopCoreService") {
+                                            stopForeground(true)
+                                            stopService(Intent(applicationContext, javaClass))
+                                        }
                                     }
                                 }
                             })
+                        logD("Shutdown CoreService OK!")
+                    }
                 }
                 /** Hook CoreService$KernelService 启动方法 */
                 runWithoutError("CoreService\$KernelService") {
@@ -296,7 +304,10 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun afterHookedMethod(param: MethodHookParam?) {
                                     (param?.thisObject as? Service)?.apply {
-                                        stopService(Intent(applicationContext, javaClass))
+                                        runWithoutError("StopKernelService") {
+                                            stopForeground(true)
+                                            stopService(Intent(applicationContext, javaClass))
+                                        }
                                     }
                                 }
                             })
@@ -309,6 +320,7 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun replaceHookedMethod(param: MethodHookParam?) = 2
                             })
+                        logD("Shutdown CoreService\$KernelService OK!")
                     }
                 }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
