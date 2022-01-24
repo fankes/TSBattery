@@ -27,23 +27,28 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 
-
 /**
  * 构造对话框
+ * @param isUseBlackTheme 是否使用深色主题
  * @param it 对话框方法体
  */
-fun Context.showDialog(it: DialogBuilder.() -> Unit) = DialogBuilder(this).apply(it).show()
+fun Context.showDialog(isUseBlackTheme: Boolean = false, it: DialogBuilder.() -> Unit) =
+    DialogBuilder(this, isUseBlackTheme).apply(it).show()
 
 /**
  * 对话框构造器
  * @param context 实例
+ * @param isUseBlackTheme 是否使用深色主题
  */
-class DialogBuilder(private val context: Context) {
+class DialogBuilder(private val context: Context, private val isUseBlackTheme: Boolean) {
 
     private var instance: AlertDialog.Builder? = null // 实例对象
 
     init {
-        instance = AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
+        instance = AlertDialog.Builder(
+            context,
+            if (isUseBlackTheme) android.R.style.Theme_Material_Dialog else android.R.style.Theme_Material_Light_Dialog
+        )
     }
 
     /** 设置对话框不可关闭 */
@@ -91,7 +96,8 @@ class DialogBuilder(private val context: Context) {
     internal fun show() = instance?.create()?.apply {
         window?.setBackgroundDrawable(GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM,
-            intArrayOf(Color.WHITE, Color.WHITE)
+            if (isUseBlackTheme) intArrayOf(0xFF2D2D2D.toInt(), 0xFF2D2D2D.toInt())
+            else intArrayOf(Color.WHITE, Color.WHITE)
         ).apply {
             shape = GradientDrawable.RECTANGLE
             gradientType = GradientDrawable.LINEAR_GRADIENT
