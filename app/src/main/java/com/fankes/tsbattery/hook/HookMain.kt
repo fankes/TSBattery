@@ -46,6 +46,10 @@ class HookMain : IXposedHookLoadPackage {
 
     companion object {
 
+        /** 旧版类名 */
+        private const val BASE_CHAT_PIE_LEGACY = "activity.BaseChatPie"
+
+        /** 新版类名 */
         private const val BASE_CHAT_PIE = "activity.aio.core.BaseChatPie"
     }
 
@@ -106,6 +110,10 @@ class HookMain : IXposedHookLoadPackage {
      */
     private fun XC_LoadPackage.LoadPackageParam.hookQQBaseChatPie(version: String) {
         when (version) {
+            "8.2.11" -> {
+                replaceToNull(BASE_CHAT_PIE_LEGACY, "bE")
+                replaceToNull(BASE_CHAT_PIE_LEGACY, "aV")
+            }
             "8.8.17" -> {
                 replaceToNull(BASE_CHAT_PIE, "bd")
                 replaceToNull(BASE_CHAT_PIE, "be")
@@ -460,6 +468,7 @@ class HookMain : IXposedHookLoadPackage {
                          * 带给用户的却是 shit 一样的体验
                          * 里面有各种使用 Handler 和 Timer 的各种耗时常驻后台耗电办法持续接收消息
                          * 直接循环全部方法全部干掉
+                         * 👮🏻 经过排查 Play 版本没这个类...... Emmmm 不想说啥了
                          */
                         lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor")
                             .apply {
