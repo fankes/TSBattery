@@ -84,11 +84,13 @@ fun Number.dp(context: Context) = toFloat() * context.resources.displayMetrics.d
  */
 fun Context.openSelfSetting(packageName: String) {
     try {
-        startActivity(Intent().apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            data = Uri.fromParts("package", packageName, null)
-        })
+        if (packageName.isInstall)
+            startActivity(Intent().apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", packageName, null)
+            })
+        else Toast.makeText(this, "你没有安装此应用", Toast.LENGTH_SHORT).show()
     } catch (_: Exception) {
         Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
     }
