@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
                     android:lineSpacingExtra="5dp"
-                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n这些标注过的版本在适配范围内的 APP 都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
+                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n没有标注的版本在适配范围内的 APP 适用性都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
                     android:textColor="#FF323B42"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
