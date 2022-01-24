@@ -413,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="选择停用后模块将不再对微信生效，可解决通话耳边不会黑屏和闪退问题，微信省电功能依然在开发，敬请期待。"
+                    android:text="选择停用后模块将不再对微信生效，可解决通话耳边不会黑屏和闪退问题，微信省电功能依然在开(画)发(饼)，敬请期待。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>
