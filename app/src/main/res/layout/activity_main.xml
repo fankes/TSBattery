@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.MainActivity"
-    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription">
+    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,TooManyViews">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -422,6 +422,87 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/shot_icon" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.85"
+                        android:singleLine="true"
+                        android:text="快捷操作"
+                        android:textColor="#FF323B42"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/quick_qq_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:text="QQ"
+                        android:textColor="#FF323B42"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/quick_tim_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:text="TIM"
+                        android:textColor="#FF323B42"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/quick_wechat_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:text="微信"
+                        android:textColor="#FF323B42"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/permotion_round"
@@ -555,6 +636,16 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.激活后一定可以非常省电吗？\nA.并不，模块只能减少 QQ、TIM 的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时毒瘤不会消耗过多的无用的电量，仅此而已。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q.模块是否需要挂后台？\nA.模块完全不需要挂后台，模块只是一个控制和显示的工具，真正的任务交由 Hook 处理，若出现失效的情况请发送模块运行日志给我们而不是将模块挂后台。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
 

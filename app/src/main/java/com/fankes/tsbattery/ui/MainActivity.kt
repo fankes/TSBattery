@@ -48,6 +48,7 @@ import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.utils.FileUtils
 import com.fankes.tsbattery.utils.isInstall
+import com.fankes.tsbattery.utils.openSelfSetting
 import com.fankes.tsbattery.utils.showDialog
 import com.gyf.immersionbar.ImmersionBar
 import java.io.File
@@ -181,6 +182,12 @@ class MainActivity : AppCompatActivity() {
             if (!btn.isPressed) return@setOnCheckedChangeListener
             putBoolean(HookMedium.ENABLE_RUN_INFO, b)
         }
+        /** 快捷操作 QQ */
+        findViewById<View>(R.id.quick_qq_button).setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
+        /** 快捷操作 TIM */
+        findViewById<View>(R.id.quick_tim_button).setOnClickListener { openSelfSetting(TIM_PACKAGE_NAME) }
+        /** 快捷操作微信 */
+        findViewById<View>(R.id.quick_wechat_button).setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
         /** 恰饭！ */
         findViewById<View>(R.id.link_with_follow_me).setOnClickListener {
             try {
