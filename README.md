@@ -30,7 +30,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 - [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ```
-Copyright (C) 2020-2021  Fankes Studio(qzmmcn@163.com)
+Copyright (C) 2020-2022  Fankes Studio(qzmmcn@163.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
