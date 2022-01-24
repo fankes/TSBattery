@@ -122,7 +122,7 @@ class HookMain : IXposedHookLoadPackage {
                 replaceToNull(BASE_CHAT_PIE, "bj")
                 replaceToNull(BASE_CHAT_PIE, "bk")
             }
-            "8.8.55" -> {
+            "8.8.55", "8.8.68" -> {
                 replaceToNull(BASE_CHAT_PIE, "bk")
                 replaceToNull(BASE_CHAT_PIE, "bl")
             }
@@ -224,7 +224,7 @@ class HookMain : IXposedHookLoadPackage {
                                             msg = "[提示模块运行信息功能已打开]\n\n" +
                                                     "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
                                                     "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                                    "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                                    "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                                     "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                                     "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
                                                     "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
@@ -238,7 +238,7 @@ class HookMain : IXposedHookLoadPackage {
                             })
                     }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
-                if (!XPrefUtils.getBoolean(HookMedium.ENABLE_WHITE_MODE)) {
+                if (!XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
                     runWithoutError("BaseChatPie(first time)") {
                         /** 通过在 SplashActivity 里取到应用的版本号 */
                         XposedHelpers.findAndHookMethod(
@@ -276,6 +276,7 @@ class HookMain : IXposedHookLoadPackage {
                         /**
                          * Hook 掉一个一像素保活 [Activity] 真的我怎么都想不到讯哥的程序员做出这种事情
                          * 这个东西经过测试会在锁屏的时候吊起来，解锁的时候自动 finish()，无限耍流氓耗电
+                         * 2022/1/25 后期查证：锁屏界面消息快速回复窗口的解锁后拉起保活界面，也是毒瘤
                          */
                         XposedHelpers.findAndHookMethod(
                             "$QQ_PACKAGE_NAME.activity.QQLSUnlockActivity",
@@ -308,9 +309,10 @@ class HookMain : IXposedHookLoadPackage {
                             }
                         )
                         /**
-                         * 这个东西同上，不知道是啥时候调用
+                         * 这个东西同上
                          * 反正也是一个一像素保活的 [Activity]
                          * 讯哥的程序员真的有你的
+                         * 2022/1/25 后期查证：锁屏界面消息快速回复窗口
                          */
                         XposedHelpers.findAndHookMethod(
                             "$QQ_PACKAGE_NAME.activity.QQLSActivity\$14",
