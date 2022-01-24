@@ -316,7 +316,7 @@
                     android:id="@+id/qqtim_protect_mode_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="启用保守模式"
+                    android:text="启用保守模式 [QQ]"
                     android:textColor="#FF323B42"
                     android:textSize="15sp" />
 
@@ -326,7 +326,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 和 TIM 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 或 TIM 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ 或 TIM。"
+                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
 

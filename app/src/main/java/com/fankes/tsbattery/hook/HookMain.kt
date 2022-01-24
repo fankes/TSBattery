@@ -192,43 +192,79 @@ class HookMain : IXposedHookLoadPackage {
                 })
         }
 
-    /** 提示模块运行信息 QQ、TIM */
+    /** 提示模块运行信息 QQ、TIM、微信 */
     private fun XC_LoadPackage.LoadPackageParam.hookModuleRunningInfo() =
-        runWithoutError("SplashActivity") {
-            /** 判断是否开启提示模块运行信息 */
-            if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
-            /**
-             * Hook 启动界面的第一个 [Activity]
-             * QQ 和 TIM 都是一样的类
-             * 在里面加入提示运行信息的对话框测试模块是否激活
-             */
-                XposedHelpers.findAndHookMethod(
-                    "$QQ_PACKAGE_NAME.activity.SplashActivity",
-                    classLoader,
-                    "doOnCreate",
-                    Bundle::class.java,
-                    object : XC_MethodHook() {
+        if (packageName != WECHAT_PACKAGE_NAME)
+            runWithoutError("SplashActivity") {
+                /** 判断是否开启提示模块运行信息 */
+                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                    XposedHelpers.findAndHookMethod(
+                        "$QQ_PACKAGE_NAME.activity.SplashActivity",
+                        classLoader,
+                        "doOnCreate",
+                        Bundle::class.java,
+                        object : XC_MethodHook() {
 
-                        override fun afterHookedMethod(param: MethodHookParam?) {
-                            (param?.thisObject as? Activity?)?.apply {
-                                showDialog {
-                                    title = "TSBattery 已激活"
-                                    msg = "[提示模块运行信息功能已打开]\n\n" +
-                                            "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                            "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                            "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
-                                            "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                            "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
-                                            "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
-                                            "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
-                                            "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                    confirmButton(text = "我知道了")
-                                    noCancelable()
+                            override fun afterHookedMethod(param: MethodHookParam?) {
+                                /**
+                                 * Hook 启动界面的第一个 [Activity]
+                                 * QQ 和 TIM 都是一样的类
+                                 * 在里面加入提示运行信息的对话框测试模块是否激活
+                                 */
+                                (param?.thisObject as? Activity?)?.apply {
+                                    showDialog {
+                                        title = "TSBattery 已激活"
+                                        msg = "[提示模块运行信息功能已打开]\n\n" +
+                                                "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                                "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                                "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
+                                                "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
+                                                "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                                "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                                "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                        confirmButton(text = "我知道了")
+                                        noCancelable()
+                                    }
                                 }
                             }
-                        }
-                    })
-        }
+                        })
+            }
+        else
+            runWithoutError("LauncherUI") {
+                /** 判断是否开启提示模块运行信息 */
+                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                    XposedHelpers.findAndHookMethod(
+                        "$WECHAT_PACKAGE_NAME.ui.LauncherUI",
+                        classLoader,
+                        "onCreate",
+                        Bundle::class.java,
+                        object : XC_MethodHook() {
+
+                            override fun afterHookedMethod(param: MethodHookParam?) {
+                                /**
+                                 * Hook 启动界面的第一个 [Activity]
+                                 * 在里面加入提示运行信息的对话框测试模块是否激活
+                                 */
+                                (param?.thisObject as? Activity?)?.apply {
+                                    showDialog(isUseBlackTheme = true) {
+                                        title = "TSBattery 已激活"
+                                        msg = "[提示模块运行信息功能已打开]\n\n" +
+                                                "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                                "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                "当前模式：基础省电" +
+                                                "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
+                                                "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
+                                                "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                                "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                                "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                        confirmButton(text = "我知道了")
+                                        noCancelable()
+                                    }
+                                }
+                            }
+                        })
+            }
 
     /** Hook CoreService QQ、TIM */
     private fun XC_LoadPackage.LoadPackageParam.hookCoreService() {
@@ -498,43 +534,12 @@ class HookMain : IXposedHookLoadPackage {
             WECHAT_PACKAGE_NAME -> {
                 /** 判断是否关闭 Hook */
                 if (XPrefUtils.getBoolean(HookMedium.DISABLE_WECHAT_HOOK)) return
-                lpparam.hookSystemWakeLock()
-                /** 判断是否开启提示模块运行信息 */
-                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
-                    runWithoutError("LauncherUI") {
-                        /**
-                         * Hook 启动界面的第一个 [Activity]
-                         * 在里面加入提示运行信息的对话框测试模块是否激活
-                         */
-                        XposedHelpers.findAndHookMethod(
-                            "$WECHAT_PACKAGE_NAME.ui.LauncherUI",
-                            lpparam.classLoader,
-                            "onCreate",
-                            Bundle::class.java,
-                            object : XC_MethodHook() {
-
-                                override fun afterHookedMethod(param: MethodHookParam?) {
-                                    (param?.thisObject as? Activity?)?.apply {
-                                        showDialog(isUseBlackTheme = true) {
-                                            title = "TSBattery 已激活"
-                                            msg = "[提示模块运行信息功能已打开]\n\n" +
-                                                    "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                    "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                                    "当前模式：基础省电" +
-                                                    "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                                    "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
-                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
-                                                    "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
-                                                    "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                            confirmButton(text = "我知道了")
-                                            noCancelable()
-                                        }
-                                    }
-                                }
-                            })
-                    }
+                lpparam.apply {
+                    hookSystemWakeLock()
+                    hookModuleRunningInfo()
+                }
                 // TODO 新建文件夹
-                logD("それが機能するかどうかはわかりません")
+                logD("ウイチャット：それが機能するかどうかはわかりませんでした")
             }
         }
     }
