@@ -172,6 +172,143 @@ class HookMain : IXposedHookLoadPackage {
         }
     }
 
+    /** 增加通知栏文本显示守护状态 */
+    private fun XC_LoadPackage.LoadPackageParam.hookNotification() =
+        runWithoutError("Notification") {
+            XposedHelpers.findAndHookMethod(
+                "android.app.Notification\$Builder",
+                classLoader,
+                "setContentText",
+                CharSequence::class.java,
+                object : XC_MethodHook() {
+                    override fun beforeHookedMethod(param: MethodHookParam?) {
+                        when (param?.args?.get(0) as? CharSequence?) {
+                            "QQ正在后台运行" ->
+                                param.args?.set(0, "QQ正在后台运行 - TSBattery 守护中")
+                            "TIM正在后台运行" ->
+                                param.args?.set(0, "TIM正在后台运行 - TSBattery 守护中")
+                        }
+                    }
+                })
+        }
+
+    /** 提示模块运行信息 QQ、TIM */
+    private fun XC_LoadPackage.LoadPackageParam.hookModuleRunningInfo() =
+        runWithoutError("SplashActivity") {
+            /** 判断是否开启提示模块运行信息 */
+            if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+            /**
+             * Hook 启动界面的第一个 [Activity]
+             * QQ 和 TIM 都是一样的类
+             * 在里面加入提示运行信息的对话框测试模块是否激活
+             */
+                XposedHelpers.findAndHookMethod(
+                    "$QQ_PACKAGE_NAME.activity.SplashActivity",
+                    classLoader,
+                    "doOnCreate",
+                    Bundle::class.java,
+                    object : XC_MethodHook() {
+
+                        override fun afterHookedMethod(param: MethodHookParam?) {
+                            (param?.thisObject as? Activity?)?.apply {
+                                showDialog {
+                                    title = "TSBattery 已激活"
+                                    msg = "[提示模块运行信息功能已打开]\n\n" +
+                                            "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                            "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                            "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                            "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
+                                            "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
+                                            "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                            "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                            "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                    confirmButton(text = "我知道了")
+                                    noCancelable()
+                                }
+                            }
+                        }
+                    })
+        }
+
+    /** Hook CoreService QQ、TIM */
+    private fun XC_LoadPackage.LoadPackageParam.hookCoreService() {
+        /** Hook CoreService 指定方法 */
+        if (packageName == QQ_PACKAGE_NAME)
+            runWithoutError("CoreServiceKnownMethods") {
+                if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
+                    XposedHelpers.findAndHookMethod(
+                        "$QQ_PACKAGE_NAME.app.CoreService",
+                        classLoader, "startTempService", replaceToNull
+                    )
+                    XposedHelpers.findAndHookMethod(
+                        "$QQ_PACKAGE_NAME.app.CoreService",
+                        classLoader, "startCoreService", Boolean::class.java, replaceToNull
+                    )
+                    XposedHelpers.findAndHookMethod(
+                        "$QQ_PACKAGE_NAME.app.CoreService",
+                        classLoader,
+                        "onStartCommand",
+                        Intent::class.java, Int::class.java, Int::class.java,
+                        object : XC_MethodReplacement() {
+
+                            override fun replaceHookedMethod(param: MethodHookParam?) = 2
+                        })
+                    logD("hook CoreService OK!")
+                }
+            }
+        /** Hook CoreService 启动方法 */
+        runWithoutError("CoreService") {
+            if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
+                XposedHelpers.findAndHookMethod(
+                    "$QQ_PACKAGE_NAME.app.CoreService",
+                    classLoader, "onCreate",
+                    object : XC_MethodHook() {
+
+                        override fun afterHookedMethod(param: MethodHookParam?) {
+                            (param?.thisObject as? Service)?.apply {
+                                runWithoutError("StopCoreService") {
+                                    stopForeground(true)
+                                    stopService(Intent(applicationContext, javaClass))
+                                    logD("Shutdown CoreService OK!")
+                                }
+                            }
+                        }
+                    })
+                logD("hook CoreService [onCreate] OK!")
+            }
+        }
+        /** Hook CoreService$KernelService 启动方法 */
+        runWithoutError("CoreService\$KernelService") {
+            if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)) {
+                XposedHelpers.findAndHookMethod(
+                    "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
+                    classLoader, "onCreate",
+                    object : XC_MethodHook() {
+
+                        override fun afterHookedMethod(param: MethodHookParam?) {
+                            (param?.thisObject as? Service)?.apply {
+                                runWithoutError("StopKernelService") {
+                                    stopForeground(true)
+                                    stopService(Intent(applicationContext, javaClass))
+                                    logD("Shutdown CoreService\$KernelService OK!")
+                                }
+                            }
+                        }
+                    })
+                XposedHelpers.findAndHookMethod(
+                    "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
+                    classLoader,
+                    "onStartCommand",
+                    Intent::class.java, Int::class.java, Int::class.java,
+                    object : XC_MethodReplacement() {
+
+                        override fun replaceHookedMethod(param: MethodHookParam?) = 2
+                    })
+                logD("hook CoreService\$KernelService [onCreate] OK!")
+            }
+        }
+    }
+
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam?) {
         if (lpparam == null) return
         when (lpparam.packageName) {
@@ -183,136 +320,22 @@ class HookMain : IXposedHookLoadPackage {
                     "isHooked",
                     replaceToTrue
                 )
-            /** 经过测试 QQ 与 TIM 这两个是一个模子里面的东西，所以他们的类名也基本上是一样的 */
-            QQ_PACKAGE_NAME, TIM_PACKAGE_NAME -> {
-                lpparam.hookSystemWakeLock()
-                /** 增加通知栏文本显示守护状态 */
-                runWithoutError("Notification") {
-                    XposedHelpers.findAndHookMethod(
-                        "android.app.Notification\$Builder",
-                        lpparam.classLoader,
-                        "setContentText",
-                        CharSequence::class.java,
-                        object : XC_MethodHook() {
-                            override fun beforeHookedMethod(param: MethodHookParam?) {
-                                when (param?.args?.get(0) as? CharSequence?) {
-                                    "QQ正在后台运行" ->
-                                        param.args?.set(0, "QQ正在后台运行 - TSBattery 守护中")
-                                    "TIM正在后台运行" ->
-                                        param.args?.set(0, "TIM正在后台运行 - TSBattery 守护中")
-                                }
-                            }
-                        })
+            /** Hook TIM */
+            TIM_PACKAGE_NAME ->
+                lpparam.apply {
+                    hookSystemWakeLock()
+                    hookNotification()
+                    hookModuleRunningInfo()
+                    hookCoreService()
+                    logD("hook Completed!")
                 }
-                /** 判断是否开启提示模块运行信息 */
-                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
-                    runWithoutError("SplashActivity") {
-                        /**
-                         * Hook 启动界面的第一个 [Activity]
-                         * QQ 和 TIM 都是一样的类
-                         * 在里面加入提示运行信息的对话框测试模块是否激活
-                         */
-                        XposedHelpers.findAndHookMethod(
-                            "$QQ_PACKAGE_NAME.activity.SplashActivity",
-                            lpparam.classLoader,
-                            "doOnCreate",
-                            Bundle::class.java,
-                            object : XC_MethodHook() {
-
-                                override fun afterHookedMethod(param: MethodHookParam?) {
-                                    (param?.thisObject as? Activity?)?.apply {
-                                        showDialog {
-                                            title = "TSBattery 已激活"
-                                            msg = "[提示模块运行信息功能已打开]\n\n" +
-                                                    "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                    "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                                    "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
-                                                    "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                                    "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
-                                                    "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
-                                                    "持续常驻使用 QQ 依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
-                                                    "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                            confirmButton(text = "我知道了")
-                                            noCancelable()
-                                        }
-                                    }
-                                }
-                            })
-                    }
-                /** Hook CoreService 指定方法 */
-                if (lpparam.packageName == QQ_PACKAGE_NAME)
-                    runWithoutError("CoreServiceKnownMethods") {
-                        if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
-                            XposedHelpers.findAndHookMethod(
-                                "$QQ_PACKAGE_NAME.app.CoreService",
-                                lpparam.classLoader, "startTempService", replaceToNull
-                            )
-                            XposedHelpers.findAndHookMethod(
-                                "$QQ_PACKAGE_NAME.app.CoreService",
-                                lpparam.classLoader, "startCoreService", Boolean::class.java, replaceToNull
-                            )
-                            XposedHelpers.findAndHookMethod(
-                                "$QQ_PACKAGE_NAME.app.CoreService",
-                                lpparam.classLoader,
-                                "onStartCommand",
-                                Intent::class.java, Int::class.java, Int::class.java,
-                                object : XC_MethodReplacement() {
-
-                                    override fun replaceHookedMethod(param: MethodHookParam?) = 2
-                                })
-                            logD("hook CoreService OK!")
-                        }
-                    }
-                /** Hook CoreService 启动方法 */
-                runWithoutError("CoreService") {
-                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
-                        XposedHelpers.findAndHookMethod(
-                            "$QQ_PACKAGE_NAME.app.CoreService",
-                            lpparam.classLoader, "onCreate",
-                            object : XC_MethodHook() {
-
-                                override fun afterHookedMethod(param: MethodHookParam?) {
-                                    (param?.thisObject as? Service)?.apply {
-                                        runWithoutError("StopCoreService") {
-                                            stopForeground(true)
-                                            stopService(Intent(applicationContext, javaClass))
-                                            logD("Shutdown CoreService OK!")
-                                        }
-                                    }
-                                }
-                            })
-                        logD("hook CoreService [onCreate] OK!")
-                    }
-                }
-                /** Hook CoreService$KernelService 启动方法 */
-                runWithoutError("CoreService\$KernelService") {
-                    if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)) {
-                        XposedHelpers.findAndHookMethod(
-                            "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
-                            lpparam.classLoader, "onCreate",
-                            object : XC_MethodHook() {
-
-                                override fun afterHookedMethod(param: MethodHookParam?) {
-                                    (param?.thisObject as? Service)?.apply {
-                                        runWithoutError("StopKernelService") {
-                                            stopForeground(true)
-                                            stopService(Intent(applicationContext, javaClass))
-                                            logD("Shutdown CoreService\$KernelService OK!")
-                                        }
-                                    }
-                                }
-                            })
-                        XposedHelpers.findAndHookMethod(
-                            "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
-                            lpparam.classLoader,
-                            "onStartCommand",
-                            Intent::class.java, Int::class.java, Int::class.java,
-                            object : XC_MethodReplacement() {
-
-                                override fun replaceHookedMethod(param: MethodHookParam?) = 2
-                            })
-                        logD("hook CoreService\$KernelService [onCreate] OK!")
-                    }
+            /** Hook QQ */
+            QQ_PACKAGE_NAME -> {
+                lpparam.apply {
+                    hookSystemWakeLock()
+                    hookNotification()
+                    hookModuleRunningInfo()
+                    hookCoreService()
                 }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
                 if (!XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
@@ -327,13 +350,8 @@ class HookMain : IXposedHookLoadPackage {
 
                                 override fun beforeHookedMethod(param: MethodHookParam?) {
                                     val self = param?.thisObject as? Activity ?: return
-                                    val name = self.packageName
                                     val version = self.versionName
-                                    /** 这个地方我们只处理 QQ */
-                                    runWithoutError("BaseChatPie") {
-                                        if (name == QQ_PACKAGE_NAME)
-                                            lpparam.hookQQBaseChatPie(version)
-                                    }
+                                    runWithoutError("BaseChatPie") { lpparam.hookQQBaseChatPie(version) }
                                 }
                             })
                     }
@@ -342,13 +360,12 @@ class HookMain : IXposedHookLoadPackage {
                          * 一个不知道是什么作用的电源锁
                          * 同样直接干掉
                          */
-                        if (lpparam.packageName == QQ_PACKAGE_NAME)
-                            XposedHelpers.findAndHookMethod(
-                                "com.tencent.mars.ilink.comm.WakerLock",
-                                lpparam.classLoader,
-                                "lock", Long::class.java,
-                                replaceToNull
-                            )
+                        XposedHelpers.findAndHookMethod(
+                            "com.tencent.mars.ilink.comm.WakerLock",
+                            lpparam.classLoader,
+                            "lock", Long::class.java,
+                            replaceToNull
+                        )
                     }
                     runWithoutError("QQLSActivity") {
                         /**
@@ -392,13 +409,12 @@ class HookMain : IXposedHookLoadPackage {
                          * 讯哥的程序员真的有你的
                          * 2022/1/25 后期查证：锁屏界面消息快速回复窗口
                          */
-                        if (lpparam.packageName == QQ_PACKAGE_NAME)
-                            XposedHelpers.findAndHookMethod(
-                                "$QQ_PACKAGE_NAME.activity.QQLSActivity\$14",
-                                lpparam.classLoader,
-                                "run",
-                                replaceToNull
-                            )
+                        XposedHelpers.findAndHookMethod(
+                            "$QQ_PACKAGE_NAME.activity.QQLSActivity\$14",
+                            lpparam.classLoader,
+                            "run",
+                            replaceToNull
+                        )
                     }
                     runWithoutError("WakerLockMonitor") {
                         /**
@@ -409,72 +425,71 @@ class HookMain : IXposedHookLoadPackage {
                          * 里面有各种使用 Handler 和 Timer 的各种耗时常驻后台耗电办法持续接收消息
                          * 直接循环全部方法全部干掉
                          */
-                        if (lpparam.packageName == QQ_PACKAGE_NAME)
-                            lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor")
-                                .apply {
-                                    val lockClazz =
-                                        lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity")
-                                    val hookClazz =
-                                        lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
-                                    val onHook = getDeclaredMethod(
-                                        "onHook",
-                                        String::class.java,
+                        lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor")
+                            .apply {
+                                val lockClazz =
+                                    lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity")
+                                val hookClazz =
+                                    lpparam.classLoader.loadClass("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
+                                val onHook = getDeclaredMethod(
+                                    "onHook",
+                                    String::class.java,
+                                    Any::class.java,
+                                    java.lang.reflect.Array.newInstance(
                                         Any::class.java,
-                                        java.lang.reflect.Array.newInstance(
-                                            Any::class.java,
-                                            0
-                                        ).javaClass,
-                                        Any::class.java
+                                        0
+                                    ).javaClass,
+                                    Any::class.java
+                                ).apply { isAccessible = true }
+                                val doReport =
+                                    getDeclaredMethod(
+                                        "doReport",
+                                        lockClazz,
+                                        Int::class.java
+                                    ).apply {
+                                        isAccessible = true
+                                    }
+                                val afterHookedMethod =
+                                    getDeclaredMethod(
+                                        "afterHookedMethod",
+                                        hookClazz
                                     ).apply { isAccessible = true }
-                                    val doReport =
-                                        getDeclaredMethod(
-                                            "doReport",
-                                            lockClazz,
-                                            Int::class.java
-                                        ).apply {
-                                            isAccessible = true
-                                        }
-                                    val afterHookedMethod =
-                                        getDeclaredMethod(
-                                            "afterHookedMethod",
-                                            hookClazz
-                                        ).apply { isAccessible = true }
-                                    val beforeHookedMethod =
-                                        getDeclaredMethod("beforeHookedMethod", hookClazz).apply {
-                                            isAccessible = true
-                                        }
-                                    val onAppBackground =
-                                        getDeclaredMethod("onAppBackground").apply {
-                                            isAccessible = true
-                                        }
-                                    val onOtherProcReport =
-                                        getDeclaredMethod(
-                                            "onOtherProcReport",
-                                            Bundle::class.java
-                                        ).apply { isAccessible = true }
-                                    val onProcessRun30Min =
-                                        getDeclaredMethod("onProcessRun30Min").apply {
-                                            isAccessible = true
-                                        }
-                                    val onProcessBG5Min =
-                                        getDeclaredMethod("onProcessBG5Min").apply {
-                                            isAccessible = true
-                                        }
-                                    val writeReport =
-                                        getDeclaredMethod(
-                                            "writeReport",
-                                            Boolean::class.java
-                                        ).apply { isAccessible = true }
-                                    XposedBridge.hookMethod(onHook, replaceToNull)
-                                    XposedBridge.hookMethod(doReport, replaceToNull)
-                                    XposedBridge.hookMethod(afterHookedMethod, replaceToNull)
-                                    XposedBridge.hookMethod(beforeHookedMethod, replaceToNull)
-                                    XposedBridge.hookMethod(onAppBackground, replaceToNull)
-                                    XposedBridge.hookMethod(onOtherProcReport, replaceToNull)
-                                    XposedBridge.hookMethod(onProcessRun30Min, replaceToNull)
-                                    XposedBridge.hookMethod(onProcessBG5Min, replaceToNull)
-                                    XposedBridge.hookMethod(writeReport, replaceToNull)
-                                }
+                                val beforeHookedMethod =
+                                    getDeclaredMethod("beforeHookedMethod", hookClazz).apply {
+                                        isAccessible = true
+                                    }
+                                val onAppBackground =
+                                    getDeclaredMethod("onAppBackground").apply {
+                                        isAccessible = true
+                                    }
+                                val onOtherProcReport =
+                                    getDeclaredMethod(
+                                        "onOtherProcReport",
+                                        Bundle::class.java
+                                    ).apply { isAccessible = true }
+                                val onProcessRun30Min =
+                                    getDeclaredMethod("onProcessRun30Min").apply {
+                                        isAccessible = true
+                                    }
+                                val onProcessBG5Min =
+                                    getDeclaredMethod("onProcessBG5Min").apply {
+                                        isAccessible = true
+                                    }
+                                val writeReport =
+                                    getDeclaredMethod(
+                                        "writeReport",
+                                        Boolean::class.java
+                                    ).apply { isAccessible = true }
+                                XposedBridge.hookMethod(onHook, replaceToNull)
+                                XposedBridge.hookMethod(doReport, replaceToNull)
+                                XposedBridge.hookMethod(afterHookedMethod, replaceToNull)
+                                XposedBridge.hookMethod(beforeHookedMethod, replaceToNull)
+                                XposedBridge.hookMethod(onAppBackground, replaceToNull)
+                                XposedBridge.hookMethod(onOtherProcReport, replaceToNull)
+                                XposedBridge.hookMethod(onProcessRun30Min, replaceToNull)
+                                XposedBridge.hookMethod(onProcessBG5Min, replaceToNull)
+                                XposedBridge.hookMethod(writeReport, replaceToNull)
+                            }
                     }
                     logD("hook Completed!")
                 }
