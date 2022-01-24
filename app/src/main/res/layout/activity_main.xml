@@ -282,8 +282,35 @@
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@mipmap/qq_icon" />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/tim_icon" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.85"
+                        android:singleLine="true"
+                        android:text="QQ、TIM"
+                        android:textColor="#FF323B42"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/protect_mode_switch"
@@ -299,7 +326,94 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 和 TIM 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 或 TIM 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ 或 TIM，暂不支持微信。"
+                    android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 和 TIM 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 或 TIM 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ 或 TIM。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
+                <com.fankes.tsbattery.view.MaterialSwitch
+                    android:id="@+id/shut_core_sv_qqtim_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="关闭 CoreService"
+                    android:textColor="#FF323B42"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务(HMS)或(GMS)可以尝试关闭。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+
+                <com.fankes.tsbattery.view.MaterialSwitch
+                    android:id="@+id/shut_core_sv_kn_qqtim_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="关闭 CoreService$KernelService"
+                    android:textColor="#FF323B42"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="这是一个辅助子服务，理论主服务关闭后子服务同样不会被启动，建议在保证消息接收的前提下可以尝试关闭子服务。"
+                    android:textColor="#777777"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/wechat_icon" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.85"
+                        android:singleLine="true"
+                        android:text="微信"
+                        android:textColor="#FF323B42"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <com.fankes.tsbattery.view.MaterialSwitch
+                    android:id="@+id/disable_wechat_sv_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="停用省电策略"
+                    android:textColor="#FF323B42"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="选择停用后模块将不再对微信生效，可解决通话耳边不会黑屏和闪退问题，微信省电功能依然在开发，敬请期待。"
                     android:textColor="#777777"
                     android:textSize="12sp" />
             </LinearLayout>

@@ -33,7 +33,10 @@ object HookMedium {
 
     const val ENABLE_HIDE_ICON = "_hide_icon"
     const val ENABLE_RUN_INFO = "_tip_run_info"
-    const val ENABLE_WHITE_MODE = "_white_mode"
+    const val ENABLE_QQTIM_WHITE_MODE = "_qqtim_white_mode"
+    const val ENABLE_QQTIM_CORESERVICE = "_qqtim_core_service"
+    const val ENABLE_QQTIM_CORESERVICE_CHILD = "_qqtim_core_service_child"
+    const val ENABLE_WECHAT_HOOK = "_wechat_hook"
     const val ENABLE_MODULE_VERSION = "_module_version"
 
     const val SELF_PACKAGE_NAME = "com.fankes.tsbattery"
@@ -63,20 +66,20 @@ object HookMedium {
                 var result: Bundle? = null
                 try {
                     result = it.contentResolver.call(uri, "active", null, null)
-                } catch (e: RuntimeException) {
+                } catch (_: RuntimeException) {
                     // TaiChi is killed, try invoke
                     try {
                         val intent = Intent("me.weishu.exp.ACTION_ACTIVE")
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         it.startActivity(intent)
-                    } catch (e1: Throwable) {
+                    } catch (_: Throwable) {
                         return false
                     }
                 }
                 if (result == null) result = it.contentResolver.call(uri, "active", null, null)
                 if (result == null) return false
                 isExp = result.getBoolean("active", false)
-            } catch (ignored: Throwable) {
+            } catch (_: Throwable) {
             }
         }
         return isExp
