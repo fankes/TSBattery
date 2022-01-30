@@ -43,7 +43,7 @@ class TSApplication : Application() {
         super.onCreate()
         /** 设置静态实例 */
         context = this
-        /** 禁止系统夜间模式对自己造成干扰 - 模块要什么夜间模式？😅 (其实是我懒) */
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        /** 跟随系统夜间模式 */
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 }

@@ -26,10 +26,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import com.fankes.tsbattery.application.TSApplication.Companion.appContext
+
+/**
+ * 系统深色模式是否开启
+ * @return [Boolean] 是否开启
+ */
+val isSystemInDarkMode
+    get() = (appContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+/**
+ * 系统深色模式是否没开启
+ * @return [Boolean] 是否开启
+ */
+inline val isNotSystemInDarkMode get() = !isSystemInDarkMode
 
 /**
  * 得到安装包信息

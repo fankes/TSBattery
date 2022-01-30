@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorThemeBackground"
     android:orientation="vertical"
     tools:context=".ui.MainActivity"
     tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,TooManyViews">
@@ -11,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:elevation="0dp"
         android:paddingLeft="15dp"
         android:paddingTop="13dp"
@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="TSBattery"
-            android:textColor="#FF323B42"
-            android:textSize="30sp"
+            android:textColor="@color/colorTextGray"
+            android:textSize="25sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -259,7 +259,7 @@
                     android:layout_marginEnd="15dp"
                     android:alpha="0.85"
                     android:src="@mipmap/about"
-                    android:tint="#FF777777" />
+                    android:tint="@color/colorTextDark" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,7 +267,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="5dp"
                     android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n没有标注的版本在适配范围内的 APP 适用性都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
             </LinearLayout>
@@ -308,7 +308,7 @@
                         android:alpha="0.85"
                         android:singleLine="true"
                         android:text="QQ、TIM"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -317,7 +317,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="启用保守模式 [QQ]"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -327,7 +327,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="此选项默认关闭，默认情况下模块将会干掉 QQ 自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的 QQ 视频通话等设置发生了故障，可以尝试开启这个功能，开启后请重启 QQ。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <com.fankes.tsbattery.view.MaterialSwitch
@@ -335,7 +335,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="关闭 CoreService"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -345,7 +345,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务(HMS)或(GMS)可以尝试关闭。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <com.fankes.tsbattery.view.MaterialSwitch
@@ -353,7 +353,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="关闭 CoreService$KernelService"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -362,7 +362,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="这是一个辅助子服务，理论主服务关闭后子服务同样不会被启动，建议在保证消息接收的前提下可以尝试关闭子服务。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -396,7 +396,7 @@
                         android:alpha="0.85"
                         android:singleLine="true"
                         android:text="微信"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -405,7 +405,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="停用省电策略"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -414,7 +414,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="选择停用后模块将不再对微信生效，可解决通话耳边不会黑屏和闪退问题，微信省电功能依然在开(画)发(饼)，敬请期待。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -448,7 +448,7 @@
                         android:alpha="0.85"
                         android:singleLine="true"
                         android:text="快捷操作"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -467,7 +467,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:text="QQ"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="15sp" />
 
                     <TextView
@@ -481,7 +481,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:text="TIM"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="15sp" />
 
                     <TextView
@@ -494,7 +494,7 @@
                         android:padding="10dp"
                         android:singleLine="true"
                         android:text="微信"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -517,7 +517,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="提示模块运行信息"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -527,7 +527,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="模块工作正常情况下无需开启，如果你想测试模块是否正常激活，可以打开此提示，开启后将会在启动 QQ、TIM 或微信的时候提示运行信息。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -549,7 +549,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="在桌面隐藏模块图标"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
 
                 <TextView
@@ -559,7 +559,7 @@
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
                     android:text="隐藏模块图标后，模块不会再在桌面显示，你可以在 EdXposed、太极、LsPosed 中找到模块设置并打开，对原生系统无效。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -587,7 +587,7 @@
                         android:layout_marginEnd="5dp"
                         android:alpha="0.85"
                         android:src="@mipmap/about"
-                        android:tint="#FF323B42" />
+                        android:tint="@color/colorTextGray" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -595,7 +595,7 @@
                         android:alpha="0.85"
                         android:singleLine="true"
                         android:text="使用帮助与说明"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -606,7 +606,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.这个模块是做什么的？\nA.此模块的诞生来源于国内厂商毒瘤 APP 强行霸占后台耗电，QQ 在 8.6.0 版本以后也只是接入了 HMS 推送，但是可笑的是开发组却并没有删除之前疯狂耗电的接收消息方法，于是这个模块就诞生了。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -616,7 +616,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.原理是什么？\nA.模块有两套工作方式，一种是针对 QQ、TIM Hook 掉系统自身的电源锁“WakeLock”使其不能影响系统休眠，这样子在锁屏的时候 QQ、TIM 就可以进入睡眠状态。第二种就是针对 QQ、TIM 删除其自身的无用耗电疯狂循环检测后台强行保活服务。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -626,7 +626,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.如何使用？\nA.目前模块支持 EdXposed、LsPosed 以及太极(无极)框架，在太极和 LsPosed 的作用域中，只需勾选 QQ 和 TIM 即可，模块可以做到即插即用，激活后无需重启手机，重启 QQ 或 TIM 就可以了。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -636,7 +636,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.激活后一定可以非常省电吗？\nA.并不，模块只能减少 QQ、TIM 的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时毒瘤不会消耗过多的无用的电量，仅此而已。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -646,7 +646,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.模块是否需要挂后台？\nA.模块完全不需要挂后台，模块只是一个控制和显示的工具，真正的任务交由 Hook 处理，若出现失效的情况请发送模块运行日志给我们而不是将模块挂后台。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -656,7 +656,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.关于目前微信的适配情况？\nA.微信适配尚在实验阶段，敬请期待。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -666,7 +666,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.如何对单独的 APP 生效模块？\nA.请在 LsPosed 中勾选对应定义域即可，我们不建议使用 EdXposed。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
                 <TextView
@@ -675,7 +675,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.如何反馈问题？\nA.酷安关注 @星夜不荟"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -704,7 +704,7 @@
                         android:layout_marginEnd="5dp"
                         android:alpha="0.85"
                         android:src="@mipmap/about"
-                        android:tint="#FF323B42" />
+                        android:tint="@color/colorTextGray" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -712,7 +712,7 @@
                         android:alpha="0.85"
                         android:singleLine="true"
                         android:text="项目地址"
-                        android:textColor="#FF323B42"
+                        android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -722,7 +722,7 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="本软件是免费开源项目，遵循 GPL 协议，你可以点击这里前往 Github 查看源码以及获取模块更新。\n严禁以任何形式贩卖、商用本软件，否则开发者有权追究其法律责任。"
-                    android:textColor="#777777"
+                    android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -749,7 +749,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="6dp"
                     android:text="恰饭时间\n点击前往酷安关注我，获取我的更多应用"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="16sp" />
 
                 <androidx.cardview.widget.CardView
@@ -772,7 +772,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="6dp"
                     android:text="开发者 酷安 @星夜不荟\n未经允许不得转载、修改复制我的劳动成果"
-                    android:textColor="#FF323B42"
+                    android:textColor="@color/colorTextGray"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
