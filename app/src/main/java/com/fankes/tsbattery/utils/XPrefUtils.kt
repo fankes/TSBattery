@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2022. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
  *
@@ -24,9 +24,9 @@ import de.robv.android.xposed.XSharedPreferences
 
 object XPrefUtils {
 
-    fun getBoolean(key: String) = pref.getBoolean(key, false)
+    fun getBoolean(key: String, default: Boolean = false) = pref.getBoolean(key, default)
 
-    fun getString(key: String) = pref.getString(key, "unknown")
+    fun getString(key: String, default: String = "unknown") = pref.getString(key, default)
 
     private val pref: XSharedPreferences
         get() {

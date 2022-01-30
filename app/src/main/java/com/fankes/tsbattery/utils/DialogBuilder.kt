@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2022. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
  *

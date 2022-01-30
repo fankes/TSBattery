@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2022. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
  *
@@ -33,7 +33,6 @@ import com.fankes.tsbattery.hook.HookMedium.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.SELF_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
-import com.fankes.tsbattery.utils.XPrefUtils
 import com.fankes.tsbattery.utils.showDialog
 import com.fankes.tsbattery.utils.versionCode
 import com.fankes.tsbattery.utils.versionName
@@ -205,7 +204,7 @@ class HookMain : IXposedHookLoadPackage {
         if (packageName != WECHAT_PACKAGE_NAME)
             runWithoutError("SplashActivity") {
                 /** 判断是否开启提示模块运行信息 */
-                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                if (HookMedium.getBoolean(HookMedium.ENABLE_RUN_INFO))
                     XposedHelpers.findAndHookMethod(
                         "$QQ_PACKAGE_NAME.activity.SplashActivity",
                         classLoader,
@@ -224,8 +223,8 @@ class HookMain : IXposedHookLoadPackage {
                                         title = "TSBattery 已激活"
                                         msg = "[提示模块运行信息功能已打开]\n\n" +
                                                 "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                                "当前模式：${if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                                "已生效模块版本：${HookMedium.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                "当前模式：${if (HookMedium.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                                 "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                                 "\n\n模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
                                                 "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
@@ -241,7 +240,7 @@ class HookMain : IXposedHookLoadPackage {
         else
             runWithoutError("LauncherUI") {
                 /** 判断是否开启提示模块运行信息 */
-                if (XPrefUtils.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                if (HookMedium.getBoolean(HookMedium.ENABLE_RUN_INFO))
                     XposedHelpers.findAndHookMethod(
                         "$WECHAT_PACKAGE_NAME.ui.LauncherUI",
                         classLoader,
@@ -259,7 +258,7 @@ class HookMain : IXposedHookLoadPackage {
                                         title = "TSBattery 已激活"
                                         msg = "[提示模块运行信息功能已打开]\n\n" +
                                                 "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                "已生效模块版本：${XPrefUtils.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                                "已生效模块版本：${HookMedium.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
                                                 "当前模式：基础省电" +
                                                 "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                                 "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
@@ -279,7 +278,7 @@ class HookMain : IXposedHookLoadPackage {
         /** Hook CoreService 指定方法 */
         if (packageName == QQ_PACKAGE_NAME)
             runWithoutError("CoreServiceKnownMethods") {
-                if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
+                if (HookMedium.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
                     XposedHelpers.findAndHookMethod(
                         "$QQ_PACKAGE_NAME.app.CoreService",
                         classLoader, "startTempService", replaceToNull
@@ -302,7 +301,7 @@ class HookMain : IXposedHookLoadPackage {
             }
         /** Hook CoreService 启动方法 */
         runWithoutError("CoreService") {
-            if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
+            if (HookMedium.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)) {
                 XposedHelpers.findAndHookMethod(
                     "$QQ_PACKAGE_NAME.app.CoreService",
                     classLoader, "onCreate",
@@ -323,7 +322,7 @@ class HookMain : IXposedHookLoadPackage {
         }
         /** Hook CoreService$KernelService 启动方法 */
         runWithoutError("CoreService\$KernelService") {
-            if (XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)) {
+            if (HookMedium.getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)) {
                 XposedHelpers.findAndHookMethod(
                     "$QQ_PACKAGE_NAME.app.CoreService\$KernelService",
                     classLoader, "onCreate",
@@ -382,7 +381,7 @@ class HookMain : IXposedHookLoadPackage {
                     hookCoreService()
                 }
                 /** 关闭保守模式后不再仅仅作用于系统电源锁 */
-                if (!XPrefUtils.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
+                if (!HookMedium.getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)) {
                     runWithoutError("BaseChatPie(first time)") {
                         /** 通过在 SplashActivity 里取到应用的版本号 */
                         XposedHelpers.findAndHookMethod(
@@ -542,7 +541,7 @@ class HookMain : IXposedHookLoadPackage {
             /** 微信 */
             WECHAT_PACKAGE_NAME -> {
                 /** 判断是否关闭 Hook */
-                if (XPrefUtils.getBoolean(HookMedium.DISABLE_WECHAT_HOOK)) return
+                if (HookMedium.getBoolean(HookMedium.DISABLE_WECHAT_HOOK)) return
                 lpparam.apply {
                     hookSystemWakeLock()
                     hookModuleRunningInfo()

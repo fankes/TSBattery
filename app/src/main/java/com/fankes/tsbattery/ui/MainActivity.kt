@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2022. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
  *
@@ -18,20 +18,15 @@
  *
  * This file is Created by fankes on 2021/9/4.
  */
-@file:Suppress(
-    "DEPRECATION", "SetTextI18n", "SetWorldReadable", "WorldReadableFiles",
-    "LocalVariableName", "SameParameterValue"
-)
+@file:Suppress("SetTextI18n", "LocalVariableName", "SameParameterValue")
 
 package com.fankes.tsbattery.ui
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -46,9 +41,11 @@ import com.fankes.tsbattery.hook.HookMedium
 import com.fankes.tsbattery.hook.HookMedium.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
-import com.fankes.tsbattery.utils.*
+import com.fankes.tsbattery.utils.isInstall
+import com.fankes.tsbattery.utils.isNotSystemInDarkMode
+import com.fankes.tsbattery.utils.openSelfSetting
+import com.fankes.tsbattery.utils.showDialog
 import com.gyf.immersionbar.ktx.immersionBar
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -222,87 +219,43 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        setWorldReadable()
+        HookMedium.setWorldReadable(this)
     }
 
     override fun onRestart() {
         super.onRestart()
-        setWorldReadable()
+        HookMedium.setWorldReadable(this)
     }
 
     override fun onPause() {
         super.onPause()
-        setWorldReadable()
+        HookMedium.setWorldReadable(this)
     }
 
     /**
      * 获取保存的值
      * @param key 名称
+     * @param default 默认值
      * @return [Boolean] 保存的值
      */
-    private fun getBoolean(key: String) =
-        getSharedPreferences(
-            packageName + "_preferences",
-            Context.MODE_PRIVATE
-        ).getBoolean(key, false)
+    private fun getBoolean(key: String, default: Boolean = false) = HookMedium.getBoolean(key, default)
 
     /**
      * 保存值
      * @param key 名称
      * @param bool 值
      */
-    private fun putBoolean(key: String, bool: Boolean) {
-        getSharedPreferences(
-            packageName + "_preferences",
-            Context.MODE_PRIVATE
-        ).edit().putBoolean(key, bool).apply()
-        setWorldReadable()
-        /** 延迟继续设置强制允许 SP 可读可写 */
-        Handler().postDelayed({ setWorldReadable() }, 500)
-        Handler().postDelayed({ setWorldReadable() }, 1000)
-        Handler().postDelayed({ setWorldReadable() }, 1500)
-    }
+    private fun putBoolean(key: String, bool: Boolean) = HookMedium.putBoolean(key, bool)
 
     /**
      * 保存值
      * @param key 名称
      * @param value 值
      */
-    private fun putString(key: String, value: String) {
-        getSharedPreferences(
-            packageName + "_preferences",
-            Context.MODE_PRIVATE
-        ).edit().putString(key, value).apply()
-        setWorldReadable()
-        /** 延迟继续设置强制允许 SP 可读可写 */
-        Handler().postDelayed({ setWorldReadable() }, 500)
-        Handler().postDelayed({ setWorldReadable() }, 1000)
-        Handler().postDelayed({ setWorldReadable() }, 1500)
-    }
-
-    /**
-     * 强制设置 Sp 存储为全局可读可写
-     * 以供模块使用
-     */
-    private fun setWorldReadable() {
-        try {
-            if (FileUtils.getDefaultPrefFile(this).exists()) {
-                for (file in arrayOf<File>(
-                    FileUtils.getDataDir(this),
-                    FileUtils.getPrefDir(this),
-                    FileUtils.getDefaultPrefFile(this)
-                )) {
-                    file.setReadable(true, false)
-                    file.setExecutable(true, false)
-                }
-            }
-        } catch (_: Exception) {
-            Toast.makeText(this, "无法写入模块设置，请检查权限\n如果此提示一直显示，请不要双开模块", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private fun putString(key: String, value: String) = HookMedium.putString(key, value)
 
     override fun onBackPressed() {
-        setWorldReadable()
+        HookMedium.setWorldReadable(this)
         super.onBackPressed()
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021. Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2022. Fankes Studio(qzmmcn@163.com)
  *
  * This file is part of TSBattery.
  *
@@ -18,15 +18,24 @@
  *
  * This file is Created by fankes on 2021/11/9.
  */
+@file:Suppress("DEPRECATION", "SetWorldReadable")
 
 package com.fankes.tsbattery.hook
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.Keep
+import com.fankes.tsbattery.application.TSApplication.Companion.appContext
+import com.fankes.tsbattery.application.TSApplication.Companion.isMineStarted
 import com.fankes.tsbattery.ui.MainActivity
+import com.fankes.tsbattery.utils.FileUtils
+import com.fankes.tsbattery.utils.XPrefUtils
+import java.io.File
 
 @Keep
 object HookMedium {
@@ -83,5 +92,89 @@ object HookMedium {
             }
         }
         return isExp
+    }
+
+    /**
+     * 获取保存的值
+     * @param key 名称
+     * @param default 默认值
+     * @return [Boolean] 保存的值
+     */
+    fun getBoolean(key: String, default: Boolean = false) =
+        if (isMineStarted)
+            appContext.getSharedPreferences(
+                appContext.packageName + "_preferences",
+                Context.MODE_PRIVATE
+            ).getBoolean(key, default)
+        else XPrefUtils.getBoolean(key, default)
+
+    /**
+     * 获取保存的值
+     * @param key 名称
+     * @param default 默认值
+     * @return [String] 保存的值
+     */
+    fun getString(key: String, default: String = "unknown") =
+        if (isMineStarted)
+            appContext.getSharedPreferences(
+                appContext.packageName + "_preferences",
+                Context.MODE_PRIVATE
+            ).getString(key, default)
+        else XPrefUtils.getString(key, default)
+
+    /**
+     * 保存值
+     * @param key 名称
+     * @param bool 值
+     */
+    fun putBoolean(key: String, bool: Boolean) {
+        appContext.getSharedPreferences(
+            appContext.packageName + "_preferences",
+            Context.MODE_PRIVATE
+        ).edit().putBoolean(key, bool).apply()
+        setWorldReadable(appContext)
+        /** 延迟继续设置强制允许 SP 可读可写 */
+        Handler().postDelayed({ setWorldReadable(appContext) }, 500)
+        Handler().postDelayed({ setWorldReadable(appContext) }, 1000)
+        Handler().postDelayed({ setWorldReadable(appContext) }, 1500)
+    }
+
+    /**
+     * 保存值
+     * @param key 名称
+     * @param value 值
+     */
+    fun putString(key: String, value: String) {
+        appContext.getSharedPreferences(
+            appContext.packageName + "_preferences",
+            Context.MODE_PRIVATE
+        ).edit().putString(key, value).apply()
+        setWorldReadable(appContext)
+        /** 延迟继续设置强制允许 SP 可读可写 */
+        Handler().postDelayed({ setWorldReadable(appContext) }, 500)
+        Handler().postDelayed({ setWorldReadable(appContext) }, 1000)
+        Handler().postDelayed({ setWorldReadable(appContext) }, 1500)
+    }
+
+    /**
+     * 强制设置 Sp 存储为全局可读可写
+     * 以供模块使用
+     * @param context 实例
+     */
+    fun setWorldReadable(context: Context) {
+        try {
+            if (FileUtils.getDefaultPrefFile(context).exists()) {
+                for (file in arrayOf<File>(
+                    FileUtils.getDataDir(context),
+                    FileUtils.getPrefDir(context),
+                    FileUtils.getDefaultPrefFile(context)
+                )) {
+                    file.setReadable(true, false)
+                    file.setExecutable(true, false)
+                }
+            }
+        } catch (_: Exception) {
+            Toast.makeText(context, "无法写入模块设置，请检查权限\n如果此提示一直显示，请不要双开模块", Toast.LENGTH_SHORT).show()
+        }
     }
 }
