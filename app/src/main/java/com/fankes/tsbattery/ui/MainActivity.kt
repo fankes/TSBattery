@@ -46,11 +46,8 @@ import com.fankes.tsbattery.hook.HookMedium
 import com.fankes.tsbattery.hook.HookMedium.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
-import com.fankes.tsbattery.utils.FileUtils
-import com.fankes.tsbattery.utils.isInstall
-import com.fankes.tsbattery.utils.openSelfSetting
-import com.fankes.tsbattery.utils.showDialog
-import com.gyf.immersionbar.ImmersionBar
+import com.fankes.tsbattery.utils.*
+import com.gyf.immersionbar.ktx.immersionBar
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -75,14 +72,14 @@ class MainActivity : AppCompatActivity() {
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
         /** 初始化沉浸状态栏 */
-        ImmersionBar.with(this)
-            .statusBarColor(R.color.white)
-            .autoDarkModeEnable(false)
-            .statusBarDarkFont(true)
-            .navigationBarColor(R.color.white)
-            .navigationBarDarkIcon(true)
-            .fitsSystemWindows(true)
-            .init()
+        immersionBar {
+            statusBarColor(R.color.colorThemeBackground)
+            autoDarkModeEnable(true)
+            statusBarDarkFont(isNotSystemInDarkMode)
+            navigationBarColor(R.color.colorThemeBackground)
+            navigationBarDarkIcon(isNotSystemInDarkMode)
+            fitsSystemWindows(true)
+        }
         /** 判断 Hook 状态 */
         if (isHooked()) {
             findViewById<LinearLayout>(R.id.main_lin_status).setBackgroundResource(R.drawable.green_round)
