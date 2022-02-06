@@ -98,13 +98,20 @@ class HookMain : IXposedHookLoadPackage {
 
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
+     *
      * 里面有两个随机混淆的方法 ⬇️
+     *
      * remainScreenOn、cancelRemainScreenOn
+     *
      * 这两个方法一个是挂起电源锁常驻亮屏
+     *
      * 一个是停止常驻亮屏
+     *
      * 不由分说每个版本混淆的方法名都会变
+     *
      * 所以说每个版本重新适配 - 也可以提交分支帮我适配
-     * ⚠️ Hook 错了方法会造成闪退！
+     *
+     * - Hook 错了方法会造成闪退！
      * @param version QQ 版本
      */
     private fun XC_LoadPackage.LoadPackageParam.hookQQBaseChatPie(version: String) {
@@ -237,41 +244,40 @@ class HookMain : IXposedHookLoadPackage {
                             }
                         })
             }
-        else
-            runWithoutError("LauncherUI") {
-                /** 判断是否开启提示模块运行信息 */
-                if (HookMedium.getBoolean(HookMedium.ENABLE_RUN_INFO))
-                    XposedHelpers.findAndHookMethod(
-                        "$WECHAT_PACKAGE_NAME.ui.LauncherUI",
-                        classLoader,
-                        "onCreate",
-                        Bundle::class.java,
-                        object : XC_MethodHook() {
+        else runWithoutError("LauncherUI") {
+            /** 判断是否开启提示模块运行信息 */
+            if (HookMedium.getBoolean(HookMedium.ENABLE_RUN_INFO))
+                XposedHelpers.findAndHookMethod(
+                    "$WECHAT_PACKAGE_NAME.ui.LauncherUI",
+                    classLoader,
+                    "onCreate",
+                    Bundle::class.java,
+                    object : XC_MethodHook() {
 
-                            override fun afterHookedMethod(param: MethodHookParam?) {
-                                /**
-                                 * Hook 启动界面的第一个 [Activity]
-                                 * 在里面加入提示运行信息的对话框测试模块是否激活
-                                 */
-                                (param?.thisObject as? Activity?)?.apply {
-                                    showDialog(isUseBlackTheme = true) {
-                                        title = "TSBattery 已激活"
-                                        msg = "[提示模块运行信息功能已打开]\n\n" +
-                                                "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                                "已生效模块版本：${HookMedium.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
-                                                "当前模式：基础省电" +
-                                                "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
-                                                "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
-                                                "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
-                                                "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
-                                                "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                        confirmButton(text = "我知道了")
-                                        noCancelable()
-                                    }
+                        override fun afterHookedMethod(param: MethodHookParam?) {
+                            /**
+                             * Hook 启动界面的第一个 [Activity]
+                             * 在里面加入提示运行信息的对话框测试模块是否激活
+                             */
+                            (param?.thisObject as? Activity?)?.apply {
+                                showDialog(isUseBlackTheme = true) {
+                                    title = "TSBattery 已激活"
+                                    msg = "[提示模块运行信息功能已打开]\n\n" +
+                                            "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                            "已生效模块版本：${HookMedium.getString(HookMedium.ENABLE_MODULE_VERSION)}\n" +
+                                            "当前模式：基础省电" +
+                                            "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
+                                            "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
+                                            "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
+                                            "持续常驻使用微信依然会耗电，任何软件都是如此，模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                            "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                    confirmButton(text = "我知道了")
+                                    noCancelable()
                                 }
                             }
-                        })
-            }
+                        }
+                    })
+        }
 
     /** Hook CoreService QQ、TIM */
     private fun XC_LoadPackage.LoadPackageParam.hookCoreService() {
