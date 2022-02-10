@@ -6,7 +6,7 @@
 <br/><br/>
 ![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
 A new way to save your battery avoid cancer apps hacker it.<br/>
-TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块
+TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块。
 
 # 开始使用
 
