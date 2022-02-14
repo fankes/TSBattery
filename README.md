@@ -48,4 +48,5 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
 
+Powered by [YukiHookAPI](https://github.com/fankes/YukiHookAPI)<br/><br/>
 版权所有 © 2019-2022 Fankes Studio(qzmmcn@163.com)

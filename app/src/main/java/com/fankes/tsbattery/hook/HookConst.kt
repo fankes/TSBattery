@@ -18,23 +18,21 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by zpp0196 on 2018/4/11.
+ * This file is Created by fankes on 2021/11/9.
  */
-package com.fankes.tsbattery.utils
+package com.fankes.tsbattery.hook
 
-import de.robv.android.xposed.XSharedPreferences
+object HookConst {
 
-object XPrefUtils {
+    const val ENABLE_HIDE_ICON = "_hide_icon"
+    const val ENABLE_RUN_INFO = "_tip_run_info"
+    const val ENABLE_QQTIM_WHITE_MODE = "_qqtim_white_mode"
+    const val ENABLE_QQTIM_CORESERVICE_BAN = "_qqtim_core_service_ban"
+    const val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = "_qqtim_core_service_child_ban"
+    const val DISABLE_WECHAT_HOOK = "_disable_wechat_hook"
+    const val ENABLE_MODULE_VERSION = "_module_version"
 
-    fun getBoolean(key: String, default: Boolean = false) = pref.getBoolean(key, default)
-
-    fun getString(key: String, default: String = "unknown") = pref.getString(key, default)
-
-    private val pref: XSharedPreferences
-        get() {
-            val preferences = XSharedPreferences("com.fankes.tsbattery")
-            preferences.makeWorldReadable()
-            preferences.reload()
-            return preferences
-        }
+    const val QQ_PACKAGE_NAME = "com.tencent.mobileqq"
+    const val TIM_PACKAGE_NAME = "com.tencent.tim"
+    const val WECHAT_PACKAGE_NAME = "com.tencent.mm"
 }

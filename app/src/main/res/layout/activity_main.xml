@@ -775,6 +775,20 @@
                     android:textColor="@color/colorTextGray"
                     android:textSize="16sp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:autoLink="web"
+                android:background="@drawable/permotion_round"
+                android:lineSpacingExtra="6dp"
+                android:padding="10dp"
+                android:text="此模块使用 YukiHookAPI 构建。\n点击这里了解更多 https://github.com/fankes/YukiHookAPI"
+                android:textColor="@color/colorTextGray"
+                android:textSize="12sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
