@@ -115,7 +115,7 @@ class HookEntry : YukiHookXposedInitProxy {
      */
     private fun PackageParam.interceptBaseChatPie(methodName: String) =
         findClass(QQ_BASE_CHAT_PIE).hook {
-            injectMember(tag = "BaseChatPie") {
+            injectMember {
                 method {
                     name = methodName
                     returnType = UnitType
@@ -127,7 +127,7 @@ class HookEntry : YukiHookXposedInitProxy {
     /** Hook 系统电源锁 */
     private fun PackageParam.hookSystemWakeLock() =
         PowerManager_WakeLockClass.hook {
-            injectMember(tag = "WakeLock acquire") {
+            injectMember {
                 method {
                     name = "acquireLocked"
                     returnType = UnitType
@@ -139,7 +139,7 @@ class HookEntry : YukiHookXposedInitProxy {
     /** 增加通知栏文本显示守护状态 */
     private fun PackageParam.hookNotification() =
         Notification_BuilderClass.hook {
-            injectMember(tag = "Notification") {
+            injectMember {
                 method {
                     name = "setContentText"
                     param(CharSequenceType)
@@ -169,7 +169,7 @@ class HookEntry : YukiHookXposedInitProxy {
                      * QQ 和 TIM 都是一样的类
                      * 在里面加入提示运行信息的对话框测试模块是否激活
                      */
-                    injectMember(tag = "SplashActivity") {
+                    injectMember {
                         method {
                             name = "doOnCreate"
                             param(BundleClass)
@@ -202,7 +202,7 @@ class HookEntry : YukiHookXposedInitProxy {
                      * Hook 启动界面的第一个 [Activity]
                      * 在里面加入提示运行信息的对话框测试模块是否激活
                      */
-                    injectMember(tag = "LauncherUI") {
+                    injectMember {
                         method {
                             name = "onCreate"
                             param(BundleClass)
@@ -238,18 +238,18 @@ class HookEntry : YukiHookXposedInitProxy {
         if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN))
             findClass(name = "$QQ_PACKAGE_NAME.app.CoreService").hook {
                 if (isQQ) {
-                    injectMember(tag = "CoreService startTemp") {
+                    injectMember {
                         method { name = "startTempService" }
                         intercept()
                     }
-                    injectMember(tag = "CoreService startCore") {
+                    injectMember {
                         method {
                             name = "startCoreService"
                             param(BooleanType)
                         }
                         intercept()
                     }
-                    injectMember(tag = "CoreService startCommand") {
+                    injectMember {
                         method {
                             name = "onStartCommand"
                             param(IntentClass, IntType, IntType)
@@ -257,7 +257,7 @@ class HookEntry : YukiHookXposedInitProxy {
                         replaceTo(any = 2)
                     }
                 }
-                injectMember(tag = "CoreService onCreate") {
+                injectMember {
                     method { name = "onCreate" }
                     afterHook {
                         instance<Service>().apply {
@@ -270,7 +270,7 @@ class HookEntry : YukiHookXposedInitProxy {
             }
         if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
             findClass(name = "$QQ_PACKAGE_NAME.app.CoreService\$KernelService").hook {
-                injectMember(tag = "CoreService\$KernelService onCreate") {
+                injectMember {
                     method { name = "onCreate" }
                     afterHook {
                         instance<Service>().apply {
@@ -280,7 +280,7 @@ class HookEntry : YukiHookXposedInitProxy {
                         }
                     }
                 }
-                injectMember(tag = "CoreService\$KernelService startCommand") {
+                injectMember {
                     method {
                         name = "onStartCommand"
                         param(IntentClass, IntType, IntType)
@@ -303,7 +303,7 @@ class HookEntry : YukiHookXposedInitProxy {
             if (prefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)) return@loadApp
             /** 通过在 SplashActivity 里取到应用的版本号 */
             findClass(name = "$QQ_PACKAGE_NAME.activity.SplashActivity").hook {
-                injectMember(tag = "BaseChatPie(first time)") {
+                injectMember {
                     method {
                         name = "doOnCreate"
                         param(BundleClass)
@@ -316,7 +316,7 @@ class HookEntry : YukiHookXposedInitProxy {
              * 同样直接干掉
              */
             findClass(name = "com.tencent.mars.ilink.comm.WakerLock").hook {
-                injectMember(tag = "WakerLock") {
+                injectMember {
                     method {
                         name = "lock"
                         param(LongType)
@@ -330,7 +330,7 @@ class HookEntry : YukiHookXposedInitProxy {
              * 2022/1/25 后期查证：锁屏界面消息快速回复窗口的解锁后拉起保活界面，也是毒瘤
              */
             findClass(name = "$QQ_PACKAGE_NAME.activity.QQLSUnlockActivity").hook {
-                injectMember(tag = "QQLSActivity") {
+                injectMember {
                     method {
                         name = "onCreate"
                         param(BundleClass)
@@ -356,7 +356,7 @@ class HookEntry : YukiHookXposedInitProxy {
              * 2022/1/25 后期查证：锁屏界面消息快速回复窗口
              */
             findClass(name = "$QQ_PACKAGE_NAME.activity.QQLSActivity\$14").hook {
-                injectMember(tag = "QQLSActivity\$14") {
+                injectMember {
                     method { name = "run" }
                     intercept()
                 }.ignoredAllFailure()
@@ -371,61 +371,59 @@ class HookEntry : YukiHookXposedInitProxy {
              * 👮🏻 经过排查 Play 版本没这个类...... Emmmm 不想说啥了
              */
             findClass(name = "com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor").hook {
-                ("WakeLockMonitor").also { tag ->
-                    injectMember(tag) {
-                        method {
-                            name = "onHook"
-                            param(StringType, AnyType, AnyArrayClass(AnyType), AnyType)
-                        }
-                        intercept()
+                injectMember {
+                    method {
+                        name = "onHook"
+                        param(StringType, AnyType, AnyArrayClass(AnyType), AnyType)
                     }
-                    injectMember(tag) {
-                        method {
-                            name = "doReport"
-                            param(("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity").clazz, IntType)
-                        }
-                        intercept()
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "doReport"
+                        param(("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity").clazz, IntType)
                     }
-                    injectMember(tag) {
-                        method {
-                            name = "afterHookedMethod"
-                            param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
-                        }
-                        intercept()
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "afterHookedMethod"
+                        param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
                     }
-                    injectMember(tag) {
-                        method {
-                            name = "beforeHookedMethod"
-                            param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
-                        }
-                        intercept()
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "beforeHookedMethod"
+                        param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
                     }
-                    injectMember(tag) {
-                        method { name = "onAppBackground" }
-                        intercept()
+                    intercept()
+                }
+                injectMember {
+                    method { name = "onAppBackground" }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "onOtherProcReport"
+                        param(BundleClass)
                     }
-                    injectMember(tag) {
-                        method {
-                            name = "onOtherProcReport"
-                            param(BundleClass)
-                        }
-                        intercept()
+                    intercept()
+                }
+                injectMember {
+                    method { name = "onProcessRun30Min" }
+                    intercept()
+                }
+                injectMember {
+                    method { name = "onProcessBG5Min" }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "writeReport"
+                        param(BooleanType)
                     }
-                    injectMember(tag) {
-                        method { name = "onProcessRun30Min" }
-                        intercept()
-                    }
-                    injectMember(tag) {
-                        method { name = "onProcessBG5Min" }
-                        intercept()
-                    }
-                    injectMember(tag) {
-                        method {
-                            name = "writeReport"
-                            param(BooleanType)
-                        }
-                        intercept()
-                    }
+                    intercept()
                 }
             }
         }
