@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.devtools.ksp' version '1.6.10-1.0.2'
 }
 
 android {
@@ -19,11 +20,10 @@ android {
 
     defaultConfig {
         applicationId "com.fankes.tsbattery"
-        minSdkVersion 22
-        //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 26
-        versionCode 10
-        versionName "3.1"
+        minSdk 22
+        targetSdk 31
+        versionCode rootProject.ext.appVersionCode
+        versionName rootProject.ext.appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,13 +46,10 @@ android {
 
 dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
-    // 基础依赖包
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
-    // Fragment 快速实现
-    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
-    // Kotlin 扩展
-    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.highcapable.yukihookapi:api:1.0'
+    ksp 'com.highcapable.yukihookapi:ksp-xposed:1.0'
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.0'
+    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.0'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'

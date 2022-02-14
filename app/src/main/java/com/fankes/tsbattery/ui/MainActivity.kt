@@ -39,15 +39,24 @@ import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.view.isGone
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
-import com.fankes.tsbattery.hook.HookMedium
-import com.fankes.tsbattery.hook.HookMedium.QQ_PACKAGE_NAME
-import com.fankes.tsbattery.hook.HookMedium.TIM_PACKAGE_NAME
-import com.fankes.tsbattery.hook.HookMedium.WECHAT_PACKAGE_NAME
+import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
+import com.fankes.tsbattery.hook.HookConst.ENABLE_HIDE_ICON
+import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
+import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_BAN
+import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN
+import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_WHITE_MODE
+import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
+import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
+import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
+import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.utils.isInstall
 import com.fankes.tsbattery.utils.isNotSystemInDarkMode
 import com.fankes.tsbattery.utils.openSelfSetting
 import com.fankes.tsbattery.utils.showDialog
 import com.gyf.immersionbar.ktx.immersionBar
+import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
+import com.highcapable.yukihookapi.hook.factory.modulePrefs
+import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,15 +67,10 @@ class MainActivity : AppCompatActivity() {
             "8.2.11(Play)、8.8.17、8.8.23、8.8.35、8.8.38、8.8.50、8.8.55、8.8.68 (8.2.11、8.5.5~8.8.68)"
         private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)"
         private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼"
-
-        /** 声明当前实例 */
-        var instance: MainActivity? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /** 设置自身实例 */
-        instance = this
         setContentView(R.layout.activity_main)
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<ImageFilterView>(R.id.main_img_status).setImageResource(R.mipmap.succcess)
             findViewById<TextView>(R.id.main_text_status).text = "模块已激活"
             /** 写入激活的模块版本 */
-            putString(HookMedium.ENABLE_MODULE_VERSION, moduleVersion)
+            modulePrefs.putString(ENABLE_MODULE_VERSION, moduleVersion)
         } else
             showDialog {
                 title = "模块没有激活"
@@ -143,31 +147,31 @@ class MainActivity : AppCompatActivity() {
         val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
         val notifyModuleInfoSwitch = findViewById<SwitchCompat>(R.id.notify_module_info_switch)
         /** 获取 Sp 存储的信息 */
-        qqTimProtectModeSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE)
-        qqTimCoreServiceSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN)
-        qqTimCoreServiceKnSwitch.isChecked = getBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
-        wechatDisableHookSwitch.isChecked = getBoolean(HookMedium.DISABLE_WECHAT_HOOK)
-        hideIconInLauncherSwitch.isChecked = getBoolean(HookMedium.ENABLE_HIDE_ICON)
-        notifyModuleInfoSwitch.isChecked = getBoolean(HookMedium.ENABLE_RUN_INFO)
+        qqTimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
+        qqTimCoreServiceSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN)
+        qqTimCoreServiceKnSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
+        wechatDisableHookSwitch.isChecked = modulePrefs.getBoolean(DISABLE_WECHAT_HOOK)
+        hideIconInLauncherSwitch.isChecked = modulePrefs.getBoolean(ENABLE_HIDE_ICON)
+        notifyModuleInfoSwitch.isChecked = modulePrefs.getBoolean(ENABLE_RUN_INFO)
         qqTimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.ENABLE_QQTIM_WHITE_MODE, b)
+            modulePrefs.putBoolean(ENABLE_QQTIM_WHITE_MODE, b)
         }
         qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_BAN, b)
+            modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_BAN, b)
         }
         qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
+            modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
         }
         wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.DISABLE_WECHAT_HOOK, b)
+            modulePrefs.putBoolean(DISABLE_WECHAT_HOOK, b)
         }
         hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.ENABLE_HIDE_ICON, b)
+            modulePrefs.putBoolean(ENABLE_HIDE_ICON, b)
             packageManager.setComponentEnabledSetting(
                 ComponentName(this@MainActivity, "com.fankes.tsbattery.Home"),
                 if (b) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -176,7 +180,7 @@ class MainActivity : AppCompatActivity() {
         }
         notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
-            putBoolean(HookMedium.ENABLE_RUN_INFO, b)
+            modulePrefs.putBoolean(ENABLE_RUN_INFO, b)
         }
         /** 快捷操作 QQ */
         findViewById<View>(R.id.quick_qq_button).setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
@@ -186,7 +190,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.quick_wechat_button).setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
         /** 恰饭！ */
         findViewById<View>(R.id.link_with_follow_me).setOnClickListener {
-            try {
+            runCatching {
                 startActivity(Intent().apply {
                     setPackage("com.coolapk.market")
                     action = "android.intent.action.VIEW"
@@ -194,20 +198,20 @@ class MainActivity : AppCompatActivity() {
                     /** 防止顶栈一样重叠在自己的 APP 中 */
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
-            } catch (e: Exception) {
+            }.onFailure {
                 Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show()
             }
         }
         /** 项目地址点击事件 */
         findViewById<View>(R.id.link_with_project_address).setOnClickListener {
-            try {
+            runCatching {
                 startActivity(Intent().apply {
                     action = "android.intent.action.VIEW"
                     data = Uri.parse("https://github.com/fankes/TSBattery")
                     /** 防止顶栈一样重叠在自己的 APP 中 */
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
-            } catch (e: Exception) {
+            }.onFailure {
                 Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show()
             }
         }
@@ -217,53 +221,5 @@ class MainActivity : AppCompatActivity() {
      * 判断模块是否激活
      * @return [Boolean] 激活状态
      */
-    private fun isHooked() = HookMedium.isHooked()
-
-    override fun onResume() {
-        super.onResume()
-        HookMedium.setWorldReadable(this)
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        HookMedium.setWorldReadable(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        HookMedium.setWorldReadable(this)
-    }
-
-    /**
-     * 获取保存的值
-     * @param key 名称
-     * @param default 默认值
-     * @return [Boolean] 保存的值
-     */
-    private fun getBoolean(key: String, default: Boolean = false) = HookMedium.getBoolean(key, default)
-
-    /**
-     * 保存值
-     * @param key 名称
-     * @param bool 值
-     */
-    private fun putBoolean(key: String, bool: Boolean) = HookMedium.putBoolean(key, bool)
-
-    /**
-     * 保存值
-     * @param key 名称
-     * @param value 值
-     */
-    private fun putString(key: String, value: String) = HookMedium.putString(key, value)
-
-    override fun onBackPressed() {
-        HookMedium.setWorldReadable(this)
-        super.onBackPressed()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        /** 销毁实例防止内存泄漏 */
-        instance = null
-    }
+    private fun isHooked() = YukiHookModuleStatus.isActive() || isTaiChiModuleActive
 }

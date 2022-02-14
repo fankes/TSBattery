@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fankes.tsbattery">
 
+    <!-- 作用域 APP -->
+    <queries>
+        <package android:name="com.tencent.mobileqq" />
+        <package android:name="com.tencent.tim" />
+        <package android:name="com.tencent.mm" />
+    </queries>
+
     <application
         android:name=".application.TSApplication"
         android:allowBackup="true"
@@ -13,25 +20,21 @@
         android:theme="@style/Theme.TSBattery"
         tools:ignore="AllowBackup">
 
-        <!-- 是否是xposed模块 -->
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
 
-        <!-- 模块描述 -->
         <meta-data
             android:name="xposeddescription"
             android:value="Tencent 社交毒瘤一键省电模块。\n目前支持 QQ、TIM、微信\n开发者：酷安 @星夜不荟" />
 
-        <!-- 最低xposed版本号 -->
         <meta-data
             android:name="xposedminversion"
-            android:value="82" />
+            android:value="93" />
 
         <activity
             android:name="com.fankes.tsbattery.ui.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="behind">
 
             <intent-filter>
