@@ -13,7 +13,9 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 点击下载最新版本
 <a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v3.1-green)</a>
 <br/><br/>
-⚠️ ️适配说明：此模块支持 LSPosed(作用域 QQ、TIM、微信 如果不起作用勾选系统框架)、~~EdXposed(随时停止支持)~~、太极无极(阴和阳)、Pine(梦境模块)
+⚠️ 适配说明<br/>
+
+- 此模块支持 LSPosed(作用域 QQ、TIM、微信)、~~EdXposed(随时停止支持)~~、太极无极(阴和阳)、Pine(梦境模块)、~~应用转生(不要使用)~~
 
 # 请勿用于非法用途
 
