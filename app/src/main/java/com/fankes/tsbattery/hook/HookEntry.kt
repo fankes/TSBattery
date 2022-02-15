@@ -42,7 +42,6 @@ import com.highcapable.yukihookapi.YukiHookAPI.configs
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.factory.encase
-import com.highcapable.yukihookapi.hook.factory.modifyStaticField
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.*
@@ -55,7 +54,7 @@ class HookEntry : YukiHookXposedInitProxy {
     companion object {
 
         /** BaseChatPie 类名 */
-        private val QQ_BASE_CHAT_PIE =
+        private val qqBaseChatPieClass =
             VariousClass("$QQ_PACKAGE_NAME.activity.aio.core.BaseChatPie", "$QQ_PACKAGE_NAME.activity.BaseChatPie")
     }
 
@@ -110,11 +109,11 @@ class HookEntry : YukiHookXposedInitProxy {
     }
 
     /**
-     * 拦截 [QQ_BASE_CHAT_PIE] 的目标方法体封装
+     * 拦截 [qqBaseChatPieClass] 的目标方法体封装
      * @param methodName 方法名
      */
     private fun PackageParam.interceptBaseChatPie(methodName: String) =
-        findClass(QQ_BASE_CHAT_PIE).hook {
+        qqBaseChatPieClass.hook {
             injectMember {
                 method {
                     name = methodName
@@ -340,12 +339,18 @@ class HookEntry : YukiHookXposedInitProxy {
                         /** 由于在 onCreate 里有一行判断只要型号是 xiaomi 的设备就开电源锁，所以说这里临时替换成菊花厂 */
                         origDevice = Build.MANUFACTURER
                         if (Build.MANUFACTURER.lowercase() == "xiaomi")
-                            BuildClass.modifyStaticField(name = "MANUFACTURER", value = "HUAWEI")
+                            field {
+                                classSet = BuildClass
+                                name = "MANUFACTURER"
+                            }.get().set("HUAWEI")
                     }
                     afterHook {
                         instance<Activity>().finish()
                         /** 这里再把型号替换回去 - 不影响应用变量等 Xposed 模块修改的型号 */
-                        BuildClass.modifyStaticField(name = "MANUFACTURER", origDevice)
+                        field {
+                            classSet = BuildClass
+                            name = "MANUFACTURER"
+                        }.get().set(origDevice)
                     }
                 }
             }
@@ -374,7 +379,7 @@ class HookEntry : YukiHookXposedInitProxy {
                 injectMember {
                     method {
                         name = "onHook"
-                        param(StringType, AnyType, AnyArrayClass(AnyType), AnyType)
+                        param(StringType, AnyType, AnyArrayClass, AnyType)
                     }
                     intercept()
                 }
