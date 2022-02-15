@@ -54,7 +54,7 @@ class HookEntry : YukiHookXposedInitProxy {
     companion object {
 
         /** BaseChatPie 类名 */
-        private val qqBaseChatPieClass =
+        private val BaseChatPieClass =
             VariousClass("$QQ_PACKAGE_NAME.activity.aio.core.BaseChatPie", "$QQ_PACKAGE_NAME.activity.BaseChatPie")
     }
 
@@ -109,11 +109,11 @@ class HookEntry : YukiHookXposedInitProxy {
     }
 
     /**
-     * 拦截 [qqBaseChatPieClass] 的目标方法体封装
+     * 拦截 [BaseChatPieClass] 的目标方法体封装
      * @param methodName 方法名
      */
     private fun PackageParam.interceptBaseChatPie(methodName: String) =
-        qqBaseChatPieClass.hook {
+        BaseChatPieClass.hook {
             injectMember {
                 method {
                     name = methodName
