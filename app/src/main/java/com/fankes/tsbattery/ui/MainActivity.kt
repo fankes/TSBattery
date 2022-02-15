@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         /** 判断 Hook 状态 */
         if (isHooked()) {
-            findViewById<LinearLayout>(R.id.main_lin_status).setBackgroundResource(R.drawable.green_round)
-            findViewById<ImageFilterView>(R.id.main_img_status).setImageResource(R.mipmap.succcess)
+            findViewById<LinearLayout>(R.id.main_lin_status).setBackgroundResource(R.drawable.bg_green_round)
+            findViewById<ImageFilterView>(R.id.main_img_status).setImageResource(R.mipmap.ic_success)
             findViewById<TextView>(R.id.main_text_status).text = "模块已激活"
             /** 写入激活的模块版本 */
             modulePrefs.putString(ENABLE_MODULE_VERSION, moduleVersion)
