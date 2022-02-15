@@ -721,7 +721,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
-                    android:text="本软件是免费开源项目，遵循 GPL 协议，你可以点击这里前往 Github 查看源码以及获取模块更新。\n严禁以任何形式贩卖、商用本软件，否则开发者有权追究其法律责任。"
+                    android:text="本软件是免费开源项目，遵循 AGPL3.0 协议，你可以点击这里前往 Github 查看源码以及获取模块更新。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
