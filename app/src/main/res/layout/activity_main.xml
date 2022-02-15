@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/dark_round"
+        android:background="@drawable/bg_dark_round"
         android:elevation="0dp"
         android:gravity="center">
 
@@ -46,7 +46,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="5dp"
-            android:src="@mipmap/warn"
+            android:src="@mipmap/ic_warn"
             android:tint="@color/white" />
 
         <LinearLayout
@@ -88,7 +88,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@mipmap/qq_icon" />
+                    android:src="@mipmap/ic_qq_icon" />
 
                 <TextView
                     android:id="@+id/main_text_qq_noinstall"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
-                    android:background="@drawable/red_round"
+                    android:background="@drawable/bg_red_round"
                     android:paddingLeft="2dp"
                     android:paddingTop="1dp"
                     android:paddingRight="2dp"
@@ -138,7 +138,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@mipmap/tim_icon" />
+                    android:src="@mipmap/ic_tim_icon" />
 
                 <TextView
                     android:id="@+id/main_text_tim_noinstall"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
-                    android:background="@drawable/red_round"
+                    android:background="@drawable/bg_red_round"
                     android:paddingLeft="2dp"
                     android:paddingTop="1dp"
                     android:paddingRight="2dp"
@@ -187,7 +187,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@mipmap/wechat_icon" />
+                    android:src="@mipmap/ic_wechat_icon" />
 
                 <TextView
                     android:id="@+id/main_text_wechat_noinstall"
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
-                    android:background="@drawable/red_round"
+                    android:background="@drawable/bg_red_round"
                     android:paddingLeft="2dp"
                     android:paddingTop="1dp"
                     android:paddingRight="2dp"
@@ -247,7 +247,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -258,7 +258,7 @@
                     android:layout_height="15dp"
                     android:layout_marginEnd="15dp"
                     android:alpha="0.85"
-                    android:src="@mipmap/about"
+                    android:src="@mipmap/ic_about"
                     android:tint="@color/colorTextDark" />
 
                 <TextView
@@ -278,7 +278,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -294,13 +294,13 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="5dp"
-                        android:src="@mipmap/qq_icon" />
+                        android:src="@mipmap/ic_qq_icon" />
 
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/tim_icon" />
+                        android:src="@mipmap/ic_tim_icon" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -372,7 +372,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -388,7 +388,7 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/wechat_icon" />
+                        android:src="@mipmap/ic_wechat_icon" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -424,7 +424,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -440,7 +440,7 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/shot_icon" />
+                        android:src="@mipmap/ic_shot_icon" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -462,7 +462,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_round"
+                        android:background="@drawable/bg_button_round"
                         android:gravity="center"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -476,7 +476,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_round"
+                        android:background="@drawable/bg_button_round"
                         android:gravity="center"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -489,7 +489,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/button_round"
+                        android:background="@drawable/bg_button_round"
                         android:gravity="center"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -505,7 +505,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -537,7 +537,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -569,7 +569,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -586,7 +586,7 @@
                         android:layout_height="15dp"
                         android:layout_marginEnd="5dp"
                         android:alpha="0.85"
-                        android:src="@mipmap/about"
+                        android:src="@mipmap/ic_about"
                         android:tint="@color/colorTextGray" />
 
                     <TextView
@@ -686,7 +686,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -703,7 +703,7 @@
                         android:layout_height="15dp"
                         android:layout_marginEnd="5dp"
                         android:alpha="0.85"
-                        android:src="@mipmap/about"
+                        android:src="@mipmap/ic_about"
                         android:tint="@color/colorTextGray" />
 
                     <TextView
@@ -733,7 +733,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -762,7 +762,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/qr_pay" />
+                        android:src="@mipmap/bg_qr_pay" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -783,7 +783,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
                 android:autoLink="web"
-                android:background="@drawable/permotion_round"
+                android:background="@drawable/bg_permotion_round"
                 android:lineSpacingExtra="6dp"
                 android:padding="10dp"
                 android:text="此模块使用 YukiHookAPI 构建。\n点击这里了解更多 https://github.com/fankes/YukiHookAPI"
