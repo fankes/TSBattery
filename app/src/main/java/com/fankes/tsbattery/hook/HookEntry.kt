@@ -42,6 +42,7 @@ import com.highcapable.yukihookapi.YukiHookAPI.configs
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.factory.encase
+import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.*
@@ -339,18 +340,12 @@ class HookEntry : YukiHookXposedInitProxy {
                         /** 由于在 onCreate 里有一行判断只要型号是 xiaomi 的设备就开电源锁，所以说这里临时替换成菊花厂 */
                         origDevice = Build.MANUFACTURER
                         if (Build.MANUFACTURER.lowercase() == "xiaomi")
-                            field {
-                                classSet = BuildClass
-                                name = "MANUFACTURER"
-                            }.get().set("HUAWEI")
+                            BuildClass.field { name = "MANUFACTURER" }.get().set("HUAWEI")
                     }
                     afterHook {
                         instance<Activity>().finish()
                         /** 这里再把型号替换回去 - 不影响应用变量等 Xposed 模块修改的型号 */
-                        field {
-                            classSet = BuildClass
-                            name = "MANUFACTURER"
-                        }.get().set(origDevice)
+                        BuildClass.field { name = "MANUFACTURER" }.get().set(origDevice)
                     }
                 }
             }
