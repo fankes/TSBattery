@@ -58,3 +58,18 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+/** 移除无效耗时 lint Task */
+tasks.whenTaskAdded {
+    task -> if (task.name == "lintVitalRelease") task.enabled = false
+}
+
+/** 移除无效耗时 lint Task */
+tasks.whenTaskAdded {
+    task -> if (task.name == "lintVitalAnalyzeRelease") task.enabled = false
+}
+
+/** 移除无效耗时 lint Task */
+tasks.whenTaskAdded {
+    task -> if (task.name == "lintVitalReportRelease") task.enabled = false
+}
