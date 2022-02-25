@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId "com.fankes.tsbattery"
         minSdk 22
-        targetSdk 31
+        targetSdk 26
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersionName
 

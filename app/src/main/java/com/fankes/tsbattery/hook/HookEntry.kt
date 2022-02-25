@@ -43,6 +43,7 @@ import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.log.loggerD
+import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.*
 import com.highcapable.yukihookapi.hook.type.java.*
@@ -100,7 +101,7 @@ class HookEntry : YukiHookXposedInitProxy {
                 interceptBaseChatPie(methodName = "bj")
                 interceptBaseChatPie(methodName = "bk")
             }
-            "8.8.55", "8.8.68" -> {
+            "8.8.55", "8.8.68", "8.8.80" -> {
                 interceptBaseChatPie(methodName = "bk")
                 interceptBaseChatPie(methodName = "bl")
             }
@@ -322,6 +323,55 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                     intercept()
                 }.ignoredAllFailure()
+            }
+            /**
+             * 一个不知道是什么作用的电源锁
+             * 同样直接干掉
+             */
+            findClass(name = "com.tencent.mars.comm.WakerLock").hook {
+                injectMember {
+                    method {
+                        name = "lock"
+                        param(LongType)
+                    }
+                    intercept()
+                }.ignoredAllFailure()
+                injectMember {
+                    method {
+                        name = "lock"
+                        param(StringType)
+                    }
+                    intercept()
+                }.ignoredAllFailure()
+                injectMember {
+                    method { name = "lock" }
+                    intercept()
+                }.ignoredAllFailure()
+            }
+            /**
+             * 干掉消息收发功能的电源锁
+             * 每个版本的差异暂未做排查
+             * 旧版本理论上没有这个类
+             */
+            findClass(name = "$QQ_PACKAGE_NAME.msf.service.y").hook {
+                injectMember {
+                    method {
+                        name = "a"
+                        param(StringType, LongType)
+                        returnType = UnitType
+                    }
+                    intercept()
+                }.onAllFailure { loggerE(msg = "Hook MsfService Failed $it") }
+            }
+            /**
+             * 干掉自动上传服务的电源锁
+             * 每个版本的差异暂未做排查
+             */
+            findClass(name = "com.tencent.upload.impl.UploadServiceImpl").hook {
+                injectMember {
+                    method { name = "acquireWakeLockIfNot" }
+                    intercept()
+                }.onAllFailure { loggerE(msg = "Hook UploadServiceImpl Failed $it") }
             }
             /**
              * Hook 掉一个一像素保活 [Activity] 真的我怎么都想不到讯哥的程序员做出这种事情
