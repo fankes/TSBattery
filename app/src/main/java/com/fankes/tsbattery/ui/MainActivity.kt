@@ -95,11 +95,27 @@ class MainActivity : AppCompatActivity() {
                 msg = "检测到模块没有激活，模块需要 Xposed 环境依赖，" +
                         "同时需要系统拥有 Root 权限(太极阴可以免 Root)，" +
                         "请自行查看本页面使用帮助与说明第三条。\n" +
-                        "太极、应用转生、梦境(Pine)和第三方 Xposed 激活后" +
+                        "太极和第三方 Xposed 激活后" +
                         "可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
+                        "或观察 QQ、TIM 的常驻通知是否有“TSBattery 守护中”字样”，" +
                         "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
                         "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
                 confirmButton(text = "我知道了")
+                noCancelable()
+            }
+        /** 推荐使用 LSPosed */
+        if (isTaiChiModuleActive)
+            showDialog {
+                title = "兼容性提示"
+                msg = "若你的设备已 Root，推荐使用 LSPosed 激活模块，太极可能会出现模块设置无法保存的问题。"
+                confirmButton(text = "我知道了")
+            }
+        /** 检测应用转生 */
+        if (("com.bug.xposed").isInstall)
+            showDialog {
+                title = "环境异常"
+                msg = "检测到“应用转生”已被安装，为了保证模块的安全和稳定，请卸载更换其他 Hook 框架后才能继续使用。"
+                confirmButton(text = "退出") { finish() }
                 noCancelable()
             }
         /** 设置安装状态 */

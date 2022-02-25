@@ -57,16 +57,15 @@ val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?
  * @return [Boolean]
  */
 val String.isInstall
-    get() =
-        try {
-            appContext.packageManager.getPackageInfo(
-                this,
-                PackageManager.GET_UNINSTALLED_PACKAGES
-            )
-            true
-        } catch (e: Exception) {
-            false
-        }
+    get() = try {
+        appContext.packageManager.getPackageInfo(
+            this,
+            PackageManager.GET_UNINSTALLED_PACKAGES
+        )
+        true
+    } catch (e: Exception) {
+        false
+    }
 
 /**
  * 得到版本信息
