@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.main_text_tim_noinstall).isGone = TIM_PACKAGE_NAME.isInstall
         findViewById<View>(R.id.main_text_wechat_noinstall).isGone = WECHAT_PACKAGE_NAME.isInstall
         /** 设置文本 */
-        findViewById<TextView>(R.id.main_text_version).text = "当前版本：$moduleVersion"
+        findViewById<TextView>(R.id.main_text_version).text = "模块版本：$moduleVersion"
         findViewById<TextView>(R.id.main_text_support_qq).apply {
             text = qqSupportVersion
             setOnClickListener {
