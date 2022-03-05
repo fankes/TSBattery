@@ -19,6 +19,8 @@
  *
  * This file is Created by fankes on 2022/2/15.
  */
+@file:Suppress("IMPLICIT_CAST_TO_ANY")
+
 package com.fankes.tsbattery.hook
 
 import android.app.Activity
