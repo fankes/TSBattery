@@ -48,10 +48,10 @@ import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
-import com.fankes.tsbattery.utils.isInstall
-import com.fankes.tsbattery.utils.isNotSystemInDarkMode
-import com.fankes.tsbattery.utils.openSelfSetting
-import com.fankes.tsbattery.utils.showDialog
+import com.fankes.tsbattery.utils.factory.isInstall
+import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
+import com.fankes.tsbattery.utils.factory.openSelfSetting
+import com.fankes.tsbattery.utils.factory.showDialog
 import com.gyf.immersionbar.ktx.immersionBar
 import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
