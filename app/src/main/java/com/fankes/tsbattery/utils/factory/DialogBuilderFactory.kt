@@ -21,7 +21,7 @@
  */
 @file:Suppress("unused")
 
-package com.fankes.tsbattery.utils
+package com.fankes.tsbattery.utils.factory
 
 import android.app.AlertDialog
 import android.content.Context

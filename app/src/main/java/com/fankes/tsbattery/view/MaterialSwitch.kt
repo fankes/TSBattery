@@ -28,7 +28,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import androidx.appcompat.widget.SwitchCompat
-import com.fankes.tsbattery.utils.dp
+import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.drawable.drawabletoolbox.DrawableBuilder
 
 class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {

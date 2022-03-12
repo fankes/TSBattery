@@ -21,7 +21,7 @@
  */
 @file:Suppress("DEPRECATION")
 
-package com.fankes.tsbattery.utils
+package com.fankes.tsbattery.utils.factory
 
 import android.content.Context
 import android.content.Intent
@@ -96,17 +96,15 @@ fun Number.dp(context: Context) = toFloat() * context.resources.displayMetrics.d
  * 跳转 APP 自身设置界面
  * @param packageName 包名
  */
-fun Context.openSelfSetting(packageName: String) {
-    try {
-        if (packageName.isInstall)
-            startActivity(Intent().apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                data = Uri.fromParts("package", packageName, null)
-            })
-        else Toast.makeText(this, "你没有安装此应用", Toast.LENGTH_SHORT).show()
-    } catch (_: Exception) {
-        Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
-    }
+fun Context.openSelfSetting(packageName: String) = runCatching {
+    if (packageName.isInstall)
+        startActivity(Intent().apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
+    else Toast.makeText(this, "你没有安装此应用", Toast.LENGTH_SHORT).show()
+}.onFailure {
+    Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
 }
 

@@ -36,12 +36,12 @@ import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
-import com.fankes.tsbattery.utils.showDialog
-import com.fankes.tsbattery.utils.versionCode
-import com.fankes.tsbattery.utils.versionName
-import com.highcapable.yukihookapi.YukiHookAPI.configs
+import com.fankes.tsbattery.utils.factory.showDialog
+import com.fankes.tsbattery.utils.factory.versionCode
+import com.fankes.tsbattery.utils.factory.versionName
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.bean.VariousClass
+import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.log.loggerD
@@ -292,11 +292,19 @@ class HookEntry : YukiHookXposedInitProxy {
             }
     }
 
-    override fun onHook() = encase {
-        configs {
-            debugTag = "TSBattery"
-            isDebug = false
-        }
+    override fun onHook() {
+        runConfig()
+        runHook()
+    }
+
+    /** 配置 Hook */
+    private fun runConfig() = configs {
+        debugTag = "TSBattery"
+        isDebug = false
+    }
+
+    /** 开始 Hook */
+    private fun runHook() = encase {
         loadApp(QQ_PACKAGE_NAME) {
             hookSystemWakeLock()
             hookNotification()

@@ -38,15 +38,10 @@ class TSApplication : Application() {
          * @return [TSApplication]
          */
         val appContext get() = context ?: error("App is death")
-
-        /** 自身 APP 是否已启动 */
-        var isMineStarted = false
     }
 
     override fun onCreate() {
         super.onCreate()
-        /** 设置状态 */
-        isMineStarted = true
         /** 设置静态实例 */
         context = this
         /** 跟随系统夜间模式 */
