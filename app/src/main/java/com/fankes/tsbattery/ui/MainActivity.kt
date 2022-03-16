@@ -217,8 +217,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show()
             }
         }
-        /** 项目地址点击事件 */
-        findViewById<View>(R.id.link_with_project_address).setOnClickListener {
+        /** 项目地址按钮点击事件 */
+        findViewById<View>(R.id.title_github_icon).setOnClickListener {
             runCatching {
                 startActivity(Intent().apply {
                     action = "android.intent.action.VIEW"
