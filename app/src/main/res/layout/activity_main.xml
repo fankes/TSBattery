@@ -13,19 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
+        android:gravity="center|start"
         android:paddingLeft="15dp"
         android:paddingTop="13dp"
         android:paddingRight="15dp"
         android:paddingBottom="5dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:singleLine="true"
             android:text="TSBattery"
             android:textColor="@color/colorTextGray"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/title_github_icon"
+            style="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginEnd="5dp"
+            android:alpha="0.85"
+            android:src="@mipmap/ic_github"
+            android:tint="@color/colorTextGray" />
     </LinearLayout>
 
     <LinearLayout
@@ -675,53 +687,6 @@
                     android:alpha="0.8"
                     android:lineSpacingExtra="6dp"
                     android:text="Q.如何反馈问题？\nA.酷安关注 @星夜不荟"
-                    android:textColor="@color/colorTextDark"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/link_with_project_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/bg_permotion_round"
-                android:elevation="0dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="15dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center|start">
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginEnd="5dp"
-                        android:alpha="0.85"
-                        android:src="@mipmap/ic_about"
-                        android:tint="@color/colorTextGray" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.85"
-                        android:singleLine="true"
-                        android:text="项目地址"
-                        android:textColor="@color/colorTextGray"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
-                    android:text="本软件是免费开源项目，遵循 AGPL3.0 协议，你可以点击这里前往 Github 查看源码以及获取模块更新。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
             </LinearLayout>
