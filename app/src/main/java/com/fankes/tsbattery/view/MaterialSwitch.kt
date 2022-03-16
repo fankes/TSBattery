@@ -28,8 +28,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import androidx.appcompat.widget.SwitchCompat
-import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.drawable.drawabletoolbox.DrawableBuilder
+import com.fankes.tsbattery.utils.factory.dp
 
 class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {
 
@@ -56,7 +56,7 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
             .solidColor(Color.WHITE)
             .size(20.dp, 20.dp)
             .cornerRadius(20.dp)
-            .strokeWidth(2.dp)
+            .strokeWidth(8.dp)
             .strokeColor(Color.TRANSPARENT)
             .build()
         trackTintList = toColors(
