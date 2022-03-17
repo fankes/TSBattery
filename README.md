@@ -3,7 +3,7 @@
 ![Eclipse Marketplace](https://img.shields.io/badge/build-pending-dbab09)
 ![Eclipse Marketplace](https://img.shields.io/badge/license-AGPL3.0-blue)
 ![Eclipse Marketplace](https://img.shields.io/badge/version-v3.2-green)
-[![Telegram](https://img.shields.io/static/v1?label=Telegram&message=Channel&color=0088cc)](https://t.me/XiaofangInternet)
+[![Telegram](https://img.shields.io/static/v1?label=Telegram&message=交流讨论&color=0088cc)](https://t.me/XiaofangInternet)
 <br/><br/>
 ![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
 A new way to save your battery avoid cancer apps hacker it.<br/>
