@@ -292,19 +292,12 @@ class HookEntry : YukiHookXposedInitProxy {
             }
     }
 
-    override fun onHook() {
-        runConfig()
-        runHook()
-    }
-
-    /** 配置 Hook */
-    private fun runConfig() = configs {
+    override fun onInit() = configs {
         debugTag = "TSBattery"
         isDebug = false
     }
 
-    /** 开始 Hook */
-    private fun runHook() = encase {
+    override fun onHook() = encase {
         loadApp(QQ_PACKAGE_NAME) {
             hookSystemWakeLock()
             hookNotification()
@@ -419,7 +412,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     method { name = "run" }
                     intercept()
                 }.ignoredAllFailure()
-            }
+            }.ignoredHookClassNotFoundFailure()
             /**
              * 这个是毒瘤核心类
              * WakeLockMonitor
@@ -484,7 +477,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                     intercept()
                 }
-            }
+            }.ignoredHookClassNotFoundFailure()
         }
         loadApp(TIM_PACKAGE_NAME) {
             hookSystemWakeLock()
