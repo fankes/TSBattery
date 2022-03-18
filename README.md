@@ -1,8 +1,8 @@
 # TSBattery
 
-![Eclipse Marketplace](https://img.shields.io/badge/build-pending-dbab09)
+![Eclipse Marketplace](https://img.shields.io/badge/build-passing-brightgreen)
 ![Eclipse Marketplace](https://img.shields.io/badge/license-AGPL3.0-blue)
-![Eclipse Marketplace](https://img.shields.io/badge/version-v3.2-green)
+![Eclipse Marketplace](https://img.shields.io/badge/version-v3.3-green)
 [![Telegram](https://img.shields.io/static/v1?label=Telegram&message=交流讨论&color=0088cc)](https://t.me/XiaofangInternet)
 <br/><br/>
 ![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
@@ -12,7 +12,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 # 开始使用
 
 点击下载最新版本
-<a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v3.2-green)</a>
+<a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v3.3-green)</a>
 <br/><br/>
 ⚠️ 适配说明<br/>
 
