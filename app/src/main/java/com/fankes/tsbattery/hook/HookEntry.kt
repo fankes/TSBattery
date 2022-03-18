@@ -56,9 +56,23 @@ class HookEntry : YukiHookXposedInitProxy {
 
     companion object {
 
-        /** BaseChatPie 类名 */
-        private val BaseChatPieClass =
-            VariousClass("$QQ_PACKAGE_NAME.activity.aio.core.BaseChatPie", "$QQ_PACKAGE_NAME.activity.BaseChatPie")
+        /** QQ、TIM 存在的类 */
+        private const val SplashActivityClass = "$QQ_PACKAGE_NAME.activity.SplashActivity"
+
+        /** QQ、TIM 存在的类 */
+        private const val CoreServiceClass = "$QQ_PACKAGE_NAME.app.CoreService"
+
+        /** QQ、TIM 存在的类 */
+        private const val CoreService_KernelServiceClass = "$QQ_PACKAGE_NAME.app.CoreService\$KernelService"
+
+        /** 微信存在的类 */
+        private const val LauncherUIClass = "$WECHAT_PACKAGE_NAME.ui.LauncherUI"
+
+        /** 根据多个版本存的不同的类 */
+        private val BaseChatPieClass = VariousClass(
+            "$QQ_PACKAGE_NAME.activity.aio.core.BaseChatPie",
+            "$QQ_PACKAGE_NAME.activity.BaseChatPie"
+        )
     }
 
     /**
@@ -151,7 +165,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     param(CharSequenceType)
                 }
                 beforeHook {
-                    when (args[0] as CharSequence) {
+                    when (firstArgs as CharSequence) {
                         "QQ正在后台运行" ->
                             args().set("QQ正在后台运行 - TSBattery 守护中")
                         "TIM正在后台运行" ->
@@ -169,7 +183,7 @@ class HookEntry : YukiHookXposedInitProxy {
         when {
             !prefs.getBoolean(ENABLE_RUN_INFO) -> {}
             isQQTIM ->
-                findClass(name = "$QQ_PACKAGE_NAME.activity.SplashActivity").hook {
+                SplashActivityClass.hook {
                     /**
                      * Hook 启动界面的第一个 [Activity]
                      * QQ 和 TIM 都是一样的类
@@ -203,7 +217,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                 }
             else ->
-                findClass(name = "$WECHAT_PACKAGE_NAME.ui.LauncherUI").hook {
+                LauncherUIClass.hook {
                     /**
                      * Hook 启动界面的第一个 [Activity]
                      * 在里面加入提示运行信息的对话框测试模块是否激活
@@ -242,7 +256,7 @@ class HookEntry : YukiHookXposedInitProxy {
      */
     private fun PackageParam.hookCoreService(isQQ: Boolean) {
         if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN))
-            findClass(name = "$QQ_PACKAGE_NAME.app.CoreService").hook {
+            CoreServiceClass.hook {
                 if (isQQ) {
                     injectMember {
                         method { name = "startTempService" }
@@ -275,7 +289,7 @@ class HookEntry : YukiHookXposedInitProxy {
                 }
             }
         if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
-            findClass(name = "$QQ_PACKAGE_NAME.app.CoreService\$KernelService").hook {
+            CoreService_KernelServiceClass.hook {
                 injectMember {
                     method { name = "onCreate" }
                     afterHook {
@@ -309,7 +323,7 @@ class HookEntry : YukiHookXposedInitProxy {
             hookModuleRunningInfo(isQQTIM = true)
             if (prefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)) return@loadApp
             /** 通过在 SplashActivity 里取到应用的版本号 */
-            findClass(name = "$QQ_PACKAGE_NAME.activity.SplashActivity").hook {
+            SplashActivityClass.hook {
                 injectMember {
                     method {
                         name = "doOnCreate"
