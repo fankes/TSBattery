@@ -107,6 +107,10 @@ class HookEntry : YukiHookXposedInitProxy {
                 interceptBaseChatPie(methodName = "bk")
                 interceptBaseChatPie(methodName = "bl")
             }
+            "8.8.83" -> {
+                interceptBaseChatPie(methodName = "bl")
+                interceptBaseChatPie(methodName = "bm")
+            }
             else -> loggerD(msg = "$version not supported!")
         }
     }
