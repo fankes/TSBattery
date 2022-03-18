@@ -29,6 +29,7 @@ import android.content.Intent
 import android.os.Build
 import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
 import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
+import com.fankes.tsbattery.hook.HookConst.ENABLE_NOTIFY_TIP
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_BAN
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_WHITE_MODE
@@ -165,12 +166,13 @@ class HookEntry : YukiHookXposedInitProxy {
                     param(CharSequenceType)
                 }
                 beforeHook {
-                    when (firstArgs as CharSequence) {
-                        "QQ正在后台运行" ->
-                            args().set("QQ正在后台运行 - TSBattery 守护中")
-                        "TIM正在后台运行" ->
-                            args().set("TIM正在后台运行 - TSBattery 守护中")
-                    }
+                    if (prefs.getBoolean(ENABLE_NOTIFY_TIP, default = true))
+                        when (firstArgs as CharSequence) {
+                            "QQ正在后台运行" ->
+                                args().set("QQ正在后台运行 - TSBattery 守护中")
+                            "TIM正在后台运行" ->
+                                args().set("TIM正在后台运行 - TSBattery 守护中")
+                        }
                 }
             }
         }

@@ -345,7 +345,8 @@
                 <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/shut_core_sv_qqtim_switch"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"
                     android:text="关闭 CoreService"
                     android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
@@ -363,7 +364,8 @@
                 <com.fankes.tsbattery.view.MaterialSwitch
                     android:id="@+id/shut_core_sv_kn_qqtim_switch"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"
                     android:text="关闭 CoreService$KernelService"
                     android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />
@@ -525,9 +527,28 @@
                 android:paddingRight="15dp">
 
                 <com.fankes.tsbattery.view.MaterialSwitch
-                    android:id="@+id/notify_module_info_switch"
+                    android:id="@+id/notify_module_notify_tip_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="通知栏显示守护状态"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="此功能仅支持 QQ、TIM，在开启“系统通知栏显示 QQ、TIM 图标”后系统通知后方将在最后显示“TSBattery 守护中”字样以判断模块已经生效，若不喜欢，你可以随时关闭这个功能。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <com.fankes.tsbattery.view.MaterialSwitch
+                    android:id="@+id/notify_module_info_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"
                     android:text="提示模块运行信息"
                     android:textColor="@color/colorTextGray"
                     android:textSize="15sp" />

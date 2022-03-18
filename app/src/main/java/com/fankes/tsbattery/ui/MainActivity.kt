@@ -41,6 +41,7 @@ import com.fankes.tsbattery.R
 import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
 import com.fankes.tsbattery.hook.HookConst.ENABLE_HIDE_ICON
 import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
+import com.fankes.tsbattery.hook.HookConst.ENABLE_NOTIFY_TIP
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_BAN
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN
 import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_WHITE_MODE
@@ -161,6 +162,7 @@ class MainActivity : AppCompatActivity() {
         val wechatDisableHookSwitch = findViewById<SwitchCompat>(R.id.disable_wechat_sv_switch)
         val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
         val notifyModuleInfoSwitch = findViewById<SwitchCompat>(R.id.notify_module_info_switch)
+        val notifyNotifyTipSwitch = findViewById<SwitchCompat>(R.id.notify_module_notify_tip_switch)
         /** 获取 Sp 存储的信息 */
         qqTimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
         qqTimCoreServiceSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN)
@@ -168,6 +170,7 @@ class MainActivity : AppCompatActivity() {
         wechatDisableHookSwitch.isChecked = modulePrefs.getBoolean(DISABLE_WECHAT_HOOK)
         hideIconInLauncherSwitch.isChecked = modulePrefs.getBoolean(ENABLE_HIDE_ICON)
         notifyModuleInfoSwitch.isChecked = modulePrefs.getBoolean(ENABLE_RUN_INFO)
+        notifyNotifyTipSwitch.isChecked = modulePrefs.getBoolean(ENABLE_NOTIFY_TIP, default = true)
         qqTimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_QQTIM_WHITE_MODE, b)
@@ -196,6 +199,10 @@ class MainActivity : AppCompatActivity() {
         notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_RUN_INFO, b)
+        }
+        notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
+            if (!btn.isPressed) return@setOnCheckedChangeListener
+            modulePrefs.putBoolean(ENABLE_NOTIFY_TIP, b)
         }
         /** 快捷操作 QQ */
         findViewById<View>(R.id.quick_qq_button).setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }

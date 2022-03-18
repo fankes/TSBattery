@@ -25,6 +25,7 @@ object HookConst {
 
     const val ENABLE_HIDE_ICON = "_hide_icon"
     const val ENABLE_RUN_INFO = "_tip_run_info"
+    const val ENABLE_NOTIFY_TIP = "_tip_in_notify"
     const val ENABLE_QQTIM_WHITE_MODE = "_qqtim_white_mode"
     const val ENABLE_QQTIM_CORESERVICE_BAN = "_qqtim_core_service_ban"
     const val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = "_qqtim_core_service_child_ban"
