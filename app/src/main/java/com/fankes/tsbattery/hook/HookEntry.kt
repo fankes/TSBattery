@@ -315,6 +315,7 @@ class HookEntry : YukiHookXposedInitProxy {
     override fun onInit() = configs {
         debugTag = "TSBattery"
         isDebug = false
+        isEnableModulePrefsCache = false
     }
 
     override fun onHook() = encase {
