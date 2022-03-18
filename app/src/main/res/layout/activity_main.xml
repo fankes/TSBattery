@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorThemeBackground"
     android:orientation="vertical"
-    tools:context=".ui.MainActivity"
+    tools:context=".ui.activity.MainActivity"
     tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,TooManyViews">
 
     <LinearLayout
@@ -324,7 +324,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/qqtim_protect_mode_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -342,7 +342,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/shut_core_sv_qqtim_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -361,7 +361,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/shut_core_sv_kn_qqtim_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -414,7 +414,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/disable_wechat_sv_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -526,7 +526,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/notify_module_notify_tip_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -544,7 +544,7 @@
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/notify_module_info_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -577,7 +577,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <com.fankes.tsbattery.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/hide_icon_in_launcher_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

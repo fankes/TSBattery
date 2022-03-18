@@ -21,7 +21,7 @@
  */
 @file:Suppress("SameParameterValue")
 
-package com.fankes.tsbattery.view
+package com.fankes.tsbattery.ui.view
 
 import android.content.Context
 import android.content.res.ColorStateList

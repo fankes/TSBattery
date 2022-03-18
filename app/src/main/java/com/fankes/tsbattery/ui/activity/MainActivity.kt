@@ -21,7 +21,7 @@
  */
 @file:Suppress("SetTextI18n", "LocalVariableName", "SameParameterValue")
 
-package com.fankes.tsbattery.ui
+package com.fankes.tsbattery.ui.activity
 
 import android.content.ComponentName
 import android.content.Intent
