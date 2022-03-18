@@ -102,7 +102,7 @@ class DialogBuilder(private val context: Context, private val isUseBlackTheme: B
         ).apply {
             shape = GradientDrawable.RECTANGLE
             gradientType = GradientDrawable.LINEAR_GRADIENT
-            cornerRadius = 15.dp(this@DialogBuilder.context)
+            cornerRadius = 15.dpFloat(this@DialogBuilder.context)
         })
     }?.show()
 }
