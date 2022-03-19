@@ -27,18 +27,13 @@
 -dontoptimize
 -verbose
 -overloadaggressively
--repackageclasses o
 -allowaccessmodification
 -adaptclassstrings
 -adaptresourcefilenames
 -adaptresourcefilecontents
 
-#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
--renamesourcefileattribute H
+-renamesourcefileattribute P
 -keepattributes SourceFile,LineNumberTable
-
--keep class android.support**
--keep class androidx**
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
@@ -46,3 +41,12 @@
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
+
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    public static *** throwUninitializedProperty(...);
+    public static *** throwUninitializedPropertyAccessException(...);
+}
+
+-keepclassmembers class * implements androidx.viewbinding.ViewBinding {
+    *** inflate(android.view.LayoutInflater);
+}

@@ -25,6 +25,14 @@ android {
         versionCode rootProject.ext.appVersionCode
         versionName rootProject.ext.appVersionName
 
+        kotlinOptions {
+            freeCompilerArgs = [
+                    '-Xno-param-assertions',
+                    '-Xno-call-assertions',
+                    '-Xno-receiver-assertions'
+            ]
+        }
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
