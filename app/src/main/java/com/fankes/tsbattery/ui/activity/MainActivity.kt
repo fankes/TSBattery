@@ -47,9 +47,9 @@ import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.isInstall
 import com.fankes.tsbattery.utils.factory.openSelfSetting
 import com.fankes.tsbattery.utils.factory.showDialog
+import com.highcapable.yukihookapi.hook.factory.isModuleActive
 import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
-import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate() {
         /** 判断 Hook 状态 */
-        if (isHooked()) {
+        if (isModuleActive) {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
             binding.mainImgStatus.setImageResource(R.mipmap.ic_success)
             binding.mainTextStatus.text = "模块已激活"
@@ -206,10 +206,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }.onFailure { Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show() }
         }
     }
-
-    /**
-     * 判断模块是否激活
-     * @return [Boolean] 激活状态
-     */
-    private fun isHooked() = YukiHookModuleStatus.isActive() || isTaiChiModuleActive
 }
