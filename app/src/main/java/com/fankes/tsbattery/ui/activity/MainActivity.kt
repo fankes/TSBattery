@@ -192,9 +192,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     /** 防止顶栈一样重叠在自己的 APP 中 */
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
-            }.onFailure {
-                Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show()
-            }
+            }.onFailure { Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show() }
         }
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener {
@@ -205,9 +203,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     /** 防止顶栈一样重叠在自己的 APP 中 */
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
-            }.onFailure {
-                Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show()
-            }
+            }.onFailure { Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show() }
         }
     }
 
