@@ -27,17 +27,11 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.core.view.isGone
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
+import com.fankes.tsbattery.databinding.ActivityMainBinding
 import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
 import com.fankes.tsbattery.hook.HookConst.ENABLE_HIDE_ICON
 import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
@@ -49,16 +43,15 @@ import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
+import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.isInstall
-import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
 import com.fankes.tsbattery.utils.factory.openSelfSetting
 import com.fankes.tsbattery.utils.factory.showDialog
-import com.gyf.immersionbar.ktx.immersionBar
 import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
 import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
 
@@ -69,25 +62,12 @@ class MainActivity : AppCompatActivity() {
         private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        /** 隐藏系统的标题栏 */
-        supportActionBar?.hide()
-        /** 初始化沉浸状态栏 */
-        immersionBar {
-            statusBarColor(R.color.colorThemeBackground)
-            autoDarkModeEnable(true)
-            statusBarDarkFont(isNotSystemInDarkMode)
-            navigationBarColor(R.color.colorThemeBackground)
-            navigationBarDarkIcon(isNotSystemInDarkMode)
-            fitsSystemWindows(true)
-        }
+    override fun onCreate() {
         /** 判断 Hook 状态 */
         if (isHooked()) {
-            findViewById<LinearLayout>(R.id.main_lin_status).setBackgroundResource(R.drawable.bg_green_round)
-            findViewById<ImageFilterView>(R.id.main_img_status).setImageResource(R.mipmap.ic_success)
-            findViewById<TextView>(R.id.main_text_status).text = "模块已激活"
+            binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
+            binding.mainImgStatus.setImageResource(R.mipmap.ic_success)
+            binding.mainTextStatus.text = "模块已激活"
             /** 写入激活的模块版本 */
             modulePrefs.putString(ENABLE_MODULE_VERSION, moduleVersion)
         } else
@@ -120,12 +100,12 @@ class MainActivity : AppCompatActivity() {
                 noCancelable()
             }
         /** 设置安装状态 */
-        findViewById<View>(R.id.main_text_qq_noinstall).isGone = QQ_PACKAGE_NAME.isInstall
-        findViewById<View>(R.id.main_text_tim_noinstall).isGone = TIM_PACKAGE_NAME.isInstall
-        findViewById<View>(R.id.main_text_wechat_noinstall).isGone = WECHAT_PACKAGE_NAME.isInstall
+        binding.mainTextQqNoinstall.isGone = QQ_PACKAGE_NAME.isInstall
+        binding.mainTextTimNoinstall.isGone = TIM_PACKAGE_NAME.isInstall
+        binding.mainTextWechatNoinstall.isGone = WECHAT_PACKAGE_NAME.isInstall
         /** 设置文本 */
-        findViewById<TextView>(R.id.main_text_version).text = "模块版本：$moduleVersion"
-        findViewById<TextView>(R.id.main_text_support_qq).apply {
+        binding.mainTextVersion.text = "模块版本：$moduleVersion"
+        binding.mainTextSupportQq.apply {
             text = qqSupportVersion
             setOnClickListener {
                 showDialog {
@@ -135,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        findViewById<TextView>(R.id.main_text_support_tim).apply {
+        binding.mainTextSupportTim.apply {
             text = timSupportVersion
             setOnClickListener {
                 showDialog {
@@ -145,7 +125,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        findViewById<TextView>(R.id.main_text_support_wechat).apply {
+        binding.mainTextSupportWechat.apply {
             text = wechatSupportVersion
             setOnClickListener {
                 showDialog {
@@ -155,39 +135,31 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        /** 初始化 View */
-        val qqTimProtectModeSwitch = findViewById<SwitchCompat>(R.id.qqtim_protect_mode_switch)
-        val qqTimCoreServiceSwitch = findViewById<SwitchCompat>(R.id.shut_core_sv_qqtim_switch)
-        val qqTimCoreServiceKnSwitch = findViewById<SwitchCompat>(R.id.shut_core_sv_kn_qqtim_switch)
-        val wechatDisableHookSwitch = findViewById<SwitchCompat>(R.id.disable_wechat_sv_switch)
-        val hideIconInLauncherSwitch = findViewById<SwitchCompat>(R.id.hide_icon_in_launcher_switch)
-        val notifyModuleInfoSwitch = findViewById<SwitchCompat>(R.id.notify_module_info_switch)
-        val notifyNotifyTipSwitch = findViewById<SwitchCompat>(R.id.notify_module_notify_tip_switch)
         /** 获取 Sp 存储的信息 */
-        qqTimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
-        qqTimCoreServiceSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN)
-        qqTimCoreServiceKnSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
-        wechatDisableHookSwitch.isChecked = modulePrefs.getBoolean(DISABLE_WECHAT_HOOK)
-        hideIconInLauncherSwitch.isChecked = modulePrefs.getBoolean(ENABLE_HIDE_ICON)
-        notifyModuleInfoSwitch.isChecked = modulePrefs.getBoolean(ENABLE_RUN_INFO)
-        notifyNotifyTipSwitch.isChecked = modulePrefs.getBoolean(ENABLE_NOTIFY_TIP, default = true)
-        qqTimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.qqtimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
+        binding.qqTimCoreServiceSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN)
+        binding.qqTimCoreServiceKnSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
+        binding.wechatDisableHookSwitch.isChecked = modulePrefs.getBoolean(DISABLE_WECHAT_HOOK)
+        binding.hideIconInLauncherSwitch.isChecked = modulePrefs.getBoolean(ENABLE_HIDE_ICON)
+        binding.notifyModuleInfoSwitch.isChecked = modulePrefs.getBoolean(ENABLE_RUN_INFO)
+        binding.notifyNotifyTipSwitch.isChecked = modulePrefs.getBoolean(ENABLE_NOTIFY_TIP, default = true)
+        binding.qqtimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_QQTIM_WHITE_MODE, b)
         }
-        qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_BAN, b)
         }
-        qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
         }
-        wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(DISABLE_WECHAT_HOOK, b)
         }
-        hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_HIDE_ICON, b)
             packageManager.setComponentEnabledSetting(
@@ -196,22 +168,22 @@ class MainActivity : AppCompatActivity() {
                 PackageManager.DONT_KILL_APP
             )
         }
-        notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_RUN_INFO, b)
         }
-        notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
+        binding.notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_NOTIFY_TIP, b)
         }
         /** 快捷操作 QQ */
-        findViewById<View>(R.id.quick_qq_button).setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
+        binding.quickQqButton.setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
         /** 快捷操作 TIM */
-        findViewById<View>(R.id.quick_tim_button).setOnClickListener { openSelfSetting(TIM_PACKAGE_NAME) }
+        binding.quickTimButton.setOnClickListener { openSelfSetting(TIM_PACKAGE_NAME) }
         /** 快捷操作微信 */
-        findViewById<View>(R.id.quick_wechat_button).setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
+        binding.quickWechatButton.setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
         /** 恰饭！ */
-        findViewById<View>(R.id.link_with_follow_me).setOnClickListener {
+        binding.linkWithFollowMe.setOnClickListener {
             runCatching {
                 startActivity(Intent().apply {
                     setPackage("com.coolapk.market")
@@ -225,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         /** 项目地址按钮点击事件 */
-        findViewById<View>(R.id.title_github_icon).setOnClickListener {
+        binding.titleGithubIcon.setOnClickListener {
             runCatching {
                 startActivity(Intent().apply {
                     action = "android.intent.action.VIEW"
