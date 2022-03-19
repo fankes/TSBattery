@@ -109,13 +109,13 @@
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/bg_red_round"
-                    android:paddingLeft="2dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="2dp"
-                    android:paddingBottom="1dp"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="2dp"
                     android:text="未安装"
                     android:textColor="@color/white"
-                    android:textSize="9sp"
+                    android:textSize="8sp"
                     tools:ignore="SmallSp" />
 
                 <TextView
@@ -159,13 +159,13 @@
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/bg_red_round"
-                    android:paddingLeft="2dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="2dp"
-                    android:paddingBottom="1dp"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="2dp"
                     android:text="未安装"
                     android:textColor="@color/white"
-                    android:textSize="9sp"
+                    android:textSize="8sp"
                     tools:ignore="SmallSp" />
 
                 <TextView
@@ -208,13 +208,13 @@
                     android:layout_marginEnd="3dp"
                     android:alpha="0.8"
                     android:background="@drawable/bg_red_round"
-                    android:paddingLeft="2dp"
-                    android:paddingTop="1dp"
-                    android:paddingRight="2dp"
-                    android:paddingBottom="1dp"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="2dp"
                     android:text="未安装"
                     android:textColor="@color/white"
-                    android:textSize="9sp"
+                    android:textSize="8sp"
                     tools:ignore="SmallSp" />
 
                 <TextView
@@ -343,7 +343,7 @@
                     android:textSize="12sp" />
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
-                    android:id="@+id/shut_core_sv_qqtim_switch"
+                    android:id="@+id/qq_tim_core_service_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginBottom="5dp"
@@ -362,7 +362,7 @@
                     android:textSize="12sp" />
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
-                    android:id="@+id/shut_core_sv_kn_qqtim_switch"
+                    android:id="@+id/qq_tim_core_service_kn_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginBottom="5dp"
@@ -415,7 +415,7 @@
                 </LinearLayout>
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
-                    android:id="@+id/disable_wechat_sv_switch"
+                    android:id="@+id/wechat_disable_hook_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="停用省电策略"
@@ -527,7 +527,7 @@
                 android:paddingRight="15dp">
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
-                    android:id="@+id/notify_module_notify_tip_switch"
+                    android:id="@+id/notify_notify_tip_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="通知栏显示守护状态"
@@ -591,8 +591,18 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.6"
                     android:lineSpacingExtra="6dp"
-                    android:text="隐藏模块图标后，模块不会再在桌面显示，你可以在 EdXposed、太极、LSPosed 中找到模块设置并打开，对原生系统无效。"
+                    android:text="隐藏模块图标后界面可能会被关闭，将不会再在桌面显示，你可以在 EdXposed、LSPosed 中找到模块设置并打开。"
                     android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="注意：请务必在 LSPosed 中关闭“强制显示桌面图标”功能"
+                    android:textColor="#FF5722"
                     android:textSize="12sp" />
             </LinearLayout>
 
