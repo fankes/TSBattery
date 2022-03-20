@@ -23,15 +23,18 @@
 
 package com.fankes.tsbattery.utils.factory
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import com.fankes.tsbattery.application.TSApplication.Companion.appContext
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * 系统深色模式是否开启
@@ -94,6 +97,26 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
 
 /**
+ * 弹出 [Toast]
+ * @param msg 提示内容
+ */
+fun toast(msg: String) = Toast.makeText(appContext, msg, Toast.LENGTH_SHORT).show()
+
+/**
+ * 弹出 [Snackbar]
+ * @param msg 提示内容
+ * @param actionText 按钮文本 - 不写默认取消按钮
+ * @param it 按钮事件回调
+ */
+fun Context.snake(msg: String, actionText: String = "", it: () -> Unit = {}) =
+    Snackbar.make((this as Activity).findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).apply {
+        if (actionText.isBlank()) return@apply
+        setActionTextColor(Color.WHITE)
+        setAction(actionText) { it() }
+    }.show()
+
+
+/**
  * 跳转 APP 自身设置界面
  * @param packageName 包名
  */
@@ -107,5 +130,23 @@ fun Context.openSelfSetting(packageName: String) = runCatching {
     else Toast.makeText(this, "你没有安装此应用", Toast.LENGTH_SHORT).show()
 }.onFailure {
     Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
+}
+
+/**
+ * 启动系统浏览器
+ * @param url 网址
+ * @param packageName 指定包名 - 可不填
+ */
+fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
+    startActivity(Intent().apply {
+        if (packageName.isNotBlank()) setPackage(packageName)
+        action = Intent.ACTION_VIEW
+        data = Uri.parse(url)
+        /** 防止顶栈一样重叠在自己的 APP 中 */
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    })
+}.onFailure {
+    if (packageName.isNotBlank()) snake(msg = "启动 $packageName 失败")
+    else snake(msg = "启动系统浏览器失败")
 }
 

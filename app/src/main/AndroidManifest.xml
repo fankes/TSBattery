@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fankes.tsbattery">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- 作用域 APP -->
     <queries>
         <package android:name="com.tencent.mobileqq" />
