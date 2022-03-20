@@ -23,9 +23,7 @@ package com.fankes.tsbattery.utils.tool
 
 import android.app.Activity
 import android.content.Context
-import com.fankes.tsbattery.utils.factory.openBrowser
-import com.fankes.tsbattery.utils.factory.runInSafe
-import com.fankes.tsbattery.utils.factory.showDialog
+import com.fankes.tsbattery.utils.factory.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -48,7 +46,7 @@ object GithubReleaseTool {
      * @param version 当前版本
      * @param it 成功后回调 - ([String] 最新版本,[Function] 更新对话框方法体)
      */
-    fun checkingForUpdate(context: Context, version: String, it: (String, () -> Unit) -> Unit) = runInSafe {
+    fun checkingForUpdate(context: Context, version: String, it: (String, () -> Unit) -> Unit) = checkingInternetConnect(context) {
         OkHttpClient().newBuilder().build().newCall(
             Request.Builder()
                 .url("https://api.github.com/repos/$repoAuthor/$repoName/releases/latest")
@@ -80,6 +78,37 @@ object GithubReleaseTool {
                 }
             }
         })
+    }
+
+    /**
+     * 检查网络连接情况
+     * @param context 实例
+     * @param it 已连接回调
+     */
+    private fun checkingInternetConnect(context: Context, it: () -> Unit) = runInSafe {
+        if (isNetWorkSuccess)
+            OkHttpClient().newBuilder().build().newCall(
+                Request.Builder()
+                    .url("https://www.baidu.com")
+                    .get()
+                    .build()
+            ).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    (context as? Activity?)?.runOnUiThread {
+                        context.showDialog {
+                            title = "网络连接失败"
+                            msg = "模块的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
+                            confirmButton(text = "去开启") { context.openSelfSetting() }
+                            cancelButton()
+                            noCancelable()
+                        }
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) = runInSafe {
+                    (context as? Activity?)?.runOnUiThread { runInSafe { it() } }
+                }
+            })
     }
 
     /**

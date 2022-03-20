@@ -4,6 +4,7 @@
     package="com.fankes.tsbattery">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- 作用域 APP -->
     <queries>
