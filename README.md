@@ -1,20 +1,21 @@
 # TSBattery
 
-![Eclipse Marketplace](https://img.shields.io/badge/build-pending-dbab09)
-![Eclipse Marketplace](https://img.shields.io/badge/license-AGPL3.0-blue)
-![Eclipse Marketplace](https://img.shields.io/badge/version-v3.3-green)
+[![Blank](https://img.shields.io/badge/build-pending-dbab09)](https://github.com/fankes/TSBattery)
+[![Blank](https://img.shields.io/badge/license-AGPL3.0-blue)](https://github.com/fankes/TSBattery/blob/master/LICENSE)
+[![Blank](https://img.shields.io/badge/version-v3.3-green)](https://github.com/fankes/TSBattery/releases)
+[![Blank](https://img.shields.io/github/downloads/fankes/TSBattery/total?label=Release)](https://github.com/fankes/TSBattery/releases)
+[![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
 [![Telegram](https://img.shields.io/static/v1?label=Telegram&message=交流讨论&color=0088cc)](https://t.me/XiaofangInternet)
 <br/><br/>
 ![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
 A new way to save your battery avoid cancer apps hacker it.<br/>
 TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块。
 
-# 开始使用
+# Developer
 
-点击下载最新版本
-<a href='https://github.com/fankes/TSBattery/releases'>![Eclipse Marketplace](https://img.shields.io/badge/download-v3.3-green)</a>
-<br/><br/>
-⚠️ 适配说明<br/>
+[酷安 @星夜不荟](http://www.coolapk.com/u/876977)
+
+# 适配说明
 
 - 支持并建议使用 <b>LSPosed</b>(若作用域没有自动出现推荐请勾选 QQ、TIM、微信)
 - 可以使用 <b>~~EdXposed~~</b>，但随时停止支持
@@ -26,7 +27,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 - 本模块完全开源免费，如果好用你可以打赏支持开发，但是请不要用于非法用途。
 - 本模块发布地址仅有 [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)、
-  [Release](https://github.com/fankes/TSBattery/releases) 及[蓝奏云](https://fankes.lanzouy.com/b02zfz3sj)，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
+  [Release](https://github.com/fankes/TSBattery/releases) 及 [蓝奏云](https://fankes.lanzouy.com/b02zfz3sj)，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
 
 # 开始贡献
 
