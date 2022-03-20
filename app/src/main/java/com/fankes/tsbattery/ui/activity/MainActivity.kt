@@ -24,11 +24,9 @@
 package com.fankes.tsbattery.ui.activity
 
 import android.content.ComponentName
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.widget.Toast
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.databinding.ActivityMainBinding
@@ -45,8 +43,10 @@ import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.isInstall
+import com.fankes.tsbattery.utils.factory.openBrowser
 import com.fankes.tsbattery.utils.factory.openSelfSetting
 import com.fankes.tsbattery.utils.factory.showDialog
+import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.highcapable.yukihookapi.hook.factory.isModuleActive
 import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
@@ -63,6 +63,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onCreate() {
+        /** 检查更新 */
+        GithubReleaseTool.checkingForUpdate(context = this, moduleVersion) { version, function ->
+            binding.mainTextReleaseVersion.apply {
+                text = "点击更新 $version"
+                isVisible = true
+                setOnClickListener { function() }
+            }
+        }
         /** 判断 Hook 状态 */
         if (isModuleActive) {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
@@ -182,28 +190,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.quickTimButton.setOnClickListener { openSelfSetting(TIM_PACKAGE_NAME) }
         /** 快捷操作微信 */
         binding.quickWechatButton.setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
+        /** 项目地址按钮点击事件 */
+        binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/fankes/TSBattery") }
         /** 恰饭！ */
         binding.linkWithFollowMe.setOnClickListener {
-            runCatching {
-                startActivity(Intent().apply {
-                    setPackage("com.coolapk.market")
-                    action = "android.intent.action.VIEW"
-                    data = Uri.parse("https://www.coolapk.com/u/876977")
-                    /** 防止顶栈一样重叠在自己的 APP 中 */
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                })
-            }.onFailure { Toast.makeText(this, "你可能没有安装酷安", Toast.LENGTH_SHORT).show() }
-        }
-        /** 项目地址按钮点击事件 */
-        binding.titleGithubIcon.setOnClickListener {
-            runCatching {
-                startActivity(Intent().apply {
-                    action = "android.intent.action.VIEW"
-                    data = Uri.parse("https://github.com/fankes/TSBattery")
-                    /** 防止顶栈一样重叠在自己的 APP 中 */
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                })
-            }.onFailure { Toast.makeText(this, "无法启动系统默认浏览器", Toast.LENGTH_SHORT).show() }
+            openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
     }
 }
