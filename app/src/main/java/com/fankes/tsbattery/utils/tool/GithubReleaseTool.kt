@@ -96,7 +96,7 @@ object GithubReleaseTool {
                 override fun onFailure(call: Call, e: IOException) {
                     (context as? Activity?)?.runOnUiThread {
                         context.showDialog {
-                            title = "网络连接失败"
+                            title = "网络不可用"
                             msg = "模块的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
                             confirmButton(text = "去开启") { context.openSelfSetting() }
                             cancelButton()
