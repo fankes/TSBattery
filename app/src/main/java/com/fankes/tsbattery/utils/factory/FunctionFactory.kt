@@ -30,9 +30,11 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import androidx.core.content.getSystemService
 import com.fankes.tsbattery.application.TSApplication.Companion.appContext
 import com.google.android.material.snackbar.Snackbar
 
@@ -83,6 +85,13 @@ val Context.versionName get() = packageInfo.versionName ?: ""
 val Context.versionCode get() = packageInfo.versionCode
 
 /**
+ * 网络连接是否正常
+ * @return [Boolean] 网络是否连接
+ */
+val isNetWorkSuccess
+    get() = safeOfFalse { appContext.getSystemService<ConnectivityManager>()?.activeNetworkInfo != null }
+
+/**
  * dp 转换为 pxInt
  * @param context 使用的实例
  * @return [Int]
@@ -115,22 +124,19 @@ fun Context.snake(msg: String, actionText: String = "", it: () -> Unit = {}) =
         setAction(actionText) { it() }
     }.show()
 
-
 /**
  * 跳转 APP 自身设置界面
  * @param packageName 包名
  */
-fun Context.openSelfSetting(packageName: String) = runCatching {
+fun Context.openSelfSetting(packageName: String = appContext.packageName) = runCatching {
     if (packageName.isInstall)
         startActivity(Intent().apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             data = Uri.fromParts("package", packageName, null)
         })
-    else Toast.makeText(this, "你没有安装此应用", Toast.LENGTH_SHORT).show()
-}.onFailure {
-    Toast.makeText(this, "启动 $packageName 应用信息失败", Toast.LENGTH_SHORT).show()
-}
+    else toast(msg = "你没有安装此应用")
+}.onFailure { toast(msg = "启动 $packageName 应用信息失败") }
 
 /**
  * 启动系统浏览器
