@@ -72,8 +72,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
 
     init {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX = MaterialAlertDialogBuilder(context) }
-        else runCatching {
+            runInSafe { instanceAndroidX = MaterialAlertDialogBuilder(context) }
+        else runInSafe {
             instanceAndroid = android.app.AlertDialog.Builder(
                 context,
                 if (isUseBlackTheme) android.R.style.Theme_Material_Dialog else android.R.style.Theme_Material_Light_Dialog
@@ -84,8 +84,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
     /** 设置对话框不可关闭 */
     fun noCancelable() {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setCancelable(false) }
-        else runCatching { instanceAndroid?.setCancelable(false) }
+            runInSafe { instanceAndroidX?.setCancelable(false) }
+        else runInSafe { instanceAndroid?.setCancelable(false) }
     }
 
     /** 设置对话框标题 */
@@ -93,8 +93,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
         get() = ""
         set(value) {
             if (isUsingAndroidX)
-                runCatching { instanceAndroidX?.setTitle(value) }
-            else runCatching { instanceAndroid?.setTitle(value) }
+                runInSafe { instanceAndroidX?.setTitle(value) }
+            else runInSafe { instanceAndroid?.setTitle(value) }
         }
 
     /** 设置对话框消息内容 */
@@ -102,8 +102,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
         get() = ""
         set(value) {
             if (isUsingAndroidX)
-                runCatching { instanceAndroidX?.setMessage(value) }
-            else runCatching { instanceAndroid?.setMessage(value) }
+                runInSafe { instanceAndroidX?.setMessage(value) }
+            else runInSafe { instanceAndroid?.setMessage(value) }
         }
 
     /** 设置进度条对话框消息内容 */
@@ -144,8 +144,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
      */
     fun confirmButton(text: String = "确定", it: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setPositiveButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setPositiveButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setPositiveButton(text) { _, _ -> it() } }
+        else runInSafe { instanceAndroid?.setPositiveButton(text) { _, _ -> it() } }
     }
 
     /**
@@ -155,8 +155,8 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
      */
     fun cancelButton(text: String = "取消", it: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setNegativeButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setNegativeButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setNegativeButton(text) { _, _ -> it() } }
+        else runInSafe { instanceAndroid?.setNegativeButton(text) { _, _ -> it() } }
     }
 
     /**
@@ -166,21 +166,21 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
      */
     fun neutralButton(text: String = "更多", it: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runCatching { instanceAndroidX?.setNeutralButton(text) { _, _ -> it() } }
-        else runCatching { instanceAndroid?.setNeutralButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setNeutralButton(text) { _, _ -> it() } }
+        else runInSafe { instanceAndroid?.setNeutralButton(text) { _, _ -> it() } }
     }
 
     /** 取消对话框 */
     fun cancel() = dialogInstance?.cancel()
 
     /** 显示对话框 */
-    internal fun show() {
-        if (isUsingAndroidX) runCatching {
+    internal fun show() =
+        if (isUsingAndroidX) runInSafe {
             instanceAndroidX?.create()?.apply {
                 customLayoutView?.let { setView(it) }
                 dialogInstance = this
             }?.show()
-        } else runCatching {
+        } else runInSafe {
             instanceAndroid?.create()?.apply {
                 customLayoutView?.let { setView(it) }
                 window?.setBackgroundDrawable(
@@ -196,5 +196,4 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
                 dialogInstance = this
             }?.show()
         }
-    }
 }
