@@ -60,6 +60,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             "8.2.11(Play)、8.8.17、8.8.23、8.8.35、8.8.38、8.8.50、8.8.55、8.8.68、8.8.80、8.8.83 (8.2.11、8.5.5~8.8.83)"
         private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)"
         private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼"
+
+        /** 预发布的版本标识 */
+        private const val pendingFlag = "[pending]"
     }
 
     override fun onCreate() {
@@ -112,7 +115,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextTimNoinstall.isGone = TIM_PACKAGE_NAME.isInstall
         binding.mainTextWechatNoinstall.isGone = WECHAT_PACKAGE_NAME.isInstall
         /** 设置文本 */
-        binding.mainTextVersion.text = "模块版本：$moduleVersion"
+        binding.mainTextVersion.text = "模块版本：$moduleVersion $pendingFlag"
         binding.mainTextSupportQq.apply {
             text = qqSupportVersion
             setOnClickListener {
