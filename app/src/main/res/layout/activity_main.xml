@@ -546,7 +546,30 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
+                android:paddingTop="15dp"
                 android:paddingRight="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/ic_bug" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.85"
+                        android:singleLine="true"
+                        android:text="调试功能"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/notify_notify_tip_switch"
@@ -597,7 +620,30 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
+                android:paddingTop="15dp"
                 android:paddingRight="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center|start">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/ic_home" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.85"
+                        android:singleLine="true"
+                        android:text="显示设置"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/hide_icon_in_launcher_switch"
@@ -638,28 +684,27 @@
                 android:elevation="0dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp">
+                android:padding="15dp"
+                android:paddingTop="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:gravity="center|start">
 
-                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                    <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_marginEnd="5dp"
-                        android:alpha="0.85"
-                        android:src="@mipmap/ic_about"
-                        android:tint="@color/colorTextGray" />
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/ic_help" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alpha="0.85"
                         android:singleLine="true"
-                        android:text="使用帮助与说明"
+                        android:text="使用帮助&amp;说明"
                         android:textColor="@color/colorTextGray"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -669,8 +714,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
-                    android:text="Q.这个模块是做什么的？\nA.此模块的诞生来源于国内厂商毒瘤 APP 强行霸占后台耗电，QQ 在 8.6.0 版本以后也只是接入了 HMS 推送，但是可笑的是开发组却并没有删除之前疯狂耗电的接收消息方法，于是这个模块就诞生了。"
+                    android:lineSpacingExtra="10dp"
+                    android:text="Q.这个模块是做什么的？\nA.此模块的诞生来源于国内厂商毒瘤 APP 强行霸占后台耗电，QQ 在 8.6.0 版本以后也只是接入了 HMS 推送，但是可笑的是开发组却并没有删除之前疯狂耗电的接收消息方法，于是这个模块就因此而诞生了。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
@@ -679,7 +724,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.原理是什么？\nA.模块有两套工作方式，一种是针对 QQ、TIM Hook 掉系统自身的电源锁“WakeLock”使其不能影响系统休眠，这样子在锁屏的时候 QQ、TIM 就可以进入睡眠状态。第二种就是针对 QQ、TIM 删除其自身的无用耗电疯狂循环检测后台强行保活服务。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -689,7 +734,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.如何使用？\nA.目前模块支持 LSPosed、EdXposed 以及太极(无极)框架，在太极和 LSPosed 的作用域中，只需勾选 QQ、TIM、微信即可，模块可以做到即插即用，激活后无需重启手机，重启 QQ、TIM 或微信就可以了。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -699,7 +744,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.激活后一定可以非常省电吗？\nA.并不，模块只能减少 QQ、TIM、微信的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时毒瘤不会消耗过多的无用的电量，仅此而已。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -709,7 +754,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.模块是否需要挂后台？\nA.模块完全不需要挂后台，模块只是一个控制和显示的工具，真正的任务交由 Hook 处理，若出现失效的情况请发送模块运行日志给我们而不是将模块挂后台。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -719,7 +764,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.关于目前微信的适配情况？\nA.微信适配尚在实验阶段，敬请期待。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -729,7 +774,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.如何对单独的 APP 生效模块？\nA.请在 LSPosed 中勾选对应定义域即可，我们不建议使用 EdXposed。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -738,7 +783,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.8"
-                    android:lineSpacingExtra="6dp"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.如何反馈问题？\nA.酷安关注 @星夜不荟"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
@@ -794,19 +839,34 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="10dp"
-                android:autoLink="web"
                 android:background="@drawable/bg_permotion_round"
-                android:lineSpacingExtra="6dp"
-                android:padding="10dp"
-                android:text="此模块使用 YukiHookAPI 构建。\n点击这里了解更多 https://github.com/fankes/YukiHookAPI"
-                android:textColor="@color/colorTextGray"
-                android:textSize="12sp" />
+                android:gravity="center|start"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/ic_yukihookapi" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="6dp"
+                    android:maxLines="2"
+                    android:text="此模块使用 YukiHookAPI 构建。\n了解更多 https://github.com/fankes/YukiHookAPI"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="11sp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
