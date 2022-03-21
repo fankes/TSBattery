@@ -257,50 +257,18 @@ class HookEntry : YukiHookXposedInitProxy {
      * @param isQQ 是否为 QQ - 单独处理
      */
     private fun PackageParam.hookCoreService(isQQ: Boolean) {
-        if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN))
-            CoreServiceClass.hook {
-                if (isQQ) {
-                    injectMember {
-                        method { name = "startTempService" }
-                        intercept()
-                    }
-                    injectMember {
-                        method {
-                            name = "startCoreService"
-                            param(BooleanType)
-                        }
-                        intercept()
-                    }
-                    injectMember {
-                        method {
-                            name = "onStartCommand"
-                            param(IntentClass, IntType, IntType)
-                        }
-                        replaceTo(any = 2)
-                    }
+        CoreServiceClass.hook {
+            if (isQQ) {
+                injectMember {
+                    method { name = "startTempService" }
+                    intercept()
                 }
                 injectMember {
-                    method { name = "onCreate" }
-                    afterHook {
-                        instance<Service>().apply {
-                            stopForeground(true)
-                            stopService(Intent(applicationContext, javaClass))
-                            loggerD(msg = "Shutdown CoreService OK!")
-                        }
+                    method {
+                        name = "startCoreService"
+                        param(BooleanType)
                     }
-                }
-            }
-        if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
-            CoreService_KernelServiceClass.hook {
-                injectMember {
-                    method { name = "onCreate" }
-                    afterHook {
-                        instance<Service>().apply {
-                            stopForeground(true)
-                            stopService(Intent(applicationContext, javaClass))
-                            loggerD(msg = "Shutdown CoreService\$KernelService OK!")
-                        }
-                    }
+                    intercept()
                 }
                 injectMember {
                     method {
@@ -310,6 +278,36 @@ class HookEntry : YukiHookXposedInitProxy {
                     replaceTo(any = 2)
                 }
             }
+            injectMember {
+                method { name = "onCreate" }
+                afterHook {
+                    instance<Service>().apply {
+                        stopForeground(true)
+                        stopService(Intent(applicationContext, javaClass))
+                        loggerD(msg = "Shutdown CoreService OK!")
+                    }
+                }
+            }
+        }.by { prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN) }
+        CoreService_KernelServiceClass.hook {
+            injectMember {
+                method { name = "onCreate" }
+                afterHook {
+                    instance<Service>().apply {
+                        stopForeground(true)
+                        stopService(Intent(applicationContext, javaClass))
+                        loggerD(msg = "Shutdown CoreService\$KernelService OK!")
+                    }
+                }
+            }
+            injectMember {
+                method {
+                    name = "onStartCommand"
+                    param(IntentClass, IntType, IntType)
+                }
+                replaceTo(any = 2)
+            }
+        }.by { prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN) }
     }
 
     override fun onInit() = configs {
