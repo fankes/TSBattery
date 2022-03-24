@@ -25,7 +25,7 @@ package com.fankes.tsbattery.ui.activity
 
 import android.content.ComponentName
 import android.content.pm.PackageManager
-import androidx.core.view.isGone
+import android.view.HapticFeedbackConstants
 import androidx.core.view.isVisible
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
@@ -42,14 +42,12 @@ import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
-import com.fankes.tsbattery.utils.factory.isInstall
-import com.fankes.tsbattery.utils.factory.openBrowser
-import com.fankes.tsbattery.utils.factory.openSelfSetting
-import com.fankes.tsbattery.utils.factory.showDialog
+import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.highcapable.yukihookapi.hook.factory.isModuleActive
 import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
+import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -79,6 +77,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
             binding.mainImgStatus.setImageResource(R.mipmap.ic_success)
             binding.mainTextStatus.text = "模块已激活"
+            binding.mainTextApiWay.isVisible = true
+            refreshActivateExecutor()
             /** 写入激活的模块版本 */
             modulePrefs.putString(ENABLE_MODULE_VERSION, moduleVersion)
         } else
@@ -89,9 +89,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         "请自行查看本页面使用帮助与说明第三条。\n" +
                         "太极和第三方 Xposed 激活后" +
                         "可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
-                        "或观察 QQ、TIM 的常驻通知是否有“TSBattery 守护中”字样”，" +
-                        "如果生效就代表模块运行正常，这里的激活状态只是一个显示意义上的存在。\n" +
-                        "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本应用查看激活状态。"
+                        "或观察 QQ、TIM 的常驻通知是否有“TSBattery 守护中”字样”。\n\n" +
+                        "如果生效就代表模块运行正常，若你在未 Root 情况下激活模块，这里的激活状态只是一个显示意义上的存在。\n" +
+                        "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本模块查看激活状态。"
                 confirmButton(text = "我知道了")
                 noCancelable()
             }
@@ -111,40 +111,37 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 noCancelable()
             }
         /** 设置安装状态 */
-        binding.mainTextQqNoinstall.isGone = QQ_PACKAGE_NAME.isInstall
-        binding.mainTextTimNoinstall.isGone = TIM_PACKAGE_NAME.isInstall
-        binding.mainTextWechatNoinstall.isGone = WECHAT_PACKAGE_NAME.isInstall
+        binding.mainTextQqVer.text = if (QQ_PACKAGE_NAME.isInstall) version(QQ_PACKAGE_NAME) else "未安装"
+        binding.mainTextTimVer.text = if (TIM_PACKAGE_NAME.isInstall) version(TIM_PACKAGE_NAME) else "未安装"
+        binding.mainTextWechatVer.text = if (WECHAT_PACKAGE_NAME.isInstall) version(WECHAT_PACKAGE_NAME) else "未安装"
         /** 设置文本 */
         binding.mainTextVersion.text = "模块版本：$moduleVersion $pendingFlag"
-        binding.mainTextSupportQq.apply {
-            text = qqSupportVersion
-            setOnClickListener {
-                showDialog {
-                    title = "兼容的 QQ 版本"
-                    msg = qqSupportVersion
-                    confirmButton(text = "我知道了")
-                }
+        binding.mainQqItem.setOnClickListener {
+            showDialog {
+                title = "兼容的 QQ 版本"
+                msg = qqSupportVersion
+                confirmButton(text = "我知道了")
             }
+            /** 振动提醒 */
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
-        binding.mainTextSupportTim.apply {
-            text = timSupportVersion
-            setOnClickListener {
-                showDialog {
-                    title = "兼容的 TIM 版本"
-                    msg = timSupportVersion
-                    confirmButton(text = "我知道了")
-                }
+        binding.mainTimItem.setOnClickListener {
+            showDialog {
+                title = "兼容的 TIM 版本"
+                msg = timSupportVersion
+                confirmButton(text = "我知道了")
             }
+            /** 振动提醒 */
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
-        binding.mainTextSupportWechat.apply {
-            text = wechatSupportVersion
-            setOnClickListener {
-                showDialog {
-                    title = "兼容的微信版本"
-                    msg = wechatSupportVersion
-                    confirmButton(text = "我知道了")
-                }
+        binding.mainWechatItem.setOnClickListener {
+            showDialog {
+                title = "兼容的微信版本"
+                msg = wechatSupportVersion
+                confirmButton(text = "我知道了")
             }
+            /** 振动提醒 */
+            it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
         /** 获取 Sp 存储的信息 */
         binding.qqtimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
@@ -157,6 +154,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.qqtimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(ENABLE_QQTIM_WHITE_MODE, b)
+            snake(msg = "修改需要重启 QQ 以生效")
         }
         binding.qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
@@ -169,6 +167,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
             modulePrefs.putBoolean(DISABLE_WECHAT_HOOK, b)
+            snake(msg = "修改需要重启微信以生效")
         }
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (!btn.isPressed) return@setOnCheckedChangeListener
@@ -198,6 +197,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 恰饭！ */
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
+        }
+    }
+
+    /** 刷新模块激活使用的方式 */
+    private fun refreshActivateExecutor() {
+        when {
+            YukiHookModuleStatus.executorVersion > 0 ->
+                binding.mainTextApiWay.text =
+                    "Activated by ${YukiHookModuleStatus.executorName} API ${YukiHookModuleStatus.executorVersion}"
+            isTaiChiModuleActive -> binding.mainTextApiWay.text = "Activated by TaiChi"
+            else -> binding.mainTextApiWay.text = "Activated by anonymous"
         }
     }
 }
