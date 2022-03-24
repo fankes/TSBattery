@@ -385,7 +385,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                     intercept()
                 }.onAllFailure { loggerE(msg = "Hook MsfService Failed $it") }
-            }
+            }.ignoredHookClassNotFoundFailure()
             /**
              * 干掉自动上传服务的电源锁
              * 每个版本的差异暂未做排查
