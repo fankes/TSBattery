@@ -346,7 +346,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                     intercept()
                 }.ignoredAllFailure()
-            }
+            }.ignoredHookClassNotFoundFailure()
             /**
              * 一个不知道是什么作用的电源锁
              * 同样直接干掉
@@ -370,7 +370,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     method { name = "lock" }
                     intercept()
                 }.ignoredAllFailure()
-            }
+            }.ignoredHookClassNotFoundFailure()
             /**
              * 干掉消息收发功能的电源锁
              * 每个版本的差异暂未做排查
@@ -496,6 +496,13 @@ class HookEntry : YukiHookXposedInitProxy {
                         param(BooleanType)
                     }
                     intercept()
+                }
+                injectMember {
+                    method {
+                        name = "handleMessage"
+                        param(MessageClass)
+                    }
+                    replaceToFalse()
                 }
             }.ignoredHookClassNotFoundFailure()
         }
