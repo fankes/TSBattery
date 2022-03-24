@@ -60,7 +60,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼"
 
         /** 预发布的版本标识 */
-        private const val pendingFlag = "[pending]"
+        private const val pendingFlag = ""
     }
 
     override fun onCreate() {
