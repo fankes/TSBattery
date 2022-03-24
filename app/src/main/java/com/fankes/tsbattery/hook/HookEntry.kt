@@ -395,7 +395,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     method { name = "acquireWakeLockIfNot" }
                     intercept()
                 }.onAllFailure { loggerE(msg = "Hook UploadServiceImpl Failed $it") }
-            }
+            }.ignoredHookClassNotFoundFailure()
             /**
              * Hook 掉一个一像素保活 [Activity] 真的我怎么都想不到讯哥的程序员做出这种事情
              * 这个东西经过测试会在锁屏的时候吊起来，解锁的时候自动 finish()，无限耍流氓耗电
