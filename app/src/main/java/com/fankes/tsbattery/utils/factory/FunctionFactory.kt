@@ -85,6 +85,17 @@ val Context.versionName get() = packageInfo.versionName ?: ""
 val Context.versionCode get() = packageInfo.versionCode
 
 /**
+ * 得到版本信息与版本号
+ * @param packageName 包名
+ * @return [String]
+ */
+fun Context.version(packageName: String) = safeOfNothing {
+    packageManager?.getPackageInfo(packageName, 0)?.let {
+        "${it.versionName}(${it.versionCode})"
+    } ?: ""
+}
+
+/**
  * 网络连接是否正常
  * @return [Boolean] 网络是否连接
  */

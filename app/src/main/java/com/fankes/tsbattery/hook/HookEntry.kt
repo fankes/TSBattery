@@ -183,20 +183,19 @@ class HookEntry : YukiHookXposedInitProxy {
      */
     private fun PackageParam.hookModuleRunningInfo(isQQTIM: Boolean) =
         when {
-            !prefs.getBoolean(ENABLE_RUN_INFO) -> {}
-            isQQTIM ->
-                SplashActivityClass.hook {
-                    /**
-                     * Hook 启动界面的第一个 [Activity]
-                     * QQ 和 TIM 都是一样的类
-                     * 在里面加入提示运行信息的对话框测试模块是否激活
-                     */
-                    injectMember {
-                        method {
-                            name = "doOnCreate"
-                            param(BundleClass)
-                        }
-                        afterHook {
+            isQQTIM -> SplashActivityClass.hook {
+                /**
+                 * Hook 启动界面的第一个 [Activity]
+                 * QQ 和 TIM 都是一样的类
+                 * 在里面加入提示运行信息的对话框测试模块是否激活
+                 */
+                injectMember {
+                    method {
+                        name = "doOnCreate"
+                        param(BundleClass)
+                    }
+                    afterHook {
+                        if (prefs.getBoolean(ENABLE_RUN_INFO))
                             instance<Activity>().apply {
                                 showDialog {
                                     title = "TSBattery 已激活"
@@ -215,21 +214,21 @@ class HookEntry : YukiHookXposedInitProxy {
                                     noCancelable()
                                 }
                             }
-                        }
                     }
                 }
-            else ->
-                LauncherUIClass.hook {
-                    /**
-                     * Hook 启动界面的第一个 [Activity]
-                     * 在里面加入提示运行信息的对话框测试模块是否激活
-                     */
-                    injectMember {
-                        method {
-                            name = "onCreate"
-                            param(BundleClass)
-                        }
-                        afterHook {
+            }
+            else -> LauncherUIClass.hook {
+                /**
+                 * Hook 启动界面的第一个 [Activity]
+                 * 在里面加入提示运行信息的对话框测试模块是否激活
+                 */
+                injectMember {
+                    method {
+                        name = "onCreate"
+                        param(BundleClass)
+                    }
+                    afterHook {
+                        if (prefs.getBoolean(ENABLE_RUN_INFO))
                             instance<Activity>().apply {
                                 showDialog(isUseBlackTheme = true) {
                                     title = "TSBattery 已激活"
@@ -247,9 +246,9 @@ class HookEntry : YukiHookXposedInitProxy {
                                     noCancelable()
                                 }
                             }
-                        }
                     }
                 }
+            }
         }
 
     /**
@@ -281,23 +280,25 @@ class HookEntry : YukiHookXposedInitProxy {
             injectMember {
                 method { name = "onCreate" }
                 afterHook {
-                    instance<Service>().apply {
-                        stopForeground(true)
-                        stopService(Intent(applicationContext, javaClass))
-                        loggerD(msg = "Shutdown CoreService OK!")
-                    }
+                    if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN))
+                        instance<Service>().apply {
+                            stopForeground(true)
+                            stopService(Intent(applicationContext, javaClass))
+                            loggerD(msg = "Shutdown CoreService OK!")
+                        }
                 }
             }
-        }.by { prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN) }
+        }
         CoreService_KernelServiceClass.hook {
             injectMember {
                 method { name = "onCreate" }
                 afterHook {
-                    instance<Service>().apply {
-                        stopForeground(true)
-                        stopService(Intent(applicationContext, javaClass))
-                        loggerD(msg = "Shutdown CoreService\$KernelService OK!")
-                    }
+                    if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
+                        instance<Service>().apply {
+                            stopForeground(true)
+                            stopService(Intent(applicationContext, javaClass))
+                            loggerD(msg = "Shutdown CoreService\$KernelService OK!")
+                        }
                 }
             }
             injectMember {
@@ -307,7 +308,7 @@ class HookEntry : YukiHookXposedInitProxy {
                 }
                 replaceTo(any = 2)
             }
-        }.by { prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN) }
+        }
     }
 
     override fun onInit() = configs {
@@ -323,7 +324,7 @@ class HookEntry : YukiHookXposedInitProxy {
             hookCoreService(isQQ = true)
             hookModuleRunningInfo(isQQTIM = true)
             if (prefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)) return@loadApp
-            /** 通过在 SplashActivity 里取到应用的版本号 */
+            /** 通过在 [SplashActivityClass] 里取到应用的版本号 */
             SplashActivityClass.hook {
                 injectMember {
                     method {

@@ -111,154 +111,111 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:gravity="center|start"
-                android:orientation="horizontal">
+                android:fadingEdgeLength="10dp"
+                android:fillViewport="true"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none">
 
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@mipmap/ic_qq_icon" />
-
-                <TextView
-                    android:id="@+id/main_text_qq_noinstall"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:alpha="0.8"
-                    android:background="@drawable/bg_red_round"
-                    android:paddingLeft="3dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="2dp"
-                    android:text="未安装"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    tools:ignore="SmallSp" />
+                    android:gravity="center|start"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:alpha="0.8"
-                    android:text="兼容"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
+                    <LinearLayout
+                        android:id="@+id/main_qq_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center|start"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/main_text_support_qq"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="%1"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_qq_icon" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/main_text_qq_ver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="%1"
+                            android:textColor="@color/white"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/main_tim_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center|start"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_tim_icon" />
+
+                        <TextView
+                            android:id="@+id/main_text_tim_ver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="%1"
+                            android:textColor="@color/white"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/main_wechat_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@mipmap/ic_wechat_icon" />
+
+                        <TextView
+                            android:id="@+id/main_text_wechat_ver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="%1"
+                            android:textColor="@color/white"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/main_text_api_way"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:gravity="center|start"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@mipmap/ic_tim_icon" />
-
-                <TextView
-                    android:id="@+id/main_text_tim_noinstall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:alpha="0.8"
-                    android:background="@drawable/bg_red_round"
-                    android:paddingLeft="3dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="2dp"
-                    android:text="未安装"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    tools:ignore="SmallSp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:alpha="0.8"
-                    android:text="兼容"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/main_text_support_tim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="%1"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginEnd="5dp"
-                    android:src="@mipmap/ic_wechat_icon" />
-
-                <TextView
-                    android:id="@+id/main_text_wechat_noinstall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:alpha="0.8"
-                    android:background="@drawable/bg_red_round"
-                    android:paddingLeft="3dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="3dp"
-                    android:paddingBottom="2dp"
-                    android:text="未安装"
-                    android:textColor="@color/white"
-                    android:textSize="8sp"
-                    tools:ignore="SmallSp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:alpha="0.8"
-                    android:text="兼容"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/main_text_support_wechat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.8"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="%1"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-            </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:alpha="0.6"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="%1"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
@@ -300,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
                     android:lineSpacingExtra="5dp"
-                    android:text="上述列出的版本号为最佳兼容版本，你可以点击进行查看。\n没有标注的版本在适配范围内的 APP 适用性都将有效，但可能不能达到最佳使用效果。\n如果当前版本失效请看下方的联系方式。"
+                    android:text="你可以点击上述每个图标查看最佳兼容的 APP 版本。\n没有标注的版本在适配范围内的 APP 适用性都将有效，但可能不能达到最佳使用效果，建议保持使用适配内的版本。"
                     android:textColor="@color/colorTextGray"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
