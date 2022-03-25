@@ -26,14 +26,15 @@
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
-
         <meta-data
             android:name="xposeddescription"
             android:value="Tencent 社交毒瘤一键省电模块。\n目前支持 QQ、TIM、微信\n开发者：酷安 @星夜不荟" />
-
         <meta-data
             android:name="xposedminversion"
             android:value="93" />
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/module_scope" />
 
         <activity
             android:name="com.fankes.tsbattery.ui.activity.MainActivity"
