@@ -17,13 +17,20 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2021/11/9.
+ * This file is Created by fankes on 2022/3/28.
  */
-package com.fankes.tsbattery.hook
+package com.fankes.tsbattery.data
 
-object HookConst {
+import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 
-    const val QQ_PACKAGE_NAME = "com.tencent.mobileqq"
-    const val TIM_PACKAGE_NAME = "com.tencent.tim"
-    const val WECHAT_PACKAGE_NAME = "com.tencent.mm"
+object DataConst {
+
+    val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
+    val ENABLE_RUN_INFO = PrefsData("_tip_run_info", false)
+    val ENABLE_NOTIFY_TIP = PrefsData("_tip_in_notify", true)
+    val ENABLE_QQTIM_WHITE_MODE = PrefsData("_qqtim_white_mode", false)
+    val ENABLE_QQTIM_CORESERVICE_BAN = PrefsData("_qqtim_core_service_ban", false)
+    val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = PrefsData("_qqtim_core_service_child_ban", false)
+    val DISABLE_WECHAT_HOOK = PrefsData("_disable_wechat_hook", false)
+    val ENABLE_MODULE_VERSION = PrefsData("_module_version", "")
 }

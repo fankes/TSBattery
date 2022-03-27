@@ -29,15 +29,8 @@ import android.view.HapticFeedbackConstants
 import androidx.core.view.isVisible
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
+import com.fankes.tsbattery.data.DataConst
 import com.fankes.tsbattery.databinding.ActivityMainBinding
-import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
-import com.fankes.tsbattery.hook.HookConst.ENABLE_HIDE_ICON
-import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
-import com.fankes.tsbattery.hook.HookConst.ENABLE_NOTIFY_TIP
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_BAN
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_WHITE_MODE
-import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
@@ -80,7 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             binding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
             /** 写入激活的模块版本 */
-            modulePrefs.putString(ENABLE_MODULE_VERSION, moduleVersion)
+            modulePrefs.put(DataConst.ENABLE_MODULE_VERSION, moduleVersion)
         } else
             showDialog {
                 title = "模块没有激活"
@@ -144,34 +137,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
         /** 获取 Sp 存储的信息 */
-        binding.qqtimProtectModeSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)
-        binding.qqTimCoreServiceSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN)
-        binding.qqTimCoreServiceKnSwitch.isChecked = modulePrefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
-        binding.wechatDisableHookSwitch.isChecked = modulePrefs.getBoolean(DISABLE_WECHAT_HOOK)
-        binding.hideIconInLauncherSwitch.isChecked = modulePrefs.getBoolean(ENABLE_HIDE_ICON)
-        binding.notifyModuleInfoSwitch.isChecked = modulePrefs.getBoolean(ENABLE_RUN_INFO)
-        binding.notifyNotifyTipSwitch.isChecked = modulePrefs.getBoolean(ENABLE_NOTIFY_TIP, default = true)
+        binding.qqtimProtectModeSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)
+        binding.qqTimCoreServiceSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN)
+        binding.qqTimCoreServiceKnSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
+        binding.wechatDisableHookSwitch.isChecked = modulePrefs.get(DataConst.DISABLE_WECHAT_HOOK)
+        binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
+        binding.notifyModuleInfoSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_RUN_INFO)
+        binding.notifyNotifyTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_NOTIFY_TIP)
         binding.qqtimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_QQTIM_WHITE_MODE, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_QQTIM_WHITE_MODE, b)
             snake(msg = "修改需要重启 QQ 以生效")
         }
         binding.qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_BAN, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_QQTIM_CORESERVICE_BAN, b)
         }
         binding.qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
         }
         binding.wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(DISABLE_WECHAT_HOOK, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.DISABLE_WECHAT_HOOK, b)
             snake(msg = "修改需要重启微信以生效")
         }
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_HIDE_ICON, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_HIDE_ICON, b)
             packageManager.setComponentEnabledSetting(
                 ComponentName(this@MainActivity, "com.fankes.tsbattery.Home"),
                 if (b) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -179,12 +172,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             )
         }
         binding.notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_RUN_INFO, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_RUN_INFO, b)
         }
         binding.notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
-            if (!btn.isPressed) return@setOnCheckedChangeListener
-            modulePrefs.putBoolean(ENABLE_NOTIFY_TIP, b)
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_NOTIFY_TIP, b)
         }
         /** 快捷操作 QQ */
         binding.quickQqButton.setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }

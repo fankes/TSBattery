@@ -27,13 +27,7 @@ import android.app.Activity
 import android.app.Service
 import android.content.Intent
 import android.os.Build
-import com.fankes.tsbattery.hook.HookConst.DISABLE_WECHAT_HOOK
-import com.fankes.tsbattery.hook.HookConst.ENABLE_MODULE_VERSION
-import com.fankes.tsbattery.hook.HookConst.ENABLE_NOTIFY_TIP
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_BAN
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN
-import com.fankes.tsbattery.hook.HookConst.ENABLE_QQTIM_WHITE_MODE
-import com.fankes.tsbattery.hook.HookConst.ENABLE_RUN_INFO
+import com.fankes.tsbattery.data.DataConst
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
@@ -166,7 +160,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     param(CharSequenceType)
                 }
                 beforeHook {
-                    if (prefs.getBoolean(ENABLE_NOTIFY_TIP, default = true))
+                    if (prefs.get(DataConst.ENABLE_NOTIFY_TIP))
                         when (firstArgs<CharSequence>()) {
                             "QQ正在后台运行" ->
                                 args().set("QQ正在后台运行 - TSBattery 守护中")
@@ -195,14 +189,14 @@ class HookEntry : YukiHookXposedInitProxy {
                         param(BundleClass)
                     }
                     afterHook {
-                        if (prefs.getBoolean(ENABLE_RUN_INFO))
+                        if (prefs.get(DataConst.ENABLE_RUN_INFO))
                             instance<Activity>().apply {
                                 showDialog {
                                     title = "TSBattery 已激活"
                                     msg = "[提示模块运行信息功能已打开]\n\n" +
                                             "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                            "已生效模块版本：${prefs.getString(ENABLE_MODULE_VERSION)}\n" +
-                                            "当前模式：${if (prefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                            "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                            "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                             "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                             "\n\n模块只对挂后台锁屏情况下有省电效果，" +
                                             "请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
@@ -228,13 +222,13 @@ class HookEntry : YukiHookXposedInitProxy {
                         param(BundleClass)
                     }
                     afterHook {
-                        if (prefs.getBoolean(ENABLE_RUN_INFO))
+                        if (prefs.get(DataConst.ENABLE_RUN_INFO))
                             instance<Activity>().apply {
                                 showDialog(isUseBlackTheme = true) {
                                     title = "TSBattery 已激活"
                                     msg = "[提示模块运行信息功能已打开]\n\n" +
                                             "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                            "已生效模块版本：${prefs.getString(ENABLE_MODULE_VERSION)}\n" +
+                                            "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
                                             "当前模式：基础省电" +
                                             "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                             "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
@@ -280,7 +274,7 @@ class HookEntry : YukiHookXposedInitProxy {
             injectMember {
                 method { name = "onCreate" }
                 afterHook {
-                    if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_BAN))
+                    if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN))
                         instance<Service>().apply {
                             stopForeground(true)
                             stopService(Intent(applicationContext, javaClass))
@@ -293,7 +287,7 @@ class HookEntry : YukiHookXposedInitProxy {
             injectMember {
                 method { name = "onCreate" }
                 afterHook {
-                    if (prefs.getBoolean(ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
+                    if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
                         instance<Service>().apply {
                             stopForeground(true)
                             stopService(Intent(applicationContext, javaClass))
@@ -323,7 +317,7 @@ class HookEntry : YukiHookXposedInitProxy {
             hookNotification()
             hookCoreService(isQQ = true)
             hookModuleRunningInfo(isQQTIM = true)
-            if (prefs.getBoolean(ENABLE_QQTIM_WHITE_MODE)) return@loadApp
+            if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) return@loadApp
             /** 通过在 [SplashActivityClass] 里取到应用的版本号 */
             SplashActivityClass.hook {
                 injectMember {
@@ -513,7 +507,7 @@ class HookEntry : YukiHookXposedInitProxy {
             hookModuleRunningInfo(isQQTIM = true)
         }
         loadApp(WECHAT_PACKAGE_NAME) {
-            if (prefs.getBoolean(DISABLE_WECHAT_HOOK)) return@loadApp
+            if (prefs.get(DataConst.DISABLE_WECHAT_HOOK)) return@loadApp
             hookSystemWakeLock()
             hookModuleRunningInfo(isQQTIM = false)
             loggerD(msg = "ウイチャット：それが機能するかどうかはわかりませんでした")
