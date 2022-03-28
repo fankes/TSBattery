@@ -31,6 +31,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.SwitchCompat
 import com.fankes.tsbattery.utils.drawable.drawabletoolbox.DrawableBuilder
 import com.fankes.tsbattery.utils.factory.dp
+import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
 
 class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {
 
@@ -42,6 +43,8 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
         states[2] = intArrayOf()
         return ColorStateList(states, colors)
     }
+
+    private val thumbColor get() = if (isSystemInDarkMode) 0xFF7C7C7C else 0xFFCCCCCC
 
     init {
         trackDrawable = DrawableBuilder()
@@ -62,8 +65,8 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
             .build()
         trackTintList = toColors(
             0xFF656565.toInt(),
-            0xFFCCCCCC.toInt(),
-            0xFFCCCCCC.toInt()
+            thumbColor.toInt(),
+            thumbColor.toInt()
         )
         isSingleLine = true
         ellipsize = TextUtils.TruncateAt.END
