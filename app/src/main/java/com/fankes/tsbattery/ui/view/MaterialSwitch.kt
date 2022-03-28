@@ -44,7 +44,7 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
         return ColorStateList(states, colors)
     }
 
-    private val thumbColor get() = if (isSystemInDarkMode) 0xFF7C7C7C else 0xFFCCCCCC
+    private val thumbColor get() = if (context.isSystemInDarkMode) 0xFF7C7C7C else 0xFFCCCCCC
 
     init {
         trackDrawable = DrawableBuilder()

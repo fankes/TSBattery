@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/1/7.
  */
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "unused")
 
 package com.fankes.tsbattery.utils.factory
 
@@ -42,14 +42,25 @@ import com.google.android.material.snackbar.Snackbar
  * 系统深色模式是否开启
  * @return [Boolean] 是否开启
  */
-val isSystemInDarkMode
-    get() = (appContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+val isSystemInDarkMode get() = appContext.isSystemInDarkMode
 
 /**
  * 系统深色模式是否没开启
  * @return [Boolean] 是否开启
  */
 inline val isNotSystemInDarkMode get() = !isSystemInDarkMode
+
+/**
+ * 系统深色模式是否开启
+ * @return [Boolean] 是否开启
+ */
+val Context.isSystemInDarkMode get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+/**
+ * 系统深色模式是否没开启
+ * @return [Boolean] 是否开启
+ */
+inline val Context.isNotSystemInDarkMode get() = !isSystemInDarkMode
 
 /**
  * 得到安装包信息
