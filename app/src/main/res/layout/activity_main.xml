@@ -544,6 +544,25 @@
                     android:textSize="12sp" />
 
                 <com.fankes.tsbattery.ui.view.MaterialSwitch
+                    android:id="@+id/setting_module_tip_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="设置页面显示守护状态"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="此功能仅支持 QQ、TIM，开启后将会在宿主设置页面显示一个条目来展示激活状态，与大部分 QQ、TIM 模块显示方式一致，建议保持开启以快速确定模块是否正常生效。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <com.fankes.tsbattery.ui.view.MaterialSwitch
                     android:id="@+id/notify_module_info_switch"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"

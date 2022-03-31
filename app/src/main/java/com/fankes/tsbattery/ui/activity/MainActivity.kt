@@ -144,6 +144,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
         binding.notifyModuleInfoSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_RUN_INFO)
         binding.notifyNotifyTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_NOTIFY_TIP)
+        binding.settingModuleTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_SETTING_TIP)
         binding.qqtimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_QQTIM_WHITE_MODE, b)
@@ -178,6 +179,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             modulePrefs.put(DataConst.ENABLE_NOTIFY_TIP, b)
+        }
+        binding.settingModuleTipSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            modulePrefs.put(DataConst.ENABLE_SETTING_TIP, b)
         }
         /** 快捷操作 QQ */
         binding.quickQqButton.setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
