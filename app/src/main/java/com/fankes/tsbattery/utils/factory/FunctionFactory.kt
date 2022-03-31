@@ -157,7 +157,7 @@ fun Context.openSelfSetting(packageName: String = appContext.packageName) = runC
             action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             data = Uri.fromParts("package", packageName, null)
         })
-    else toast(msg = "你没有安装此应用")
+    else snake(msg = "你没有安装此应用")
 }.onFailure { toast(msg = "启动 $packageName 应用信息失败") }
 
 /**
