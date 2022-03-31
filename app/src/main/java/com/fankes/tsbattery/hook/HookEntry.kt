@@ -25,19 +25,26 @@ package com.fankes.tsbattery.hook
 
 import android.app.Activity
 import android.app.Service
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Build
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.Toast
+import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.data.DataConst
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
+import com.fankes.tsbattery.ui.activity.MainActivity
 import com.fankes.tsbattery.utils.factory.showDialog
 import com.fankes.tsbattery.utils.factory.versionCode
 import com.fankes.tsbattery.utils.factory.versionName
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.bean.VariousClass
-import com.highcapable.yukihookapi.hook.factory.configs
-import com.highcapable.yukihookapi.hook.factory.encase
-import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.param.PackageParam
@@ -58,6 +65,12 @@ class HookEntry : YukiHookXposedInitProxy {
 
         /** QQ、TIM 存在的类 */
         private const val CoreService_KernelServiceClass = "$QQ_PACKAGE_NAME.app.CoreService\$KernelService"
+
+        /** QQ、TIM 新版本存在的类 */
+        private const val FormSimpleItemClass = "$QQ_PACKAGE_NAME.widget.FormSimpleItem"
+
+        /** QQ、TIM 旧版本存在的类 */
+        private const val FormCommonSingleLineItemClass = "$QQ_PACKAGE_NAME.widget.FormCommonSingleLineItem"
 
         /** 微信存在的类 */
         private const val LauncherUIClass = "$WECHAT_PACKAGE_NAME.ui.LauncherUI"
@@ -200,8 +213,8 @@ class HookEntry : YukiHookXposedInitProxy {
                                             "\n\n模块只对挂后台锁屏情况下有省电效果，" +
                                             "请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
                                             "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
-                                            "持续常驻使用 QQ 依然会耗电，任何软件都是如此，" +
-                                            "模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                            "持续常驻使用 QQ、TIM 依然会耗电，任何软件都是如此，" +
+                                            "模块是无法帮你做到前台不耗电的。\n\n" +
                                             "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
                                     confirmButton(text = "我知道了")
                                     noCancelable()
@@ -233,7 +246,7 @@ class HookEntry : YukiHookXposedInitProxy {
                                             "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
                                             "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
                                             "持续常驻使用微信依然会耗电，任何软件都是如此，" +
-                                            "模块无法帮你做到前台不耗电，永远记住这一点。\n\n" +
+                                            "模块是无法帮你做到前台不耗电的。\n\n" +
                                             "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
                                     confirmButton(text = "我知道了")
                                     noCancelable()
@@ -304,6 +317,101 @@ class HookEntry : YukiHookXposedInitProxy {
         }
     }
 
+    /**
+     * 将激活状态插入到设置页面
+     * @param isQQ 是否为 QQ - 单独处理
+     */
+    private fun PackageParam.hookQQSettingsSettingActivity(isQQ: Boolean) =
+        findClass(name = "$QQ_PACKAGE_NAME.activity.QQSettingSettingActivity").hook {
+            injectMember {
+                method {
+                    name = "doOnCreate"
+                    param(BundleClass)
+                    afterHook {
+                        /** 是否启用 Hook */
+                        if (prefs.get(DataConst.ENABLE_SETTING_TIP).not()) return@afterHook
+
+                        /** 当前的顶级 Item 实例 */
+                        var formItemRefRoot: View? = null
+
+                        /**
+                         * 使用循环筛选
+                         * @param target 目标变量名称
+                         * @return [View] or null
+                         */
+                        fun match(target: String) = runCatching {
+                            field {
+                                name = target
+                                type = FormSimpleItemClass.clazz
+                            }.ignoredError().get(instance).cast() ?: field {
+                                name = target
+                                type = FormCommonSingleLineItemClass.clazz
+                            }.ignoredError().get(instance).cast<View?>()
+                        }.getOrNull()
+                        /** 循环出当前设置界面存在的顶级 Item */
+                        arrayOf(
+                            "a", "b", "c", "d", "e", "f", "g",
+                            "h", "i", "j", "k", "l", "m", "n",
+                            "o", "p", "q", "r", "s", "t", "u",
+                            "v", "w", "x", "y", "z", "A", "B"
+                        ).forEach { match(it)?.also { e -> formItemRefRoot = e } }
+                        /** 创建一个新的 Item */
+                        FormSimpleItemClass.clazz.constructor { param(ContextClass) }.get().newInstance<View>(instance)?.also {
+                            it.javaClass.apply {
+                                method {
+                                    name = "setLeftText"
+                                    param(CharSequenceType)
+                                }.get(it).call("TSBattery")
+                                method {
+                                    name = "setRightText"
+                                    param(CharSequenceType)
+                                }.get(it).call(prefs.get(DataConst.ENABLE_MODULE_VERSION))
+                                method {
+                                    name = "setBgType"
+                                    param(IntType)
+                                }.get(it).call(2)
+                            }
+                            it.setOnClickListener {
+                                instance<Activity>().apply {
+                                    showDialog {
+                                        title = "TSBattery 守护中"
+                                        msg = "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                                "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
+                                                "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
+                                                "\n\n模块只对挂后台锁屏情况下有省电效果，" +
+                                                "请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
+                                                "持续常驻使用 QQ、TIM 依然会耗电，任何软件都是如此，" +
+                                                "模块是无法帮你做到前台不耗电的。\n\n" +
+                                                "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                        confirmButton(text = "打开模块设置") {
+                                            runCatching {
+                                                startActivity(Intent().apply {
+                                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                    component = ComponentName(
+                                                        BuildConfig.APPLICATION_ID,
+                                                        MainActivity::class.java.name
+                                                    )
+                                                })
+                                            }.onFailure { Toast.makeText(context, "启动失败", Toast.LENGTH_SHORT).show() }
+                                        }
+                                        cancelButton(text = "关闭")
+                                    }
+                                }
+                            }
+                        }.apply {
+                            var listGroup = formItemRefRoot?.parent as? ViewGroup?
+                            val lparam = (if (listGroup?.childCount == 1) {
+                                listGroup = listGroup.parent as? ViewGroup
+                                (formItemRefRoot?.parent as? View?)?.layoutParams
+                            } else formItemRefRoot?.layoutParams) ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                            /** 将 Item 添加到设置界面 */
+                            listGroup?.also { if (isQQ) it.addView(this, lparam) else it.addView(this, 0, lparam) }
+                        }
+                    }
+                }
+            }
+        }
+
     override fun onInit() = configs {
         debugTag = "TSBattery"
         isDebug = false
@@ -316,6 +424,7 @@ class HookEntry : YukiHookXposedInitProxy {
             hookNotification()
             hookCoreService(isQQ = true)
             hookModuleRunningInfo(isQQTIM = true)
+            hookQQSettingsSettingActivity(isQQ = true)
             if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) return@loadApp
             /** 通过在 [SplashActivityClass] 里取到应用的版本号 */
             SplashActivityClass.hook {
@@ -327,43 +436,6 @@ class HookEntry : YukiHookXposedInitProxy {
                     afterHook { hookQQBaseChatPie(instance<Activity>().versionName) }
                 }
             }
-            /**
-             * 一个不知道是什么作用的电源锁
-             * 同样直接干掉
-             */
-            findClass(name = "com.tencent.mars.ilink.comm.WakerLock").hook {
-                injectMember {
-                    method {
-                        name = "lock"
-                        param(LongType)
-                    }
-                    intercept()
-                }.ignoredAllFailure()
-            }.ignoredHookClassNotFoundFailure()
-            /**
-             * 一个不知道是什么作用的电源锁
-             * 同样直接干掉
-             */
-            findClass(name = "com.tencent.mars.comm.WakerLock").hook {
-                injectMember {
-                    method {
-                        name = "lock"
-                        param(LongType)
-                    }
-                    intercept()
-                }.ignoredAllFailure()
-                injectMember {
-                    method {
-                        name = "lock"
-                        param(StringType)
-                    }
-                    intercept()
-                }.ignoredAllFailure()
-                injectMember {
-                    method { name = "lock" }
-                    intercept()
-                }.ignoredAllFailure()
-            }.ignoredHookClassNotFoundFailure()
             /**
              * 干掉消息收发功能的电源锁
              * 每个版本的差异暂未做排查
@@ -420,7 +492,7 @@ class HookEntry : YukiHookXposedInitProxy {
              * 讯哥的程序员真的有你的
              * 2022/1/25 后期查证：锁屏界面消息快速回复窗口
              */
-            findClass(name = "$QQ_PACKAGE_NAME.activity.QQLSActivity\$14").hook {
+            findClass("$QQ_PACKAGE_NAME.activity.QQLSActivity\$14", "ktq").hook {
                 injectMember {
                     method { name = "run" }
                     intercept()
@@ -491,12 +563,88 @@ class HookEntry : YukiHookXposedInitProxy {
                     intercept()
                 }
             }.ignoredHookClassNotFoundFailure()
+            /**
+             * 这个是毒瘤核心操作类
+             * 功能同上、全部拦截
+             */
+            findClass(name = "com.tencent.qapmsdk.qqbattery.QQBatteryMonitor").hook {
+                injectMember {
+                    method { name = "start" }
+                    intercept()
+                }
+                injectMember {
+                    method { name = "stop" }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "handleMessage"
+                        param(MessageClass)
+                    }
+                    replaceToTrue()
+                }
+                injectMember {
+                    method { name = "startMonitorInner" }
+                    intercept()
+                }
+                injectMember {
+                    method { name = "onAppBackground" }
+                    intercept()
+                }
+                injectMember {
+                    method { name = "onAppForeground" }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "setLogWhite"
+                        paramCount = 2
+                    }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "setCmdWhite"
+                        paramCount = 2
+                    }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "onWriteLog"
+                        param(StringType, StringType)
+                    }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "onCmdRequest"
+                        param(StringType)
+                    }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "addData"
+                        paramCount = 4
+                    }
+                    intercept()
+                }
+                injectMember {
+                    method {
+                        name = "onGpsScan"
+                        paramCount = 2
+                    }
+                    intercept()
+                }
+            }.ignoredHookClassNotFoundFailure()
         }
         loadApp(TIM_PACKAGE_NAME) {
             hookSystemWakeLock()
             hookNotification()
             hookCoreService(isQQ = false)
             hookModuleRunningInfo(isQQTIM = true)
+            hookQQSettingsSettingActivity(isQQ = false)
         }
         loadApp(WECHAT_PACKAGE_NAME) {
             if (prefs.get(DataConst.DISABLE_WECHAT_HOOK)) return@loadApp

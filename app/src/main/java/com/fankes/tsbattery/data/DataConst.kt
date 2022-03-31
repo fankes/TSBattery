@@ -28,6 +28,7 @@ object DataConst {
     val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
     val ENABLE_RUN_INFO = PrefsData("_tip_run_info", false)
     val ENABLE_NOTIFY_TIP = PrefsData("_tip_in_notify", true)
+    val ENABLE_SETTING_TIP = PrefsData("_tip_in_setting", true)
     val ENABLE_QQTIM_WHITE_MODE = PrefsData("_qqtim_white_mode", false)
     val ENABLE_QQTIM_CORESERVICE_BAN = PrefsData("_qqtim_core_service_ban", false)
     val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = PrefsData("_qqtim_core_service_child_ban", false)
