@@ -25,7 +25,6 @@ package com.fankes.tsbattery.hook
 
 import android.app.Activity
 import android.app.Service
-import android.content.Intent
 import android.os.Build
 import com.fankes.tsbattery.data.DataConst
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
@@ -116,7 +115,7 @@ class HookEntry : YukiHookXposedInitProxy {
                 interceptBaseChatPie(methodName = "bk")
                 interceptBaseChatPie(methodName = "bl")
             }
-            "8.8.83" -> {
+            "8.8.83", "8.8.85" -> {
                 interceptBaseChatPie(methodName = "bl")
                 interceptBaseChatPie(methodName = "bm")
             }
@@ -277,7 +276,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN))
                         instance<Service>().apply {
                             stopForeground(true)
-                            stopService(Intent(applicationContext, javaClass))
+                            stopSelf()
                             loggerD(msg = "Shutdown CoreService OK!")
                         }
                 }
@@ -290,7 +289,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
                         instance<Service>().apply {
                             stopForeground(true)
-                            stopService(Intent(applicationContext, javaClass))
+                            stopSelf()
                             loggerD(msg = "Shutdown CoreService\$KernelService OK!")
                         }
                 }
