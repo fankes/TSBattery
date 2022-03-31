@@ -491,13 +491,6 @@ class HookEntry : YukiHookXposedInitProxy {
                     }
                     intercept()
                 }
-                injectMember {
-                    method {
-                        name = "handleMessage"
-                        param(MessageClass)
-                    }
-                    replaceToFalse()
-                }
             }.ignoredHookClassNotFoundFailure()
         }
         loadApp(TIM_PACKAGE_NAME) {
