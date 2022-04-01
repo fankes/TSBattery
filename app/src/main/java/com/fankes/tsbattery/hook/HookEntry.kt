@@ -406,7 +406,7 @@ class HookEntry : YukiHookXposedInitProxy {
                                 listGroup = listGroup.parent as? ViewGroup
                                 (formItemRefRoot?.parent as? View?)?.layoutParams
                             } else formItemRefRoot?.layoutParams) ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                            /** 设为圆角和间距 */
+                            /** 设置圆角和间距 */
                             if (isQQ) (lparam as? MarginLayoutParams?)?.setMargins(0, 15.dp(context), 0, 0)
                             /** 将 Item 添加到设置界面 */
                             listGroup?.also { if (isQQ) it.addView(this, lparam) else it.addView(this, 0, lparam) }
