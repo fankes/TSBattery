@@ -32,6 +32,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.data.DataConst
@@ -39,6 +40,7 @@ import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
 import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.ui.activity.MainActivity
+import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.showDialog
 import com.fankes.tsbattery.utils.factory.versionCode
 import com.fankes.tsbattery.utils.factory.versionName
@@ -369,7 +371,7 @@ class HookEntry : YukiHookXposedInitProxy {
                                 method {
                                     name = "setBgType"
                                     param(IntType)
-                                }.get(it).call(2)
+                                }.get(it).call(if (isQQ) 0 else 2)
                             }
                             it.setOnClickListener {
                                 instance<Activity>().apply {
@@ -398,12 +400,14 @@ class HookEntry : YukiHookXposedInitProxy {
                                     }
                                 }
                             }
-                        }.apply {
+                        }?.apply {
                             var listGroup = formItemRefRoot?.parent as? ViewGroup?
                             val lparam = (if (listGroup?.childCount == 1) {
                                 listGroup = listGroup.parent as? ViewGroup
                                 (formItemRefRoot?.parent as? View?)?.layoutParams
                             } else formItemRefRoot?.layoutParams) ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                            /** 设为圆角和间距 */
+                            if (isQQ) (lparam as? MarginLayoutParams?)?.setMargins(0, 15.dp(context), 0, 0)
                             /** 将 Item 添加到设置界面 */
                             listGroup?.also { if (isQQ) it.addView(this, lparam) else it.addView(this, 0, lparam) }
                         }
