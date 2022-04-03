@@ -37,7 +37,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.highcapable.yukihookapi.annotation.DoNotUseField
+import com.highcapable.yukihookapi.annotation.CauseProblemsApi
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
@@ -61,7 +61,7 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
 
     private var dialogInstance: Dialog? = null // 对话框实例
 
-    @DoNotUseField
+    @CauseProblemsApi
     var customLayoutView: View? = null // 自定义布局
 
     /**
