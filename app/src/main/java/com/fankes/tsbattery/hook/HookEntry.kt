@@ -269,21 +269,21 @@ class HookEntry : YukiHookXposedInitProxy {
                 injectMember {
                     method { name = "startTempService" }
                     intercept()
-                }
+                }.ignoredNoSuchMemberFailure()
                 injectMember {
                     method {
                         name = "startCoreService"
                         param(BooleanType)
                     }
                     intercept()
-                }
+                }.ignoredNoSuchMemberFailure()
                 injectMember {
                     method {
                         name = "onStartCommand"
                         param(IntentClass, IntType, IntType)
                     }
                     replaceTo(any = 2)
-                }
+                }.ignoredNoSuchMemberFailure()
             }
             injectMember {
                 method { name = "onCreate" }
@@ -315,7 +315,7 @@ class HookEntry : YukiHookXposedInitProxy {
                     param(IntentClass, IntType, IntType)
                 }
                 replaceTo(any = 2)
-            }
+            }.ignoredNoSuchMemberFailure()
         }
     }
 
@@ -332,48 +332,28 @@ class HookEntry : YukiHookXposedInitProxy {
                     afterHook {
                         /** 是否启用 Hook */
                         if (prefs.get(DataConst.ENABLE_SETTING_TIP).not()) return@afterHook
-
                         /** 当前的顶级 Item 实例 */
-                        var formItemRefRoot: View? = null
-
-                        /**
-                         * 使用循环筛选
-                         * @param target 目标变量名称
-                         * @return [View] or null
-                         */
-                        fun match(target: String) = runCatching {
-                            field {
-                                name = target
-                                type = FormSimpleItemClass.clazz
-                            }.ignoredError().get(instance).cast() ?: field {
-                                name = target
-                                type = FormCommonSingleLineItemClass.clazz
-                            }.ignoredError().get(instance).cast<View?>()
-                        }.getOrNull()
-                        /** 循环出当前设置界面存在的顶级 Item */
-                        arrayOf(
-                            "a", "b", "c", "d", "e", "f", "g",
-                            "h", "i", "j", "k", "l", "m", "n",
-                            "o", "p", "q", "r", "s", "t", "u",
-                            "v", "w", "x", "y", "z", "A", "B"
-                        ).forEach { match(it)?.also { e -> formItemRefRoot = e } }
+                        val formItemRefRoot = field {
+                            type(FormSimpleItemClass).index(num = 1)
+                        }.ignoredError().get(instance).cast() ?: field {
+                            type(FormCommonSingleLineItemClass).index(num = 1)
+                        }.ignoredError().get(instance).cast<View?>()
                         /** 创建一个新的 Item */
-                        FormSimpleItemClass.clazz.constructor { param(ContextClass) }.get().newInstance<View>(instance)?.also {
-                            it.javaClass.apply {
-                                method {
-                                    name = "setLeftText"
-                                    param(CharSequenceType)
-                                }.get(it).call("TSBattery")
-                                method {
-                                    name = "setRightText"
-                                    param(CharSequenceType)
-                                }.get(it).call(prefs.get(DataConst.ENABLE_MODULE_VERSION))
-                                method {
-                                    name = "setBgType"
-                                    param(IntType)
-                                }.get(it).call(if (isQQ) 0 else 2)
-                            }
-                            it.setOnClickListener {
+                        FormSimpleItemClass.clazz.buildOf<View>(instance) { param(ContextClass) }?.current {
+                            method {
+                                name = "setLeftText"
+                                param(CharSequenceType)
+                            }.call("TSBattery")
+                            method {
+                                name = "setRightText"
+                                param(CharSequenceType)
+                            }.call(prefs.get(DataConst.ENABLE_MODULE_VERSION))
+                            method {
+                                name = "setBgType"
+                                param(IntType)
+                            }.call(if (isQQ) 0 else 2)
+                        }?.apply {
+                            setOnClickListener {
                                 instance<Activity>().apply {
                                     showDialog {
                                         title = "TSBattery 守护中"
@@ -400,16 +380,16 @@ class HookEntry : YukiHookXposedInitProxy {
                                     }
                                 }
                             }
-                        }?.apply {
+                        }?.also { item ->
                             var listGroup = formItemRefRoot?.parent as? ViewGroup?
                             val lparam = (if (listGroup?.childCount == 1) {
                                 listGroup = listGroup.parent as? ViewGroup
                                 (formItemRefRoot?.parent as? View?)?.layoutParams
                             } else formItemRefRoot?.layoutParams) ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                             /** 设置圆角和间距 */
-                            if (isQQ) (lparam as? MarginLayoutParams?)?.setMargins(0, 15.dp(context), 0, 0)
+                            if (isQQ) (lparam as? MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
                             /** 将 Item 添加到设置界面 */
-                            listGroup?.also { if (isQQ) it.addView(this, lparam) else it.addView(this, 0, lparam) }
+                            listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
                         }
                     }
                 }
@@ -522,21 +502,21 @@ class HookEntry : YukiHookXposedInitProxy {
                 injectMember {
                     method {
                         name = "doReport"
-                        param(("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity").clazz, IntType)
+                        param("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity", IntType)
                     }
                     intercept()
                 }
                 injectMember {
                     method {
                         name = "afterHookedMethod"
-                        param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
+                        param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
                     }
                     intercept()
                 }
                 injectMember {
                     method {
                         name = "beforeHookedMethod"
-                        param(("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam").clazz)
+                        param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
                     }
                     intercept()
                 }
@@ -570,6 +550,7 @@ class HookEntry : YukiHookXposedInitProxy {
             /**
              * 这个是毒瘤核心操作类
              * 功能同上、全部拦截
+             * 👮🏻 经过排查 Play 版本也没这个类...... Emmmm 不想说啥了
              */
             findClass(name = "com.tencent.qapmsdk.qqbattery.QQBatteryMonitor").hook {
                 injectMember {
