@@ -7,6 +7,7 @@ plugins {
 ext {
     appVersionName = "3.7"
     appVersionCode = 15
+    enableR8 = true
 }
 
 task clean(type: Delete) {
