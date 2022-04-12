@@ -175,11 +175,11 @@ class HookEntry : YukiHookXposedInitProxy {
                 }
                 beforeHook {
                     if (prefs.get(DataConst.ENABLE_NOTIFY_TIP))
-                        when (firstArgs<CharSequence>()) {
+                        when (args().first().cast<CharSequence>()) {
                             "QQ正在后台运行" ->
-                                args().set("QQ正在后台运行 - TSBattery 守护中")
+                                args().first().set("QQ正在后台运行 - TSBattery 守护中")
                             "TIM正在后台运行" ->
-                                args().set("TIM正在后台运行 - TSBattery 守护中")
+                                args().first().set("TIM正在后台运行 - TSBattery 守护中")
                         }
                 }
             }
