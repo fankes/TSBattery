@@ -35,8 +35,8 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.getSystemService
-import com.fankes.tsbattery.application.TSApplication.Companion.appContext
 import com.google.android.material.snackbar.Snackbar
+import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication.Companion.appContext
 
 /**
  * 系统深色模式是否开启
