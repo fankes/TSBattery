@@ -19,31 +19,15 @@
  *
  * This file is Created by fankes on 2021/11/9.
  */
-@file:Suppress("unused")
-
 package com.fankes.tsbattery.application
 
-import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
-class TSApplication : Application() {
-
-    companion object {
-
-        /** 全局静态实例 */
-        private var context: TSApplication? = null
-
-        /**
-         * 调用全局静态实例
-         * @return [TSApplication]
-         */
-        val appContext get() = context ?: error("App is death")
-    }
+class TSApplication : ModuleApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        /** 设置静态实例 */
-        context = this
         /** 跟随系统夜间模式 */
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }

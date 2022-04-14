@@ -72,8 +72,8 @@ tasks.whenTaskAdded {
 
 dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
-    implementation 'com.highcapable.yukihookapi:api:1.0.75'
-    ksp 'com.highcapable.yukihookapi:ksp-xposed:1.0.75'
+    implementation 'com.highcapable.yukihookapi:api:1.0.77'
+    ksp 'com.highcapable.yukihookapi:ksp-xposed:1.0.77'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.0'
     implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.0'
