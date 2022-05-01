@@ -52,10 +52,10 @@ import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.*
 import com.highcapable.yukihookapi.hook.type.java.*
-import com.highcapable.yukihookapi.hook.xposed.proxy.YukiHookXposedInitProxy
+import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 
 @InjectYukiHookWithXposed
-class HookEntry : YukiHookXposedInitProxy {
+class HookEntry : IYukiHookXposedInit {
 
     companion object {
 
