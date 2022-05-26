@@ -400,6 +400,7 @@ class HookEntry : IYukiHookXposedInit {
         debugTag = "TSBattery"
         isDebug = false
         isEnableModulePrefsCache = false
+        isEnableDataChannel = false
     }
 
     override fun onHook() = encase {
