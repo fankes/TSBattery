@@ -37,10 +37,8 @@ import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
-import com.highcapable.yukihookapi.hook.factory.isModuleActive
-import com.highcapable.yukihookapi.hook.factory.isTaiChiModuleActive
+import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
-import com.highcapable.yukihookapi.hook.xposed.YukiHookModuleStatus
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -66,7 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             }
         }
         /** 判断 Hook 状态 */
-        if (isModuleActive) {
+        if (YukiHookAPI.Status.isModuleActive) {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
             binding.mainImgStatus.setImageResource(R.mipmap.ic_success)
             binding.mainTextStatus.text = "模块已激活"
@@ -89,7 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 noCancelable()
             }
         /** 推荐使用 LSPosed */
-        if (isTaiChiModuleActive)
+        if (YukiHookAPI.Status.isTaiChiModuleActive)
             showDialog {
                 title = "兼容性提示"
                 msg = "若你的设备已 Root，推荐使用 LSPosed 激活模块，太极可能会出现模块设置无法保存的问题。"
@@ -201,10 +199,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     /** 刷新模块激活使用的方式 */
     private fun refreshActivateExecutor() {
         when {
-            YukiHookModuleStatus.executorVersion > 0 ->
+            YukiHookAPI.Status.executorVersion > 0 ->
                 binding.mainTextApiWay.text =
-                    "Activated by ${YukiHookModuleStatus.executorName} API ${YukiHookModuleStatus.executorVersion}"
-            isTaiChiModuleActive -> binding.mainTextApiWay.text = "Activated by TaiChi"
+                    "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
+            YukiHookAPI.Status.isTaiChiModuleActive -> binding.mainTextApiWay.text = "Activated by TaiChi"
             else -> binding.mainTextApiWay.text = "Activated by anonymous"
         }
     }
