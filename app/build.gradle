@@ -60,8 +60,6 @@ dependencies {
     implementation 'com.highcapable.yukihookapi:api:1.0.91'
     ksp 'com.highcapable.yukihookapi:ksp-xposed:1.0.91'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.0'
-    implementation 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.0'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
