@@ -44,9 +44,9 @@ object GithubReleaseTool {
      * 获取最新版本信息
      * @param context 实例
      * @param version 当前版本
-     * @param it 成功后回调 - ([String] 最新版本,[Function] 更新对话框方法体)
+     * @param result 成功后回调 - ([String] 最新版本,[Function] 更新对话框方法体)
      */
-    fun checkingForUpdate(context: Context, version: String, it: (String, () -> Unit) -> Unit) = checkingInternetConnect(context) {
+    fun checkingForUpdate(context: Context, version: String, result: (String, () -> Unit) -> Unit) = checkingInternetConnect(context) {
         OkHttpClient().newBuilder().build().newCall(
             Request.Builder()
                 .url("https://api.github.com/repos/$REPO_AUTHOR/$REPO_NAME/releases/latest")
@@ -72,7 +72,7 @@ object GithubReleaseTool {
                         }
                         if (name != version) (context as? Activity?)?.runOnUiThread {
                             showUpdate()
-                            it(name) { showUpdate() }
+                            result(name) { showUpdate() }
                         }
                     }
                 }
@@ -83,9 +83,9 @@ object GithubReleaseTool {
     /**
      * 检查网络连接情况
      * @param context 实例
-     * @param it 已连接回调
+     * @param result 已连接回调
      */
-    private fun checkingInternetConnect(context: Context, it: () -> Unit) = runInSafe {
+    private fun checkingInternetConnect(context: Context, result: () -> Unit) = runInSafe {
         if (isNetWorkSuccess)
             OkHttpClient().newBuilder().build().newCall(
                 Request.Builder()
@@ -106,7 +106,7 @@ object GithubReleaseTool {
                 }
 
                 override fun onResponse(call: Call, response: Response) = runInSafe {
-                    (context as? Activity?)?.runOnUiThread { runInSafe { it() } }
+                    (context as? Activity?)?.runOnUiThread { runInSafe { result() } }
                 }
             })
     }
