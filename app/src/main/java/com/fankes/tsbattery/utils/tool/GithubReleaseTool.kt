@@ -83,9 +83,9 @@ object GithubReleaseTool {
     /**
      * 检查网络连接情况
      * @param context 实例
-     * @param result 已连接回调
+     * @param callback 已连接回调
      */
-    private fun checkingInternetConnect(context: Context, result: () -> Unit) = runInSafe {
+    private fun checkingInternetConnect(context: Context, callback: () -> Unit) = runInSafe {
         if (isNetWorkSuccess)
             OkHttpClient().newBuilder().build().newCall(
                 Request.Builder()
@@ -106,7 +106,7 @@ object GithubReleaseTool {
                 }
 
                 override fun onResponse(call: Call, response: Response) = runInSafe {
-                    (context as? Activity?)?.runOnUiThread { runInSafe { result() } }
+                    (context as? Activity?)?.runOnUiThread { runInSafe { callback() } }
                 }
             })
     }
