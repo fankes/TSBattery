@@ -37,6 +37,7 @@ import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
+import com.fankes.tsbattery.utils.tool.YukiPromoteTool
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.hook.factory.modulePrefs
 
@@ -72,6 +73,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             refreshActivateExecutor()
             /** 写入激活的模块版本 */
             modulePrefs.put(DataConst.ENABLE_MODULE_VERSION, moduleVersion)
+            /** 推广、恰饭 */
+            YukiPromoteTool.promote(context = this)
         } else
             showDialog {
                 title = "模块没有激活"
