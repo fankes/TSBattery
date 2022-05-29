@@ -44,10 +44,10 @@ import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 /**
  * 构造对话框
  * @param isUseBlackTheme 是否使用深色主题
- * @param it 对话框方法体
+ * @param initiate 对话框方法体
  */
-fun Context.showDialog(isUseBlackTheme: Boolean = false, it: DialogBuilder.() -> Unit) =
-    DialogBuilder(this, isUseBlackTheme).apply(it).show()
+fun Context.showDialog(isUseBlackTheme: Boolean = false, initiate: DialogBuilder.() -> Unit) =
+    DialogBuilder(this, isUseBlackTheme).apply(initiate).show()
 
 /**
  * 对话框构造器
@@ -140,34 +140,34 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
     /**
      * 设置对话框确定按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun confirmButton(text: String = "确定", it: () -> Unit = {}) {
+    fun confirmButton(text: String = "确定", callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runInSafe { instanceAndroidX?.setPositiveButton(text) { _, _ -> it() } }
-        else runInSafe { instanceAndroid?.setPositiveButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setPositiveButton(text) { _, _ -> callback() } }
+        else runInSafe { instanceAndroid?.setPositiveButton(text) { _, _ -> callback() } }
     }
 
     /**
      * 设置对话框取消按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun cancelButton(text: String = "取消", it: () -> Unit = {}) {
+    fun cancelButton(text: String = "取消", callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runInSafe { instanceAndroidX?.setNegativeButton(text) { _, _ -> it() } }
-        else runInSafe { instanceAndroid?.setNegativeButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setNegativeButton(text) { _, _ -> callback() } }
+        else runInSafe { instanceAndroid?.setNegativeButton(text) { _, _ -> callback() } }
     }
 
     /**
      * 设置对话框第三个按钮
      * @param text 按钮文本内容
-     * @param it 点击事件
+     * @param callback 点击事件
      */
-    fun neutralButton(text: String = "更多", it: () -> Unit = {}) {
+    fun neutralButton(text: String = "更多", callback: () -> Unit = {}) {
         if (isUsingAndroidX)
-            runInSafe { instanceAndroidX?.setNeutralButton(text) { _, _ -> it() } }
-        else runInSafe { instanceAndroid?.setNeutralButton(text) { _, _ -> it() } }
+            runInSafe { instanceAndroidX?.setNeutralButton(text) { _, _ -> callback() } }
+        else runInSafe { instanceAndroid?.setNeutralButton(text) { _, _ -> callback() } }
     }
 
     /** 取消对话框 */
