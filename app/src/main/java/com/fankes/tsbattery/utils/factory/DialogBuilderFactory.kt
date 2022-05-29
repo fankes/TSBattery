@@ -47,7 +47,7 @@ import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
  * @param initiate 对话框方法体
  */
 fun Context.showDialog(isUseBlackTheme: Boolean = false, initiate: DialogBuilder.() -> Unit) =
-    DialogBuilder(this, isUseBlackTheme).apply(initiate).show()
+    DialogBuilder(context = this, isUseBlackTheme).apply(initiate).show()
 
 /**
  * 对话框构造器
