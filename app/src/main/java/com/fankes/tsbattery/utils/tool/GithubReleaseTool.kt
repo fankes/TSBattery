@@ -19,15 +19,21 @@
  *
  * This file is Created by fankes on 2022/3/20.
  */
+@file:Suppress("NewApi")
+
 package com.fankes.tsbattery.utils.tool
 
 import android.app.Activity
 import android.content.Context
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
+import android.icu.util.TimeZone
 import com.fankes.tsbattery.utils.factory.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import java.io.Serializable
+import java.util.*
 
 /**
  * 获取 Github Release 最新版本工具类
@@ -61,7 +67,7 @@ object GithubReleaseTool {
                         name = getString("name"),
                         htmlUrl = getString("html_url"),
                         content = getString("body"),
-                        date = getString("published_at").replace(oldValue = "T", newValue = " ").replace(oldValue = "Z", newValue = "")
+                        date = getString("published_at").localTime()
                     ).apply {
                         fun showUpdate() = context.showDialog {
                             title = "最新版本 $name"
@@ -109,6 +115,18 @@ object GithubReleaseTool {
                     (context as? Activity?)?.runOnUiThread { runInSafe { callback() } }
                 }
             })
+    }
+
+    /**
+     * 格式化时间为本地时区
+     * @return [String] 本地时区时间
+     */
+    private fun String.localTime() = replace(oldValue = "T", newValue = " ").replace(oldValue = "Z", newValue = "").let {
+        runCatching {
+            val local = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = Calendar.getInstance().timeZone }
+            val current = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("GMT") }
+            local.format(current.parse(it))
+        }.getOrNull() ?: it
     }
 
     /**
