@@ -134,6 +134,10 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "bl")
                 interceptBaseChatPie(methodName = "bm")
             }
+            "8.8.93" -> {
+                interceptBaseChatPie(methodName = "J3")
+                interceptBaseChatPie(methodName = "S")
+            }
             else -> loggerD(msg = "$version not supported!")
         }
     }
