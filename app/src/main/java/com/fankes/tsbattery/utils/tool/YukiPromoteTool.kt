@@ -22,6 +22,7 @@
 package com.fankes.tsbattery.utils.tool
 
 import android.content.Context
+import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.utils.factory.openBrowser
 import com.fankes.tsbattery.utils.factory.showDialog
 import com.highcapable.yukihookapi.YukiHookAPI
@@ -34,7 +35,7 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 object YukiPromoteTool {
 
     /** 推广已读存储键值 */
-    private val YUKI_PROMOTE_READED = PrefsData("yuki_promote_readed", false)
+    private val YUKI_PROMOTE_READED = PrefsData("yuki_promote_readed_${BuildConfig.VERSION_NAME}", false)
 
     /**
      * 显示推广对话框
