@@ -28,18 +28,13 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.highcapable.yukihookapi.annotation.CauseProblemsApi
-import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
 
 /**
  * 构造对话框
@@ -60,9 +55,7 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
     private var instanceAndroid: android.app.AlertDialog.Builder? = null // 实例对象
 
     private var dialogInstance: Dialog? = null // 对话框实例
-
-    @CauseProblemsApi
-    var customLayoutView: View? = null // 自定义布局
+    private var customLayoutView: View? = null // 自定义布局
 
     /**
      * 是否需要使用 AndroidX 风格对话框
@@ -124,18 +117,6 @@ class DialogBuilder(val context: Context, private val isUseBlackTheme: Boolean) 
                 }
             else customLayoutView?.findViewWithTag<TextView>("progressContent")?.text = value
         }
-
-    /**
-     * 设置对话框自定义布局
-     * @return [ViewBinding]
-     */
-    inline fun <reified T : ViewBinding> bind() =
-        T::class.java.method {
-            name = "inflate"
-            param(LayoutInflaterClass)
-        }.get().invoke<T>(LayoutInflater.from(context))?.apply {
-            customLayoutView = root
-        } ?: error("binding failed")
 
     /**
      * 设置对话框确定按钮
