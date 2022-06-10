@@ -62,7 +62,7 @@ object GithubReleaseTool {
             override fun onFailure(call: Call, e: IOException) {}
 
             override fun onResponse(call: Call, response: Response) = runInSafe {
-                JSONObject(response.body?.string() ?: "").apply {
+                JSONObject(response.body.string()).apply {
                     GithubReleaseBean(
                         name = getString("name"),
                         htmlUrl = getString("html_url"),
