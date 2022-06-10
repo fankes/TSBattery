@@ -151,6 +151,7 @@ class HookEntry : IYukiHookXposedInit {
             injectMember {
                 method {
                     name = methodName
+                    emptyParam()
                     returnType = UnitType
                 }
                 intercept()
@@ -163,7 +164,7 @@ class HookEntry : IYukiHookXposedInit {
             injectMember {
                 method {
                     name = "acquireLocked"
-                    returnType = UnitType
+                    emptyParam()
                 }
                 intercept()
             }
