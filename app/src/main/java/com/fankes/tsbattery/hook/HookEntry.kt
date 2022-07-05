@@ -84,6 +84,9 @@ class HookEntry : IYukiHookXposedInit {
         )
     }
 
+    /** 是否完全支持当前版本 */
+    private var isHookClientSupport = true
+
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
      *
@@ -142,7 +145,10 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "M3")
                 interceptBaseChatPie(methodName = "S")
             }
-            else -> loggerD(msg = "$version not supported!")
+            else -> {
+                isHookClientSupport = false
+                loggerD(msg = "$version not supported!")
+            }
         }
     }
 
@@ -196,11 +202,12 @@ class HookEntry : IYukiHookXposedInit {
 
     /**
      * 提示模块运行信息 QQ、TIM、微信
-     * @param isQQTIM 是否为 QQ、TIM
+     * @param isQQ 是否为 QQ
+     * @param isTIM 是否为 TIM
      */
-    private fun PackageParam.hookModuleRunningInfo(isQQTIM: Boolean) =
+    private fun PackageParam.hookModuleRunningInfo(isQQ: Boolean = false, isTIM: Boolean = false) =
         when {
-            isQQTIM -> SplashActivityClass.hook {
+            isQQ || isTIM -> SplashActivityClass.hook {
                 /**
                  * Hook 启动界面的第一个 [Activity]
                  * QQ 和 TIM 都是一样的类
@@ -217,7 +224,9 @@ class HookEntry : IYukiHookXposedInit {
                                 showDialog {
                                     title = "TSBattery 已激活"
                                     msg = "[提示模块运行信息功能已打开]\n\n" +
-                                            "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
+                                            (if (isQQ && isHookClientSupport.not())
+                                                "❎ 当前版本 $versionName($versionCode) 不在兼容列表，请自行测试是否生效~\n\n"
+                                            else "✅ 模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n") +
                                             "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
                                             "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                             "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
@@ -356,7 +365,7 @@ class HookEntry : IYukiHookXposedInit {
                             method {
                                 name = "setRightText"
                                 param(CharSequenceType)
-                            }.call(prefs.get(DataConst.ENABLE_MODULE_VERSION))
+                            }.call("${if (isQQ && isHookClientSupport.not()) "❎" else "✅"} ${prefs.get(DataConst.ENABLE_MODULE_VERSION)}")
                             method {
                                 name = "setBgType"
                                 param(IntType)
@@ -366,7 +375,9 @@ class HookEntry : IYukiHookXposedInit {
                                 instance<Activity>().apply {
                                     showDialog {
                                         title = "TSBattery 守护中"
-                                        msg = "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                        msg = (if (isQQ && isHookClientSupport.not())
+                                            "❎ 当前版本 $versionName($versionCode) 不在兼容列表，请自行测试是否生效~\n\n" else "") +
+                                                "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
                                                 "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                                 "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                                 "\n\n模块只对挂后台锁屏情况下有省电效果，" +
@@ -417,7 +428,7 @@ class HookEntry : IYukiHookXposedInit {
             hookSystemWakeLock()
             hookNotification()
             hookCoreService(isQQ = true)
-            hookModuleRunningInfo(isQQTIM = true)
+            hookModuleRunningInfo(isQQ = true)
             hookQQSettingsSettingActivity(isQQ = true)
             if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) return@loadApp
             /** 通过在 [SplashActivityClass] 里取到应用的版本号 */
@@ -638,13 +649,13 @@ class HookEntry : IYukiHookXposedInit {
             hookSystemWakeLock()
             hookNotification()
             hookCoreService(isQQ = false)
-            hookModuleRunningInfo(isQQTIM = true)
+            hookModuleRunningInfo(isTIM = true)
             hookQQSettingsSettingActivity(isQQ = false)
         }
         loadApp(WECHAT_PACKAGE_NAME) {
             if (prefs.get(DataConst.DISABLE_WECHAT_HOOK)) return@loadApp
             hookSystemWakeLock()
-            hookModuleRunningInfo(isQQTIM = false)
+            hookModuleRunningInfo()
             loggerD(msg = "ウイチャット：それが機能するかどうかはわかりませんでした")
         }
     }
