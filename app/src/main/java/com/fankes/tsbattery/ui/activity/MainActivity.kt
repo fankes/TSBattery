@@ -48,10 +48,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         private const val moduleVersion = BuildConfig.VERSION_NAME
         private val qqSupportVersions = arrayOf(
             "8.2.11(Play)", "8.8.17", "8.8.23",
-            "8.8.35", "8.8.38", "8.8.50",
-            "8.8.55", "8.8.68", "8.8.80",
-            "8.8.83", "8.8.85", "8.8.88",
-            "8.8.90", "8.8.93", "8.8.95"
+            "8.8.35", "8.8.38", "8.8.50", "8.8.55",
+            "8.8.68", "8.8.80", "8.8.83", "8.8.85",
+            "8.8.88", "8.8.90", "8.8.93", "8.8.95",
+            "8.8.98"
         )
         private val qqSupportVersion by lazy {
             if (qqSupportVersions.isNotEmpty()) {
