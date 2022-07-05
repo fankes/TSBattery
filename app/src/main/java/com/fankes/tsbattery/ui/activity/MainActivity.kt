@@ -108,8 +108,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 msg = "若你的设备已 Root，推荐使用 LSPosed 激活模块，太极可能会出现模块设置无法保存的问题。"
                 confirmButton(text = "我知道了")
             }
-        /** 检测应用转生 */
-        if (("com.bug.xposed").isInstall)
+        /** 检测应用转生 - 如果模块已激活就不再检测 */
+        if (("com.bug.xposed").isInstall && YukiHookAPI.Status.isModuleActive.not())
             showDialog {
                 title = "环境异常"
                 msg = "检测到“应用转生”已被安装，为了保证模块的安全和稳定，请卸载更换其他 Hook 框架后才能继续使用。"
