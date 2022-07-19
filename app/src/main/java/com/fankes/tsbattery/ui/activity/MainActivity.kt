@@ -51,7 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             "8.8.35", "8.8.38", "8.8.50", "8.8.55",
             "8.8.68", "8.8.80", "8.8.83", "8.8.85",
             "8.8.88", "8.8.90", "8.8.93", "8.8.95",
-            "8.8.98"
+            "8.8.98", "8.9.0", "8.9.1"
         )
         private val qqSupportVersion by lazy {
             if (qqSupportVersions.isNotEmpty()) {

@@ -146,7 +146,7 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "S")
             }
             /** 8.9.0 贡献者：StarWishsama */
-            "8.9.0" -> {
+            "8.9.0", "8.9.1" -> {
                 interceptBaseChatPie(methodName = "N3")
                 interceptBaseChatPie(methodName = "S")
             }
