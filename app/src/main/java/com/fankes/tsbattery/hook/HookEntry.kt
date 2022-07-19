@@ -145,10 +145,11 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "M3")
                 interceptBaseChatPie(methodName = "S")
             }
+            /** 8.9.0 贡献者：StarWishsama */
             "8.9.0" -> {
                 interceptBaseChatPie(methodName = "N3")
                 interceptBaseChatPie(methodName = "S")
-            }    
+            }
             else -> {
                 isHookClientSupport = false
                 loggerD(msg = "$version not supported!")
@@ -435,16 +436,8 @@ class HookEntry : IYukiHookXposedInit {
             hookModuleRunningInfo(isQQ = true)
             hookQQSettingsSettingActivity(isQQ = true)
             if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) return@loadApp
-            /** 通过在 [SplashActivityClass] 里取到应用的版本号 */
-            SplashActivityClass.hook {
-                injectMember {
-                    method {
-                        name = "doOnCreate"
-                        param(BundleClass)
-                    }
-                    afterHook { hookQQBaseChatPie(instance<Activity>().versionName) }
-                }
-            }
+            /** 通过在生命周期里取到应用的版本号 */
+            onAppLifecycle { onCreate { hookQQBaseChatPie(versionName) } }
             /**
              * 干掉消息收发功能的电源锁
              * 每个版本的差异暂未做排查
