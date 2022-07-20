@@ -107,23 +107,23 @@ class HookEntry : IYukiHookXposedInit {
      */
     private fun PackageParam.hookQQBaseChatPie(version: String) {
         when (version) {
-             "8.0.0" -> {
+            "8.0.0" -> {
                 interceptBaseChatPie(methodName = "bq")
                 interceptBaseChatPie(methodName = "aL")
             }
-             "8.0.5", "8.0.7" -> {
+            "8.0.5", "8.0.7" -> {
                 interceptBaseChatPie(methodName = "bw")
                 interceptBaseChatPie(methodName = "aQ")
             }
-             "8.1.0", "8.1.3" -> {
+            "8.1.0", "8.1.3" -> {
                 interceptBaseChatPie(methodName = "bE")
                 interceptBaseChatPie(methodName = "aT")
             }
-             "8.1.5" -> {
+            "8.1.5" -> {
                 interceptBaseChatPie(methodName = "bF")
                 interceptBaseChatPie(methodName = "aT")
             }
-             "8.1.8", "8.2.0", "8.2.6" -> {
+            "8.1.8", "8.2.0", "8.2.6" -> {
                 interceptBaseChatPie(methodName = "bC")
                 interceptBaseChatPie(methodName = "aT")
             }
@@ -175,12 +175,10 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "bg")
                 interceptBaseChatPie(methodName = "bh")
             }
-            /** 8.8.35 贡献者：StarWishsama */
             "8.8.35", "8.8.38" -> {
                 interceptBaseChatPie(methodName = "bi")
                 interceptBaseChatPie(methodName = "bj")
             }
-            /** 贡献者：JiZhi-Error */
             "8.8.50" -> {
                 interceptBaseChatPie(methodName = "bj")
                 interceptBaseChatPie(methodName = "bk")
@@ -201,7 +199,6 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "M3")
                 interceptBaseChatPie(methodName = "S")
             }
-            /** 8.9.0 贡献者：StarWishsama */
             "8.9.0", "8.9.1" -> {
                 interceptBaseChatPie(methodName = "N3")
                 interceptBaseChatPie(methodName = "S")
