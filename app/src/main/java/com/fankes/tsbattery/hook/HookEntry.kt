@@ -163,11 +163,7 @@ class HookEntry : IYukiHookXposedInit {
                 interceptBaseChatPie(methodName = "bc")
                 interceptBaseChatPie(methodName = "bd")
             }
-            "8.8.17" -> {
-                interceptBaseChatPie(methodName = "bd")
-                interceptBaseChatPie(methodName = "be")
-            }
-            "8.8.20" -> {
+            "8.8.17", "8.8.20" -> {
                 interceptBaseChatPie(methodName = "bd")
                 interceptBaseChatPie(methodName = "be")
             }
