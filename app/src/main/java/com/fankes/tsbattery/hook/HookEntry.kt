@@ -107,17 +107,77 @@ class HookEntry : IYukiHookXposedInit {
      */
     private fun PackageParam.hookQQBaseChatPie(version: String) {
         when (version) {
-            "8.2.11" -> {
+             "8.0.0" -> {
+                interceptBaseChatPie(methodName = "bq")
+                interceptBaseChatPie(methodName = "aL")
+            }
+             "8.0.5", "8.0.7" -> {
+                interceptBaseChatPie(methodName = "bw")
+                interceptBaseChatPie(methodName = "aQ")
+            }
+             "8.1.0", "8.1.3" -> {
+                interceptBaseChatPie(methodName = "bE")
+                interceptBaseChatPie(methodName = "aT")
+            }
+             "8.1.5" -> {
+                interceptBaseChatPie(methodName = "bF")
+                interceptBaseChatPie(methodName = "aT")
+            }
+             "8.1.8", "8.2.0", "8.2.6" -> {
+                interceptBaseChatPie(methodName = "bC")
+                interceptBaseChatPie(methodName = "aT")
+            }
+            "8.2.7", "8.2.8", "8.2.11", "8.3.0" -> {
                 interceptBaseChatPie(methodName = "bE")
                 interceptBaseChatPie(methodName = "aV")
+            }
+            "8.3.5" -> {
+                interceptBaseChatPie(methodName = "bR")
+                interceptBaseChatPie(methodName = "aX")
+            }
+            "8.3.6" -> {
+                interceptBaseChatPie(methodName = "cp")
+                interceptBaseChatPie(methodName = "aX")
+            }
+            "8.3.9" -> {
+                interceptBaseChatPie(methodName = "cj")
+                interceptBaseChatPie(methodName = "aT")
+            }
+            "8.4.1", "8.4.5" -> {
+                interceptBaseChatPie(methodName = "ck")
+                interceptBaseChatPie(methodName = "aT")
+            }
+            "8.4.8", "8.4.10", "8.4.17", "8.4.18", "8.5.0" -> {
+                interceptBaseChatPie(methodName = "remainScreenOn")
+                interceptBaseChatPie(methodName = "cancelRemainScreenOn")
+            }
+            "8.5.5" -> {
+                interceptBaseChatPie(methodName = "bT")
+                interceptBaseChatPie(methodName = "aN")
+            }
+            "8.6.0", "8.6.5", "8.7.0", "8.7.5", "8.7.8", "8.8.0", "8.8.3", "8.8.5" -> {
+                interceptBaseChatPie(methodName = "ag")
+                interceptBaseChatPie(methodName = "ah")
+            }
+            "8.8.11", "8.8.12" -> {
+                interceptBaseChatPie(methodName = "bc")
+                interceptBaseChatPie(methodName = "bd")
             }
             "8.8.17" -> {
                 interceptBaseChatPie(methodName = "bd")
                 interceptBaseChatPie(methodName = "be")
             }
-            "8.8.23" -> {
+            "8.8.20" -> {
+                interceptBaseChatPie(methodName = "bd")
+                interceptBaseChatPie(methodName = "be")
+            }
+            "8.8.23", "8.8.28" -> {
                 interceptBaseChatPie(methodName = "bf")
                 interceptBaseChatPie(methodName = "bg")
+            }
+            "8.8.33" -> {
+                interceptBaseChatPie(methodName = "bg")
+                interceptBaseChatPie(methodName = "bh")
             }
             /** 8.8.35 贡献者：StarWishsama */
             "8.8.35", "8.8.38" -> {
