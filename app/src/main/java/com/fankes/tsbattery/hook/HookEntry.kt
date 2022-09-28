@@ -323,7 +323,7 @@ class HookEntry : IYukiHookXposedInit {
                     afterHook {
                         if (prefs.get(DataConst.ENABLE_RUN_INFO))
                             instance<Activity>().apply {
-                                showDialog(isUseBlackTheme = true) {
+                                showDialog {
                                     title = "TSBattery 已激活"
                                     msg = "[提示模块运行信息功能已打开]\n\n" +
                                             "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
