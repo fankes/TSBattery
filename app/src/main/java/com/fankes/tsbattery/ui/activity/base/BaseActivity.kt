@@ -25,7 +25,6 @@ package com.fankes.tsbattery.ui.activity.base
 
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
@@ -34,8 +33,11 @@ import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
+import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.base.ModuleAppCompatActivity
 
-abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
+abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
+
+    override val moduleTheme get() = R.style.Theme_TSBattery
 
     /** 获取绑定布局对象 */
     lateinit var binding: VB
