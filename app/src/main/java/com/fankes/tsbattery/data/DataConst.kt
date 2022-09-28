@@ -25,7 +25,6 @@ import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 
 object DataConst {
 
-    val ENABLE_HIDE_ICON = PrefsData("_hide_icon", false)
     val ENABLE_RUN_INFO = PrefsData("_tip_run_info", false)
     val ENABLE_NOTIFY_TIP = PrefsData("_tip_in_notify", true)
     val ENABLE_SETTING_TIP = PrefsData("_tip_in_setting", true)

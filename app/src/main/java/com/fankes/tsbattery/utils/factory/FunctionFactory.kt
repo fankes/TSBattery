@@ -24,6 +24,7 @@
 package com.fankes.tsbattery.utils.factory
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -35,6 +36,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.getSystemService
+import com.fankes.tsbattery.BuildConfig
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication.Companion.appContext
 
@@ -178,3 +180,25 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
     else snake(msg = "启动系统浏览器失败")
 }
 
+/**
+ * 隐藏或显示启动器图标
+ *
+ * - 你可能需要 LSPosed 的最新版本以开启高版本系统中隐藏 APP 桌面图标功能
+ * @param isShow 是否显示
+ */
+fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
+    packageManager?.setComponentEnabledSetting(
+        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home"),
+        if (isShow) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+        PackageManager.DONT_KILL_APP
+    )
+}
+
+/**
+ * 获取启动器图标状态
+ * @return [Boolean] 是否显示
+ */
+val Context.isLauncherIconShowing
+    get() = packageManager?.getComponentEnabledSetting(
+        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home")
+    ) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED

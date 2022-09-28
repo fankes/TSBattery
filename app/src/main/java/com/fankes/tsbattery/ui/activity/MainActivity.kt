@@ -23,8 +23,6 @@
 
 package com.fankes.tsbattery.ui.activity
 
-import android.content.ComponentName
-import android.content.pm.PackageManager
 import android.view.HapticFeedbackConstants
 import androidx.core.view.isVisible
 import com.fankes.tsbattery.BuildConfig
@@ -152,11 +150,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
         /** 获取 Sp 存储的信息 */
+        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
         binding.qqtimProtectModeSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)
         binding.qqTimCoreServiceSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN)
         binding.qqTimCoreServiceKnSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
         binding.wechatDisableHookSwitch.isChecked = modulePrefs.get(DataConst.DISABLE_WECHAT_HOOK)
-        binding.hideIconInLauncherSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_HIDE_ICON)
         binding.notifyModuleInfoSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_RUN_INFO)
         binding.notifyNotifyTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_NOTIFY_TIP)
         binding.settingModuleTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_SETTING_TIP)
@@ -180,12 +178,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_HIDE_ICON, b)
-            packageManager.setComponentEnabledSetting(
-                ComponentName(this@MainActivity, "com.fankes.tsbattery.Home"),
-                if (b) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-            )
+            hideOrShowLauncherIcon(b)
         }
         binding.notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
