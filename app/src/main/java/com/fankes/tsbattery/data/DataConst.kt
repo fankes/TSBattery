@@ -33,5 +33,4 @@ object DataConst {
     val ENABLE_QQTIM_CORESERVICE_BAN = PrefsData("_qqtim_core_service_ban", false)
     val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = PrefsData("_qqtim_core_service_child_ban", false)
     val DISABLE_WECHAT_HOOK = PrefsData("_disable_wechat_hook", false)
-    val ENABLE_MODULE_VERSION = PrefsData("_module_version", "")
 }

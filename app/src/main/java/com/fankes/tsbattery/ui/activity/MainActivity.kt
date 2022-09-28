@@ -87,8 +87,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             binding.mainTextStatus.text = "模块已激活"
             binding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
-            /** 写入激活的模块版本 */
-            modulePrefs.put(DataConst.ENABLE_MODULE_VERSION, moduleVersion)
             /** 推广、恰饭 */
             YukiPromoteTool.promote(context = this)
         } else

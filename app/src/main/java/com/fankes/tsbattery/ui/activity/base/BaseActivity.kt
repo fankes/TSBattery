@@ -31,9 +31,9 @@ import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
+import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
-import java.lang.reflect.ParameterizedType
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
@@ -42,15 +42,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        javaClass.genericSuperclass.also { type ->
-            if (type is ParameterizedType) {
-                binding = (type.actualTypeArguments[0] as Class<VB>).method {
-                    name = "inflate"
-                    param(LayoutInflaterClass)
-                }.get().invoke<VB>(layoutInflater) ?: error("binding failed")
-                setContentView(binding.root)
-            } else error("binding but got wrong type")
-        }
+        binding = current().generic()?.argument()?.method {
+            name = "inflate"
+            param(LayoutInflaterClass)
+        }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
+        setContentView(binding.root)
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
         /** 初始化沉浸状态栏 */

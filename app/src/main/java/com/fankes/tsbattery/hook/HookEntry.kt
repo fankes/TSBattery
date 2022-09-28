@@ -34,6 +34,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
+import androidx.core.app.ServiceCompat
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.data.DataConst
 import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
@@ -293,7 +294,7 @@ class HookEntry : IYukiHookXposedInit {
                                             (if (isQQ && isHookClientSupport.not())
                                                 "❎ 当前版本 $versionName($versionCode) 不在兼容列表，请自行测试是否生效~\n\n"
                                             else "✅ 模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n") +
-                                            "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                            "已生效模块版本：${BuildConfig.VERSION_NAME}\n" +
                                             "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                             "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                             "\n\n模块只对挂后台锁屏情况下有省电效果，" +
@@ -301,7 +302,7 @@ class HookEntry : IYukiHookXposedInit {
                                             "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
                                             "持续常驻使用 QQ、TIM 依然会耗电，任何软件都是如此，" +
                                             "模块是无法帮你做到前台不耗电的。\n\n" +
-                                            "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                            "开发者 酷安 @星夜不荟\n未经允许禁止修改或复制我的劳动成果。"
                                     confirmButton(text = "我知道了")
                                     noCancelable()
                                 }
@@ -326,15 +327,15 @@ class HookEntry : IYukiHookXposedInit {
                                     title = "TSBattery 已激活"
                                     msg = "[提示模块运行信息功能已打开]\n\n" +
                                             "模块工作看起来一切正常，请自行测试是否能达到省电效果。\n\n" +
-                                            "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                            "已生效模块版本：${BuildConfig.VERSION_NAME}\n" +
                                             "当前模式：基础省电" +
                                             "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                             "\n\n当前只支持微信的基础省电，即系统电源锁，后续会继续适配微信相关的省电功能(在新建文件夹了)。\n\n" +
                                             "如果你不想看到此提示。请在模块设置中关闭“提示模块运行信息”，此设置默认关闭。\n\n" +
                                             "持续常驻使用微信依然会耗电，任何软件都是如此，" +
                                             "模块是无法帮你做到前台不耗电的。\n\n" +
-                                            "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
-                                    confirmButton(text = "我知道了")
+                                            "开发者 酷安 @星夜不荟\n未经允许禁止修改或复制我的劳动成果。"
+                                    confirmButton(text = "我知道了") { finish() }
                                     noCancelable()
                                 }
                             }
@@ -374,7 +375,7 @@ class HookEntry : IYukiHookXposedInit {
                 afterHook {
                     if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN))
                         instance<Service>().apply {
-                            stopForeground(true)
+                            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
                             stopSelf()
                             loggerD(msg = "Shutdown CoreService OK!")
                         }
@@ -387,7 +388,7 @@ class HookEntry : IYukiHookXposedInit {
                 afterHook {
                     if (prefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN))
                         instance<Service>().apply {
-                            stopForeground(true)
+                            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
                             stopSelf()
                             loggerD(msg = "Shutdown CoreService\$KernelService OK!")
                         }
@@ -419,11 +420,11 @@ class HookEntry : IYukiHookXposedInit {
                         /** 当前的顶级 Item 实例 */
                         val formItemRefRoot = field {
                             type(FormSimpleItemClass).index(num = 1)
-                        }.ignoredError().get(instance).cast() ?: field {
+                        }.ignored().get(instance).cast() ?: field {
                             type(FormCommonSingleLineItemClass).index(num = 1)
-                        }.ignoredError().get(instance).cast<View?>()
+                        }.ignored().get(instance).cast<View?>()
                         /** 创建一个新的 Item */
-                        FormSimpleItemClass.clazz.buildOf<View>(instance) { param(ContextClass) }?.current {
+                        FormSimpleItemClass.toClass().buildOf<View>(instance) { param(ContextClass) }?.current {
                             method {
                                 name = "setLeftText"
                                 param(CharSequenceType)
@@ -431,7 +432,7 @@ class HookEntry : IYukiHookXposedInit {
                             method {
                                 name = "setRightText"
                                 param(CharSequenceType)
-                            }.call("${if (isQQ && isHookClientSupport.not()) "❎" else "✅"} ${prefs.get(DataConst.ENABLE_MODULE_VERSION)}")
+                            }.call("${if (isQQ && isHookClientSupport.not()) "❎" else "✅"} ${BuildConfig.VERSION_NAME}")
                             method {
                                 name = "setBgType"
                                 param(IntType)
@@ -443,14 +444,14 @@ class HookEntry : IYukiHookXposedInit {
                                         title = "TSBattery 守护中"
                                         msg = (if (isQQ && isHookClientSupport.not())
                                             "❎ 当前版本 $versionName($versionCode) 不在兼容列表，请自行测试是否生效~\n\n" else "") +
-                                                "已生效模块版本：${prefs.get(DataConst.ENABLE_MODULE_VERSION)}\n" +
+                                                "已生效模块版本：${BuildConfig.VERSION_NAME}\n" +
                                                 "当前模式：${if (prefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)) "保守模式" else "完全模式"}" +
                                                 "\n\n包名：${packageName}\n版本：$versionName($versionCode)" +
                                                 "\n\n模块只对挂后台锁屏情况下有省电效果，" +
                                                 "请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n\n" +
                                                 "持续常驻使用 QQ、TIM 依然会耗电，任何软件都是如此，" +
                                                 "模块是无法帮你做到前台不耗电的。\n\n" +
-                                                "开发者 酷安 @星夜不荟\n未经允许禁止转载、修改或复制我的劳动成果。"
+                                                "开发者 酷安 @星夜不荟\n未经允许禁止修改或复制我的劳动成果。"
                                         confirmButton(text = "打开模块设置") {
                                             runCatching {
                                                 startActivity(Intent().apply {
@@ -483,7 +484,7 @@ class HookEntry : IYukiHookXposedInit {
         }
 
     override fun onInit() = configs {
-        debugTag = "TSBattery"
+        debugLog { tag = "TSBattery" }
         isDebug = false
         isEnableModulePrefsCache = false
         isEnableDataChannel = false
