@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/1/7.
  */
-@file:Suppress("DEPRECATION", "unused")
+@file:Suppress("DEPRECATION", "unused", "DiscouragedApi", "InternalInsetResource")
 
 package com.fankes.tsbattery.utils.factory
 
@@ -31,6 +31,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.Settings
@@ -109,11 +110,32 @@ fun Context.version(packageName: String) = safeOfNothing {
 }
 
 /**
+ * 得到 APP 名称
+ * @param name APP 包名 - 默认为当前 APP
+ * @return [String]
+ */
+fun Context.findAppName(name: String = packageName) =
+    safeOfNothing { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadLabel(packageManager).toString() }
+
+/**
+ * 得到 APP 图标
+ * @param name APP 包名 - 默认为当前 APP
+ * @return [Drawable] or null
+ */
+fun Context.findAppIcon(name: String = packageName) =
+    safeOfNull { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadIcon(packageManager) }
+
+/**
  * 网络连接是否正常
  * @return [Boolean] 网络是否连接
  */
-val isNetWorkSuccess
-    get() = safeOfFalse { appContext.getSystemService<ConnectivityManager>()?.activeNetworkInfo != null }
+val isNetWorkSuccess get() = appContext.isNetWorkSuccess
+
+/**
+ * 网络连接是否正常
+ * @return [Boolean] 网络是否连接
+ */
+val Context.isNetWorkSuccess get() = safeOfFalse { getSystemService<ConnectivityManager>()?.activeNetworkInfo != null }
 
 /**
  * dp 转换为 pxInt
@@ -130,10 +152,25 @@ fun Number.dp(context: Context) = dpFloat(context).toInt()
 fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
 
 /**
+ * 获取绝对状态栏高度
+ * @return [Int]
+ */
+val Context.absoluteStatusBarHeight
+    get() = safeOfNan {
+        resources.getDimensionPixelSize(resources.getIdentifier("status_bar_height", "dimen", "android"))
+    }
+
+/**
  * 弹出 [Toast]
  * @param msg 提示内容
  */
-fun toast(msg: String) = Toast.makeText(appContext, msg, Toast.LENGTH_SHORT).show()
+fun toast(msg: String) = appContext.toast(msg)
+
+/**
+ * 弹出 [Toast]
+ * @param msg 提示内容
+ */
+fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
 /**
  * 弹出 [Snackbar]
