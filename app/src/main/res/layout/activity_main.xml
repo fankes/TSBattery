@@ -480,6 +480,16 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
                     android:lineSpacingExtra="10dp"
+                    android:text="Q.配置界面在哪里？\nA.从 4.0 版本开始模块已将配置界面转移到目标 APP 中，你可以从以下途径找到模块配置界面：\nQQ: 设置 > TSBattery\nTIM: 设置 > TSBattery\n微信: 设置 > 右上角 TSBattery 图标\n你还可以从此界面上方的“快捷操作”中快速进入指定配置界面。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="10dp"
                     android:text="Q.激活后一定可以非常省电吗？\nA.并不，模块只能减少 QQ、TIM、微信的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时毒瘤不会消耗过多的无用的电量，仅此而已。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
