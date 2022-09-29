@@ -17,19 +17,30 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/3/28.
+ * This file is Created by fankes on 2022/9/29.
  */
-package com.fankes.tsbattery.data
+package com.fankes.tsbattery.const
 
-import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
+/**
+ * 包名常量定义类
+ */
+object PackageName {
 
-object DataConst {
+    /** QQ */
+    const val QQ = "com.tencent.mobileqq"
 
-    val ENABLE_RUN_INFO = PrefsData("_tip_run_info", false)
-    val ENABLE_NOTIFY_TIP = PrefsData("_tip_in_notify", true)
-    val ENABLE_SETTING_TIP = PrefsData("_tip_in_setting", true)
-    val ENABLE_QQTIM_WHITE_MODE = PrefsData("_qqtim_white_mode", false)
-    val ENABLE_QQTIM_CORESERVICE_BAN = PrefsData("_qqtim_core_service_ban", false)
-    val ENABLE_QQTIM_CORESERVICE_CHILD_BAN = PrefsData("_qqtim_core_service_child_ban", false)
-    val DISABLE_WECHAT_HOOK = PrefsData("_disable_wechat_hook", false)
+    /** TIM */
+    const val TIM = "com.tencent.tim"
+
+    /** 微信 */
+    const val WECHAT = "com.tencent.mm"
+}
+
+/**
+ * 跳转常量定义类
+ */
+object JumpEvent {
+
+    /** 启动模块设置 */
+    const val OPEN_MODULE_SETTING = "tsbattery_open_module_settings"
 }

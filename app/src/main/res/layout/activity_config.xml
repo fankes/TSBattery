@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorThemeBackground"
+    android:orientation="vertical"
+    tools:context=".ui.activity.parasitic.ConfigActivity"
+    tools:ignore="HardcodedText,ContentDescription,UnusedAttribute,UselessParent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:gravity="center|start"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/title_back_icon"
+            style="?android:attr/selectableItemBackgroundBorderless"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:src="@mipmap/ic_back"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="返回" />
+
+        <TextView
+            android:id="@+id/title_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2.5dp"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="@color/colorTextGray"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="10dp"
+        android:orientation="vertical"
+        android:requiresFadingEdge="vertical"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:id="@+id/update_version_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_orange_round"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="点击更新 %1"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bg_permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/app_icon"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center|start">
+
+                        <TextView
+                            android:id="@+id/app_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="7.5dp"
+                            android:singleLine="true"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/app_version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:text="|"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:text="模块版本："
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/module_version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginEnd="6dp"
+                            app:cardBackgroundColor="@color/colorThemeBackground"
+                            app:cardCornerRadius="50dp"
+                            app:cardElevation="0dp">
+
+                            <androidx.constraintlayout.utils.widget.ImageFilterView
+                                android:id="@+id/active_mode_icon"
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:src="@mipmap/ic_success"
+                                android:tint="#FF26A69A"
+                                android:visibility="gone" />
+
+                            <androidx.constraintlayout.utils.widget.ImageFilterView
+                                android:id="@+id/inactive_mode_icon"
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:src="@mipmap/ic_error"
+                                android:tint="#FF7043"
+                                android:visibility="gone" />
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:id="@+id/unsupport_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:gravity="center|start"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.85"
+                                android:singleLine="true"
+                                android:text="检测到未适配的版本"
+                                android:textColor="@color/colorTextGray"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:alpha="0.85"
+                                android:singleLine="true"
+                                android:text="|"
+                                android:textColor="@color/colorTextGray"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/current_mode_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/info_tip_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:alpha="0.8"
+                android:background="@drawable/bg_permotion_round"
+                android:lineSpacingExtra="10dp"
+                android:padding="15dp"
+                android:text="模块只对挂后台锁屏情况下有省电效果，请不要将过多的群提醒，消息通知打开，这样子在使用过程时照样会极其耗电。\n持续常驻使用{APP_NAME}依然会耗电，任何软件都是如此，模块是无法帮你做到前台不耗电的。"
+                android:textColor="@color/colorTextDark"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_permotion_round"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp">
+
+                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                        android:id="@+id/disable_all_hook_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="停用省电策略"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:lineSpacingExtra="6dp"
+                        android:text="选择停用后模块将关闭所有省电功能，模块停止使用。"
+                        android:textColor="@color/colorTextDark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/item_qq_tim_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_permotion_round"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="15dp">
+
+                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                        android:id="@+id/qq_tim_protect_mode_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="启用保守模式"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/qq_tim_protect_tip_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.6"
+                        android:lineSpacingExtra="6dp"
+                        android:text="此选项默认关闭，默认情况下模块将会干掉{APP_NAME}自身的电源锁控制类，开启后模块将只对系统电源锁生效，如果你的{APP_NAME}视频通话等设置发生了故障，可以尝试开启这个功能。"
+                        android:textColor="@color/colorTextDark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_permotion_round"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp">
+
+                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                        android:id="@+id/qq_tim_core_service_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="关闭 CoreService"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:alpha="0.6"
+                        android:lineSpacingExtra="6dp"
+                        android:text="关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务(HMS)或(GMS)可以尝试关闭。"
+                        android:textColor="@color/colorTextDark"
+                        android:textSize="12sp" />
+
+                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                        android:id="@+id/qq_tim_core_service_child_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="关闭 CoreService$KernelService"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:lineSpacingExtra="6dp"
+                        android:text="这是一个辅助子服务，理论主服务关闭后子服务同样不会被启动，建议在保证消息接收的前提下可以尝试关闭子服务。"
+                        android:textColor="@color/colorTextDark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
