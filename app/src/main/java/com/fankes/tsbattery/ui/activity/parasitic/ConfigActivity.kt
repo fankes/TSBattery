@@ -23,6 +23,8 @@
 
 package com.fankes.tsbattery.ui.activity.parasitic
 
+import android.content.ComponentName
+import android.content.Intent
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -32,6 +34,7 @@ import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.data.ConfigData.bind
 import com.fankes.tsbattery.databinding.ActivityConfigBinding
 import com.fankes.tsbattery.hook.HookEntry
+import com.fankes.tsbattery.ui.activity.MainActivity
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
@@ -49,6 +52,21 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
             }
         }
         binding.titleBackIcon.setOnClickListener { finish() }
+        binding.titleModuleIcon.setOnClickListener {
+            showDialog {
+                title = "打开模块主界面"
+                msg = "点击确定后将打开模块主界面，如果未安装模块本体将会无法打开。"
+                confirmButton {
+                    runCatching {
+                        startActivity(Intent().apply {
+                            component = ComponentName(BuildConfig.APPLICATION_ID, MainActivity::class.java.name)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                    }.onFailure { snake(msg = "打开失败，请确认你已安装模块 APP\n$it") }
+                }
+                cancelButton()
+            }
+        }
         binding.titleNameText.text = "TSBattery 设置 (${appName.trim()})"
         binding.appIcon.setImageDrawable(findAppIcon())
         binding.appName.text = appName.trim()
