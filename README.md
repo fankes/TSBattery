@@ -2,7 +2,7 @@
 
 [![Blank](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/fankes/TSBattery)
 [![Blank](https://img.shields.io/badge/license-AGPL3.0-blue)](https://github.com/fankes/TSBattery/blob/master/LICENSE)
-[![Blank](https://img.shields.io/badge/version-v4.0-green)](https://github.com/fankes/TSBattery/releases)
+[![Blank](https://img.shields.io/badge/version-v4.1-green)](https://github.com/fankes/TSBattery/releases)
 [![Blank](https://img.shields.io/github/downloads/fankes/TSBattery/total?label=Release)](https://github.com/fankes/TSBattery/releases)
 [![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
 [![Telegram](https://img.shields.io/badge/Follow-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
@@ -18,15 +18,17 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 ## 适配说明
 
-- 支持并建议使用 <b>LSPosed</b>(若作用域没有自动出现推荐请勾选 QQ、TIM、微信)
+- 支持并建议使用 **LSPosed**(若作用域没有自动出现推荐请勾选 QQ、TIM、微信)
 
-- 可以使用 <b>~~EdXposed~~</b>，但随时停止支持
+- 可以使用 **~~EdXposed~~**，但随时停止支持
 
-- <b>太极无极 · 阴</b> 支持性不是很好，建议使用 <b>太极无极 · 阳</b>
+- **太极无极 · 阴** 支持性不是很好，建议使用 **太极无极 · 阳** 或 **LSPatch (推荐)**
 
-- 支持 <b>Pine</b>(梦境模块) 但是部分功能有限制
+- 支持 **Pine**(梦境模块) 但是部分功能有限制
 
-- 请不要使用 <b>~~应用转生~~</b>，发生封号情况后果自负
+- 请不要使用 **~~应用转生~~**，发生封号情况后果自负
+
+- 如果微信不能在 **LSPosed** 中生效，请尝试勾选任意包含微信作用域的模块，例如 **微X模块**
 
 ## 请勿用于非法用途
 
