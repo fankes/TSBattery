@@ -56,6 +56,9 @@ object QQTIMHooker : YukiBaseHooker() {
     /** QQ、TIM 存在的类 */
     private const val QQSettingSettingActivityClass = "${PackageName.QQ}.activity.QQSettingSettingActivity"
 
+    /** QQ、TIM 存在的类 */
+    private const val AboutActivityClass = "${PackageName.QQ}.activity.AboutActivity"
+
     /** QQ、TIM 新版本存在的类 */
     private const val FormSimpleItemClass = "${PackageName.QQ}.widget.FormSimpleItem"
 
@@ -504,7 +507,7 @@ object QQTIMHooker : YukiBaseHooker() {
             onCreate {
                 appVersionName = versionName
                 ConfigData.init(context = this)
-                registerModuleAppActivities(QQSettingSettingActivityClass)
+                registerModuleAppActivities(AboutActivityClass)
                 if (ConfigData.isDisableAllHook) return@onCreate
                 hookSystemWakeLock()
                 hookQQBaseChatPie()
