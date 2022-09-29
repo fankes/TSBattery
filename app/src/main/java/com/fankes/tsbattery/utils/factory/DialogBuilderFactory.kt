@@ -132,7 +132,7 @@ class DialogBuilder(val context: Context) {
 
     /** 显示对话框 */
     @CauseProblemsApi
-    fun show() {
+    fun show() = runInSafe {
         instance?.create()?.apply {
             customLayoutView?.let { setView(it) }
             dialogInstance = this
