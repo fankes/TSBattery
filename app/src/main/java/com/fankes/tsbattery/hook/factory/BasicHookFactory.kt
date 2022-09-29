@@ -24,15 +24,45 @@ package com.fankes.tsbattery.hook.factory
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatDelegate
 import com.fankes.tsbattery.const.JumpEvent
+import com.fankes.tsbattery.const.PackageName
+import com.fankes.tsbattery.hook.entity.QQTIMHooker.toClass
 import com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
 import com.highcapable.yukihookapi.YukiHookAPI
+import com.highcapable.yukihookapi.hook.bean.VariousClass
+import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.PowerManager_WakeLockClass
 import kotlin.system.exitProcess
 
+/** QQ、TIM 存在的类 */
+private const val MobileQQClass = "mqq.app.MobileQQ"
+
+/** QQ、TIM 存在的类 */
+private val ThemeUtilClass = VariousClass("${PackageName.QQ}.theme.ThemeUtil", "${PackageName.QQ}.vas.theme.api.ThemeUtil")
+
+/**
+ * QQ、TIM 主题是否为夜间模式
+ * @return [Boolean]
+ */
+private fun Context.isQQNightMode() = runCatching {
+    ThemeUtilClass.get(classLoader).method {
+        name = "getUserCurrentThemeId"
+        paramCount = 1
+    }.get().string(MobileQQClass.toClass(classLoader)
+        .field { name = "sMobileQQ" }.ignored().get().current(ignored = true)?.field { name = "mAppRuntime" }?.any()
+    ).let { it.endsWith(suffix = "1103") || it.endsWith(suffix = "2920") }
+}.getOrNull() ?: false
+
 /** 启动模块设置 [Activity] */
-fun Context.startModuleSettings() = startActivity(Intent(this, ConfigActivity::class.java))
+fun Context.startModuleSettings() {
+    /** 为 QQ、TIM 适配夜间模式 */
+    if (packageName == PackageName.QQ || packageName == PackageName.TIM)
+        AppCompatDelegate.setDefaultNightMode(if (isQQNightMode()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+    startActivity(Intent(this, ConfigActivity::class.java))
+}
 
 /**
  * 跳转模块设置 [Activity]
