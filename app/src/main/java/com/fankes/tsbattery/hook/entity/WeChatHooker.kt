@@ -36,10 +36,14 @@ import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.dp
+import com.fankes.tsbattery.utils.factory.versionCode
+import com.fankes.tsbattery.utils.factory.versionName
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
-import com.highcapable.yukihookapi.hook.log.loggerD
+import com.highcapable.yukihookapi.hook.factory.processName
+import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
+import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 
 /**
@@ -53,56 +57,75 @@ object WeChatHooker : YukiBaseHooker() {
     const val LauncherUIClass = "${PackageName.WECHAT}.ui.LauncherUI"
 
     /** 微信存在的类 - 未测试每个版本是否都存在 */
+    private const val EmptyActivityClass = "${PackageName.WECHAT}.ui.EmptyActivity"
+
+    /** 微信存在的类 - 未测试每个版本是否都存在 */
+    private const val WelabMainUIClass = "${PackageName.WECHAT}.plugin.welab.ui.WelabMainUI"
+
+    /** 微信存在的类 - 未测试每个版本是否都存在 */
     private const val SettingsUIClass = "${PackageName.WECHAT}.plugin.setting.ui.setting.SettingsUI"
 
     override fun onHook() {
-        /** Hook 跳转事件 */
-        LauncherUIClass.hook {
-            injectMember {
-                method {
-                    name = "onResume"
-                    emptyParam()
-                }
-                afterHook { instance<Activity>().jumpToModuleSettings(isFinish = false) }
+        onAppLifecycle {
+            onCreate {
+                ConfigData.init(context = this)
+                registerModuleAppActivities(
+                    when {
+                        EmptyActivityClass.hasClass() -> EmptyActivityClass
+                        WelabMainUIClass.hasClass() -> WelabMainUIClass
+                        else -> error("Inject WeChat Activity Proxy failed, unsupport version $versionName($versionCode)")
+                    }
+                )
+                if (ConfigData.isDisableAllHook) return@onCreate
+                hookSystemWakeLock()
+                loggerI(msg = "All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
             }
         }
-        /** 向设置界面右上角添加按钮 */
-        SettingsUIClass.hook {
-            injectMember {
-                method {
-                    name = "onCreate"
-                    param(BundleClass)
-                }
-                afterHook {
+        /** 仅注入主进程 */
+        withProcess(mainProcessName) {
+            /** Hook 跳转事件 */
+            LauncherUIClass.hook {
+                injectMember {
                     method {
-                        name = "get_fragment"
+                        name = "onResume"
                         emptyParam()
-                        superClass(isOnlySuperClass = true)
-                    }.get(instance).call()?.current()
-                        ?.field { name = "mController" }
-                        ?.current()?.method { name = "getContentView" }
-                        ?.invoke<ViewGroup>()?.addView(LinearLayout(instance()).apply {
-                            context.injectModuleAppResources()
-                            gravity = Gravity.END or Gravity.BOTTOM
-                            layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                            addView(ImageView(context).apply {
-                                layoutParams = ViewGroup.MarginLayoutParams(20.dp(context), 20.dp(context)).apply {
-                                    topMargin = context.absoluteStatusBarHeight + 15.dp(context)
-                                    rightMargin = 20.dp(context)
-                                }
-                                setColorFilter(ResourcesCompat.getColor(resources, R.color.colorTextGray, null))
-                                setImageResource(R.drawable.ic_icon)
-                                if (Build.VERSION.SDK_INT >= 26) tooltipText = "TSBattery 设置"
-                                setOnClickListener { context.startModuleSettings() }
+                    }
+                    afterHook { instance<Activity>().jumpToModuleSettings(isFinish = false) }
+                }
+            }
+            /** 向设置界面右上角添加按钮 */
+            SettingsUIClass.hook {
+                injectMember {
+                    method {
+                        name = "onCreate"
+                        param(BundleClass)
+                    }
+                    afterHook {
+                        method {
+                            name = "get_fragment"
+                            emptyParam()
+                            superClass(isOnlySuperClass = true)
+                        }.get(instance).call()?.current()
+                            ?.field { name = "mController" }
+                            ?.current()?.method { name = "getContentView" }
+                            ?.invoke<ViewGroup>()?.addView(LinearLayout(instance()).apply {
+                                context.injectModuleAppResources()
+                                gravity = Gravity.END or Gravity.BOTTOM
+                                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                                addView(ImageView(context).apply {
+                                    layoutParams = ViewGroup.MarginLayoutParams(20.dp(context), 20.dp(context)).apply {
+                                        topMargin = context.absoluteStatusBarHeight + 15.dp(context)
+                                        rightMargin = 20.dp(context)
+                                    }
+                                    setColorFilter(ResourcesCompat.getColor(resources, R.color.colorTextGray, null))
+                                    setImageResource(R.drawable.ic_icon)
+                                    if (Build.VERSION.SDK_INT >= 26) tooltipText = "TSBattery 设置"
+                                    setOnClickListener { context.startModuleSettings() }
+                                })
                             })
-                        })
+                    }
                 }
             }
         }
-        if (ConfigData.isDisableAllHook) return
-        /** Hook 系统电源锁 */
-        hookSystemWakeLock()
-        /** 日志省电大法 */
-        loggerD(msg = "ウイチャット：それが機能するかどうかはわかりませんでした")
     }
 }

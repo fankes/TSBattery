@@ -35,13 +35,13 @@ import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.dp
+import com.fankes.tsbattery.utils.factory.versionName
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.highcapable.yukihookapi.hook.factory.buildOf
-import com.highcapable.yukihookapi.hook.factory.current
-import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
+import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.type.android.*
 import com.highcapable.yukihookapi.hook.type.java.*
 
@@ -79,7 +79,7 @@ object QQTIMHooker : YukiBaseHooker() {
     private val isQQ get() = packageName == PackageName.QQ
 
     /** 当前宿主的版本 */
-    var appVersionName = "<unknown>"
+    private var appVersionName = "<unknown>"
 
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
@@ -500,67 +500,74 @@ object QQTIMHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
-        /** Hook 跳转事件 */
-        JumpActivityClass.hook {
-            injectMember {
-                method {
-                    name = "doOnCreate"
-                    param(BundleClass)
-                }
-                afterHook { instance<Activity>().jumpToModuleSettings() }
+        onAppLifecycle {
+            onCreate {
+                appVersionName = versionName
+                ConfigData.init(context = this)
+                registerModuleAppActivities(QQSettingSettingActivityClass)
+                if (ConfigData.isDisableAllHook) return@onCreate
+                hookSystemWakeLock()
+                hookQQBaseChatPie()
+                hookCoreService()
+                hookQQDisgusting()
+                loggerI(msg = "All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
             }
         }
-        /** 将条目注入设置界面 */
-        QQSettingSettingActivityClass.hook {
-            injectMember {
-                method {
-                    name = "doOnCreate"
-                    param(BundleClass)
+        /** 仅注入主进程 */
+        withProcess(mainProcessName) {
+            /** Hook 跳转事件 */
+            JumpActivityClass.hook {
+                injectMember {
+                    method {
+                        name = "doOnCreate"
+                        param(BundleClass)
+                    }
+                    afterHook { instance<Activity>().jumpToModuleSettings() }
                 }
-                afterHook {
-                    /** 当前的顶级 Item 实例 */
-                    val formItemRefRoot = field {
-                        type(FormSimpleItemClass).index(num = 1)
-                    }.ignored().get(instance).cast() ?: field {
-                        type(FormCommonSingleLineItemClass).index(num = 1)
-                    }.ignored().get(instance).cast<View?>()
-                    /** 创建一个新的 Item */
-                    FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance) { param(ContextClass) }?.current {
-                        method {
-                            name = "setLeftText"
-                            param(CharSequenceType)
-                        }.call("TSBattery")
-                        method {
-                            name = "setRightText"
-                            param(CharSequenceType)
-                        }.call(BuildConfig.VERSION_NAME)
-                        method {
-                            name = "setBgType"
-                            param(IntType)
-                        }.call(if (isQQ) 0 else 2)
-                    }?.apply { setOnClickListener { instance<Activity>().startModuleSettings() } }?.also { item ->
-                        var listGroup = formItemRefRoot?.parent as? ViewGroup?
-                        val lparam = (if (listGroup?.childCount == 1) {
-                            listGroup = listGroup.parent as? ViewGroup
-                            (formItemRefRoot?.parent as? View?)?.layoutParams
-                        } else formItemRefRoot?.layoutParams)
-                            ?: ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                        /** 设置圆角和间距 */
-                        if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
-                        /** 将 Item 添加到设置界面 */
-                        listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
+            }
+            /** 将条目注入设置界面 */
+            QQSettingSettingActivityClass.hook {
+                injectMember {
+                    method {
+                        name = "doOnCreate"
+                        param(BundleClass)
+                    }
+                    afterHook {
+                        /** 当前的顶级 Item 实例 */
+                        val formItemRefRoot = field {
+                            type(FormSimpleItemClass).index(num = 1)
+                        }.ignored().get(instance).cast() ?: field {
+                            type(FormCommonSingleLineItemClass).index(num = 1)
+                        }.ignored().get(instance).cast<View?>()
+                        /** 创建一个新的 Item */
+                        FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance) { param(ContextClass) }?.current {
+                            method {
+                                name = "setLeftText"
+                                param(CharSequenceType)
+                            }.call("TSBattery")
+                            method {
+                                name = "setRightText"
+                                param(CharSequenceType)
+                            }.call(BuildConfig.VERSION_NAME)
+                            method {
+                                name = "setBgType"
+                                param(IntType)
+                            }.call(if (isQQ) 0 else 2)
+                        }?.apply { setOnClickListener { instance<Activity>().startModuleSettings() } }?.also { item ->
+                            var listGroup = formItemRefRoot?.parent as? ViewGroup?
+                            val lparam = (if (listGroup?.childCount == 1) {
+                                listGroup = listGroup.parent as? ViewGroup
+                                (formItemRefRoot?.parent as? View?)?.layoutParams
+                            } else formItemRefRoot?.layoutParams)
+                                ?: ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                            /** 设置圆角和间距 */
+                            if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
+                            /** 将 Item 添加到设置界面 */
+                            listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
+                        }
                     }
                 }
             }
         }
-        if (ConfigData.isDisableAllHook) return
-        /** Hook 系统电源锁 */
-        hookSystemWakeLock()
-        /** Hook 聊天界面 */
-        hookQQBaseChatPie()
-        /** Hook CoreService */
-        hookCoreService()
-        /** Hook QQ 不省电的功能 */
-        hookQQDisgusting()
     }
 }

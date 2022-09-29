@@ -24,15 +24,11 @@
 package com.fankes.tsbattery.hook
 
 import com.fankes.tsbattery.const.PackageName
-import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.hook.entity.QQTIMHooker
 import com.fankes.tsbattery.hook.entity.WeChatHooker
-import com.fankes.tsbattery.utils.factory.versionName
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
-import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
-import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 
 @InjectYukiHookWithXposed(isUsingResourcesHook = false)
@@ -50,31 +46,9 @@ class HookEntry : IYukiHookXposedInit {
         isEnableDataChannel = false
     }
 
-    /**
-     * 装载对象是否为 QQ、TIM、微信
-     * @return [Boolean]
-     */
-    private fun PackageParam.isCurrentScope() = packageName.let { it == PackageName.QQ || it == PackageName.TIM || it == PackageName.WECHAT }
-
     override fun onHook() = encase {
-        loadApp {
-            if (isCurrentScope()) onAppLifecycle {
-                attachBaseContext { baseContext, hasCalledSuper ->
-                    if (hasCalledSuper) return@attachBaseContext
-                    ConfigData.init(baseContext)
-                    when (baseContext.packageName) {
-                        PackageName.QQ, PackageName.TIM -> loadHooker(QQTIMHooker.apply { appVersionName = baseContext.versionName })
-                        PackageName.WECHAT -> loadHooker(WeChatHooker)
-                    }
-                }
-                onCreate {
-                    when (packageName) {
-                        PackageName.QQ, PackageName.TIM ->
-                            registerModuleAppActivities(proxy = "${PackageName.QQ}.activity.QQSettingSettingActivity")
-                        PackageName.WECHAT -> registerModuleAppActivities(proxy = "${PackageName.WECHAT}.plugin.welab.ui.WelabMainUI")
-                    }
-                }
-            }
-        }
+        loadApp(PackageName.QQ) { loadHooker(QQTIMHooker) }
+        loadApp(PackageName.TIM) { loadHooker(QQTIMHooker) }
+        loadApp(PackageName.WECHAT) { loadHooker(WeChatHooker) }
     }
 }
