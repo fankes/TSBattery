@@ -34,6 +34,9 @@
 -renamesourcefileattribute P
 -keepattributes SourceFile,LineNumberTable
 
+# 排除注入的 Activity
+-keep class com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
+
 -assumenosideeffects class kotlin.jvm.internal.Intrinsics {
     public static *** throwUninitializedProperty(...);
     public static *** throwUninitializedPropertyAccessException(...);
