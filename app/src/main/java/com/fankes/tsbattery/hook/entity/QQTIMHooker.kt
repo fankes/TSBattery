@@ -23,6 +23,7 @@ package com.fankes.tsbattery.hook.entity
 
 import android.app.Activity
 import android.app.Service
+import android.content.res.Configuration
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -74,6 +75,9 @@ object QQTIMHooker : YukiBaseHooker() {
     /** 根据多个版本存的不同的类 */
     private val BaseChatPieClass =
         VariousClass("${PackageName.QQ}.activity.aio.core.BaseChatPie", "${PackageName.QQ}.activity.BaseChatPie")
+
+    /** 默认的 [Configuration] */
+    var baseConfiguration: Configuration? = null
 
     /**
      * 当前是否为 QQ
@@ -504,6 +508,9 @@ object QQTIMHooker : YukiBaseHooker() {
 
     override fun onHook() {
         onAppLifecycle {
+            attachBaseContext { baseContext, hasCalledSuper ->
+                if (hasCalledSuper.not()) baseConfiguration = baseContext.resources.configuration
+            }
             onCreate {
                 appVersionName = versionName
                 ConfigData.init(context = this)

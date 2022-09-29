@@ -19,12 +19,13 @@
  *
  * This file is Created by fankes on 2022/9/28.
  */
-@file:Suppress("SetTextI18n")
+@file:Suppress("SetTextI18n", "DEPRECATION")
 
 package com.fankes.tsbattery.ui.activity.parasitic
 
 import android.content.ComponentName
 import android.content.Intent
+import android.content.res.Resources
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -34,6 +35,7 @@ import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.data.ConfigData.bind
 import com.fankes.tsbattery.databinding.ActivityConfigBinding
 import com.fankes.tsbattery.hook.HookEntry
+import com.fankes.tsbattery.hook.entity.QQTIMHooker
 import com.fankes.tsbattery.ui.activity.MainActivity
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
@@ -115,6 +117,17 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
     /** 替换占位符到当前 APP 名称 */
     private fun TextView.replaceToAppName() {
         text = text.toString().replace(oldValue = "{APP_NAME}", appName)
+    }
+
+    /** 重新设置 DPI 防止 QQ、TIM 修改它 */
+    override fun getResources(): Resources? = super.getResources().apply {
+        if (packageName == PackageName.QQ || packageName == PackageName.TIM)
+            QQTIMHooker.baseConfiguration?.also {
+                updateConfiguration(configuration.apply {
+                    fontScale = it.fontScale
+                    densityDpi = it.densityDpi
+                }, displayMetrics)
+            }
     }
 
     /**
