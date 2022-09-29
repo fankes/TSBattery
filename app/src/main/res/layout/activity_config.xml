@@ -32,14 +32,25 @@
 
         <TextView
             android:id="@+id/title_name_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="2.5dp"
+            android:layout_weight="1"
             android:singleLine="true"
             android:text="@string/app_name"
             android:textColor="@color/colorTextGray"
             android:textSize="19sp"
             android:textStyle="bold" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/title_module_icon"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginEnd="10dp"
+            android:padding="1.5dp"
+            android:src="@drawable/ic_icon"
+            android:tint="@color/colorTextGray"
+            android:tooltipText="打开模块主界面" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
