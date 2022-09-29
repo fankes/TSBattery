@@ -23,27 +23,27 @@
 
 package com.fankes.tsbattery.ui.activity
 
+import android.content.ComponentName
+import android.content.Intent
 import android.view.HapticFeedbackConstants
 import androidx.core.view.isVisible
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
-import com.fankes.tsbattery.data.DataConst
+import com.fankes.tsbattery.const.JumpEvent
+import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.databinding.ActivityMainBinding
-import com.fankes.tsbattery.hook.HookConst.QQ_PACKAGE_NAME
-import com.fankes.tsbattery.hook.HookConst.TIM_PACKAGE_NAME
-import com.fankes.tsbattery.hook.HookConst.WECHAT_PACKAGE_NAME
+import com.fankes.tsbattery.hook.entity.QQTIMHooker
+import com.fankes.tsbattery.hook.entity.WeChatHooker
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.fankes.tsbattery.utils.tool.YukiPromoteTool
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.factory.modulePrefs
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
 
-        private const val moduleVersion = BuildConfig.VERSION_NAME
         private val qqSupportVersions = arrayOf(
             "8.0.0", "8.0.5", "8.0.7", "8.1.0", "8.1.3", "8.1.5", "8.1.8",
             "8.2.0", "8.2.6", "8.2.7", "8.2.8", "8.2.11", "8.3.0", "8.3.5",
@@ -71,7 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate() {
         /** 检查更新 */
-        GithubReleaseTool.checkingForUpdate(context = this, moduleVersion) { version, function ->
+        GithubReleaseTool.checkingForUpdate(context = this, BuildConfig.VERSION_NAME) { version, function ->
             binding.mainTextReleaseVersion.apply {
                 text = "点击更新 $version"
                 isVisible = true
@@ -90,38 +90,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         } else
             showDialog {
                 title = "模块没有激活"
-                msg = "检测到模块没有激活，模块需要 Xposed 环境依赖，" +
-                        "同时需要系统拥有 Root 权限(太极阴可以免 Root)，" +
-                        "请自行查看本页面使用帮助与说明第三条。\n" +
-                        "太极和第三方 Xposed 激活后" +
-                        "可能不会提示激活，若想验证是否激活请打开“提示模块运行信息”自行检查，" +
-                        "或观察 QQ、TIM 的常驻通知是否有“TSBattery 守护中”字样”。\n\n" +
-                        "如果生效就代表模块运行正常，若你在未 Root 情况下激活模块，这里的激活状态只是一个显示意义上的存在。\n" +
-                        "太极(无极)在 MIUI 设备上会提示打开授权，请进行允许，然后再次打开本模块查看激活状态。"
+                msg = "检测到模块没有激活，若你正在使用免 Root 框架例如 LSPatch、太极或无极，你可以忽略此提示。"
                 confirmButton(text = "我知道了")
-                noCancelable()
-            }
-        /** 推荐使用 LSPosed */
-        if (YukiHookAPI.Status.isTaiChiModuleActive)
-            showDialog {
-                title = "兼容性提示"
-                msg = "若你的设备已 Root，推荐使用 LSPosed 激活模块，太极可能会出现模块设置无法保存的问题。"
-                confirmButton(text = "我知道了")
-            }
-        /** 检测应用转生 - 如果模块已激活就不再检测 */
-        if (("com.bug.xposed").isInstall && YukiHookAPI.Status.isModuleActive.not())
-            showDialog {
-                title = "环境异常"
-                msg = "检测到“应用转生”已被安装，为了保证模块的安全和稳定，请卸载更换其他 Hook 框架后才能继续使用。"
-                confirmButton(text = "退出") { finish() }
                 noCancelable()
             }
         /** 设置安装状态 */
-        binding.mainTextQqVer.text = if (QQ_PACKAGE_NAME.isInstall) version(QQ_PACKAGE_NAME) else "未安装"
-        binding.mainTextTimVer.text = if (TIM_PACKAGE_NAME.isInstall) version(TIM_PACKAGE_NAME) else "未安装"
-        binding.mainTextWechatVer.text = if (WECHAT_PACKAGE_NAME.isInstall) version(WECHAT_PACKAGE_NAME) else "未安装"
+        binding.mainTextQqVer.text = if (PackageName.QQ.isInstall) version(PackageName.QQ) else "未安装"
+        binding.mainTextTimVer.text = if (PackageName.TIM.isInstall) version(PackageName.TIM) else "未安装"
+        binding.mainTextWechatVer.text = if (PackageName.WECHAT.isInstall) version(PackageName.WECHAT) else "未安装"
         /** 设置文本 */
-        binding.mainTextVersion.text = "模块版本：$moduleVersion $pendingFlag"
+        binding.mainTextVersion.text = "模块版本：${BuildConfig.VERSION_NAME} $pendingFlag"
         binding.mainQqItem.setOnClickListener {
             showDialog {
                 title = "兼容的 QQ 版本"
@@ -151,59 +129,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         /** 获取 Sp 存储的信息 */
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
-        binding.qqtimProtectModeSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_WHITE_MODE)
-        binding.qqTimCoreServiceSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_BAN)
-        binding.qqTimCoreServiceKnSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN)
-        binding.wechatDisableHookSwitch.isChecked = modulePrefs.get(DataConst.DISABLE_WECHAT_HOOK)
-        binding.notifyModuleInfoSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_RUN_INFO)
-        binding.notifyNotifyTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_NOTIFY_TIP)
-        binding.settingModuleTipSwitch.isChecked = modulePrefs.get(DataConst.ENABLE_SETTING_TIP)
-        binding.qqtimProtectModeSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_QQTIM_WHITE_MODE, b)
-            snake(msg = "修改需要重启 QQ 以生效")
-        }
-        binding.qqTimCoreServiceSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_QQTIM_CORESERVICE_BAN, b)
-        }
-        binding.qqTimCoreServiceKnSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_QQTIM_CORESERVICE_CHILD_BAN, b)
-        }
-        binding.wechatDisableHookSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.DISABLE_WECHAT_HOOK, b)
-            snake(msg = "修改需要重启微信以生效")
-        }
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
         }
-        binding.notifyModuleInfoSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_RUN_INFO, b)
-        }
-        binding.notifyNotifyTipSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_NOTIFY_TIP, b)
-        }
-        binding.settingModuleTipSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            modulePrefs.put(DataConst.ENABLE_SETTING_TIP, b)
-        }
         /** 快捷操作 QQ */
-        binding.quickQqButton.setOnClickListener { openSelfSetting(QQ_PACKAGE_NAME) }
+        binding.quickQqButton.setOnClickListener { startModuleSettings(PackageName.QQ) }
         /** 快捷操作 TIM */
-        binding.quickTimButton.setOnClickListener { openSelfSetting(TIM_PACKAGE_NAME) }
+        binding.quickTimButton.setOnClickListener { startModuleSettings(PackageName.TIM) }
         /** 快捷操作微信 */
-        binding.quickWechatButton.setOnClickListener { openSelfSetting(WECHAT_PACKAGE_NAME) }
+        binding.quickWechatButton.setOnClickListener { startModuleSettings(PackageName.WECHAT) }
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/fankes/TSBattery") }
         /** 恰饭！ */
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
+    }
+
+    /**
+     * 启动模块设置界面
+     * @param packageName 包名
+     */
+    private fun startModuleSettings(packageName: String) {
+        if (packageName.isInstall) runCatching {
+            startActivity(Intent().apply {
+                component = ComponentName(
+                    packageName,
+                    if (packageName != PackageName.WECHAT) QQTIMHooker.JumpActivityClass else WeChatHooker.LauncherUIClass
+                )
+                putExtra(JumpEvent.OPEN_MODULE_SETTING, YukiHookAPI.Status.compiledTimestamp)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            })
+        }.onFailure { snake(msg = "启动模块设置失败\n$it") } else snake(msg = "你没有安装此应用")
     }
 
     /** 刷新模块激活使用的方式 */
