@@ -204,6 +204,10 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie(methodName = "H3")
                 hookBaseChatPie(methodName = "N")
             }
+            "8.9.13" -> {
+                hookBaseChatPie(methodName = "y3")
+                hookBaseChatPie(methodName = "H")
+            }
             else -> {
                 HookEntry.isHookClientSupport = false
                 loggerD(msg = "$appVersionName not supported!")
