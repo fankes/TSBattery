@@ -36,8 +36,8 @@ import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.dp
-import com.fankes.tsbattery.utils.factory.versionCode
-import com.fankes.tsbattery.utils.factory.versionName
+import com.fankes.tsbattery.utils.factory.appVersionCode
+import com.fankes.tsbattery.utils.factory.appVersionName
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
@@ -73,7 +73,7 @@ object WeChatHooker : YukiBaseHooker() {
                     when {
                         EmptyActivityClass.hasClass() -> EmptyActivityClass
                         WelabMainUIClass.hasClass() -> WelabMainUIClass
-                        else -> error("Inject WeChat Activity Proxy failed, unsupport version $versionName($versionCode)")
+                        else -> error("Inject WeChat Activity Proxy failed, unsupport version $appVersionName($appVersionCode)")
                     }
                 )
                 if (ConfigData.isDisableAllHook) return@onCreate

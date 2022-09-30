@@ -36,7 +36,7 @@ import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.dp
-import com.fankes.tsbattery.utils.factory.versionName
+import com.fankes.tsbattery.utils.factory.appVersionName
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.*
@@ -512,7 +512,7 @@ object QQTIMHooker : YukiBaseHooker() {
                 if (hasCalledSuper.not()) baseConfiguration = baseContext.resources.configuration
             }
             onCreate {
-                appVersionName = versionName
+                appVersionName = appVersionName
                 ConfigData.init(context = this)
                 registerModuleAppActivities(AboutActivityClass)
                 if (ConfigData.isDisableAllHook) return@onCreate
