@@ -70,7 +70,7 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
             }
         }
         binding.titleNameText.text = "TSBattery 设置 (${appName.trim()})"
-        binding.appIcon.setImageDrawable(findAppIcon())
+        binding.appIcon.setImageDrawable(appIconOf())
         binding.appName.text = appName.trim()
         binding.appVersion.text = "${versionName}($versionCode)"
         binding.moduleVersion.text = "${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})"
@@ -134,5 +134,5 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
      * 获取当前 APP 名称
      * @return [String]
      */
-    private val appName by lazy { findAppName().let { if (packageName == PackageName.WECHAT) it else " $it " } }
+    private val appName by lazy { appNameOf().let { if (packageName == PackageName.WECHAT) it else " $it " } }
 }

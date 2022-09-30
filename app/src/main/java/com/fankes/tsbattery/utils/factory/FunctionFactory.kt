@@ -69,7 +69,7 @@ inline val Context.isNotSystemInDarkMode get() = !isSystemInDarkMode
  * 得到安装包信息
  * @return [PackageInfo]
  */
-val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?: PackageInfo()
+private val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?: PackageInfo()
 
 /**
  * 判断应用是否安装
@@ -100,11 +100,11 @@ val Context.versionCode get() = packageInfo.versionCode
 
 /**
  * 得到版本信息与版本号
- * @param packageName 包名
+ * @param name APP 包名 - 默认为当前 APP
  * @return [String]
  */
-fun Context.version(packageName: String) = safeOfNothing {
-    packageManager?.getPackageInfo(packageName, 0)?.let {
+fun Context.versionBrandOf(name: String = packageName) = safeOfNothing {
+    packageManager?.getPackageInfo(name, 0)?.let {
         "${it.versionName}(${it.versionCode})"
     } ?: ""
 }
@@ -114,7 +114,7 @@ fun Context.version(packageName: String) = safeOfNothing {
  * @param name APP 包名 - 默认为当前 APP
  * @return [String]
  */
-fun Context.findAppName(name: String = packageName) =
+fun Context.appNameOf(name: String = packageName) =
     safeOfNothing { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadLabel(packageManager).toString() }
 
 /**
@@ -122,7 +122,7 @@ fun Context.findAppName(name: String = packageName) =
  * @param name APP 包名 - 默认为当前 APP
  * @return [Drawable] or null
  */
-fun Context.findAppIcon(name: String = packageName) =
+fun Context.appIconOf(name: String = packageName) =
     safeOfNull { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadIcon(packageManager) }
 
 /**
