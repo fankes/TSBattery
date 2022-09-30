@@ -127,7 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             /** 振动提醒 */
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
-        /** 获取 Sp 存储的信息 */
+        /** 设置桌面图标显示隐藏 */
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
