@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/1/7.
  */
-@file:Suppress("DEPRECATION", "unused", "DiscouragedApi", "InternalInsetResource")
+@file:Suppress("unused", "DiscouragedApi", "InternalInsetResource")
 
 package com.fankes.tsbattery.utils.factory
 
@@ -29,14 +29,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.getSystemService
+import androidx.core.content.pm.PackageInfoCompat
 import com.fankes.tsbattery.BuildConfig
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication.Companion.appContext
@@ -66,76 +69,75 @@ val Context.isSystemInDarkMode get() = (resources.configuration.uiMode and Confi
 inline val Context.isNotSystemInDarkMode get() = !isSystemInDarkMode
 
 /**
- * 得到安装包信息
- * @return [PackageInfo]
+ * 得到 APP 安装包信息 (兼容)
+ * @param packageName APP 包名
+ * @param flag [PackageInfoFlags]
+ * @return [PackageInfo] or null
  */
-private val Context.packageInfo get() = packageManager?.getPackageInfo(packageName, 0) ?: PackageInfo()
+private fun Context.getPackageInfoCompat(packageName: String, flag: Number = 0) = runCatching {
+    @Suppress("DEPRECATION")
+    if (Build.VERSION.SDK_INT >= 33)
+        packageManager?.getPackageInfo(packageName, PackageInfoFlags.of(flag.toLong()))
+    else packageManager?.getPackageInfo(packageName, flag.toInt())
+}.getOrNull()
 
 /**
- * 判断应用是否安装
- * @return [Boolean]
- */
-val String.isInstall
-    get() = try {
-        appContext.packageManager.getPackageInfo(
-            this,
-            PackageManager.GET_UNINSTALLED_PACKAGES
-        )
-        true
-    } catch (e: Exception) {
-        false
-    }
-
-/**
- * 得到版本信息
- * @return [String]
- */
-val Context.versionName get() = packageInfo.versionName ?: ""
-
-/**
- * 得到版本号
+ * 得到 APP 版本号 (兼容 [PackageInfo.getLongVersionCode])
  * @return [Int]
  */
-val Context.versionCode get() = packageInfo.versionCode
+private val PackageInfo.versionCodeCompat get() = PackageInfoCompat.getLongVersionCode(this)
 
 /**
- * 得到版本信息与版本号
- * @param name APP 包名 - 默认为当前 APP
+ * 判断 APP 是否安装
+ * @param packageName APP 包名
+ * @return [Boolean]
+ */
+fun Context.isInstall(packageName: String) = getPackageInfoCompat(packageName)?.let { true } ?: false
+
+/**
+ * 得到 APP 版本信息
  * @return [String]
  */
-fun Context.versionBrandOf(name: String = packageName) = safeOfNothing {
-    packageManager?.getPackageInfo(name, 0)?.let {
-        "${it.versionName}(${it.versionCode})"
-    } ?: ""
-}
+val Context.appVersionName get() = getPackageInfoCompat(packageName)?.versionName ?: ""
+
+/**
+ * 得到 APP 版本号
+ * @return [Int]
+ */
+val Context.appVersionCode get() = getPackageInfoCompat(packageName)?.versionCodeCompat
+
+/**
+ * 得到 APP 版本信息与版本号
+ * @param packageName APP 包名 - 默认为当前 APP
+ * @return [String]
+ */
+fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
+    getPackageInfoCompat(packageName)?.let { "${it.versionName}(${it.versionCodeCompat})" } ?: ""
 
 /**
  * 得到 APP 名称
- * @param name APP 包名 - 默认为当前 APP
+ * @param packageName APP 包名 - 默认为当前 APP
  * @return [String]
  */
-fun Context.appNameOf(name: String = packageName) =
-    safeOfNothing { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadLabel(packageManager).toString() }
+fun Context.appNameOf(packageName: String = getPackageName()) =
+    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
 
 /**
  * 得到 APP 图标
- * @param name APP 包名 - 默认为当前 APP
+ * @param packageName APP 包名 - 默认为当前 APP
  * @return [Drawable] or null
  */
-fun Context.appIconOf(name: String = packageName) =
-    safeOfNull { packageManager?.getPackageInfo(name, 0)?.applicationInfo?.loadIcon(packageManager) }
+fun Context.appIconOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.applicationInfo?.loadIcon(packageManager)
 
 /**
  * 网络连接是否正常
  * @return [Boolean] 网络是否连接
  */
-val isNetWorkSuccess get() = appContext.isNetWorkSuccess
-
-/**
- * 网络连接是否正常
- * @return [Boolean] 网络是否连接
- */
-val Context.isNetWorkSuccess get() = safeOfFalse { getSystemService<ConnectivityManager>()?.activeNetworkInfo != null }
+val Context.isNetWorkSuccess
+    get() = safeOfFalse {
+        @Suppress("DEPRECATION")
+        getSystemService<ConnectivityManager>()?.activeNetworkInfo != null
+    }
 
 /**
  * dp 转换为 pxInt
@@ -190,7 +192,7 @@ fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {
  * @param packageName 包名
  */
 fun Context.openSelfSetting(packageName: String = appContext.packageName) = runCatching {
-    if (packageName.isInstall)
+    if (isInstall(packageName))
         startActivity(Intent().apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS

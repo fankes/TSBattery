@@ -95,9 +95,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 noCancelable()
             }
         /** 设置安装状态 */
-        binding.mainTextQqVer.text = if (PackageName.QQ.isInstall) versionBrandOf(PackageName.QQ) else "未安装"
-        binding.mainTextTimVer.text = if (PackageName.TIM.isInstall) versionBrandOf(PackageName.TIM) else "未安装"
-        binding.mainTextWechatVer.text = if (PackageName.WECHAT.isInstall) versionBrandOf(PackageName.WECHAT) else "未安装"
+        binding.mainTextQqVer.text = PackageName.QQ.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
+        binding.mainTextTimVer.text = PackageName.TIM.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
+        binding.mainTextWechatVer.text = PackageName.WECHAT.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         /** 设置文本 */
         binding.mainTextVersion.text = "模块版本：${BuildConfig.VERSION_NAME} $pendingFlag"
         binding.mainQqItem.setOnClickListener {
@@ -152,7 +152,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
      * @param packageName 包名
      */
     private fun startModuleSettings(packageName: String) {
-        if (packageName.isInstall) runCatching {
+        if (isInstall(packageName)) runCatching {
             startActivity(Intent().apply {
                 component = ComponentName(
                     packageName,

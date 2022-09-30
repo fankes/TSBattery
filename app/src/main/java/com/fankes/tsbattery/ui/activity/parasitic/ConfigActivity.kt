@@ -72,7 +72,7 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
         binding.titleNameText.text = "TSBattery 设置 (${appName.trim()})"
         binding.appIcon.setImageDrawable(appIconOf())
         binding.appName.text = appName.trim()
-        binding.appVersion.text = "${versionName}($versionCode)"
+        binding.appVersion.text = "${appVersionName}($appVersionCode)"
         binding.moduleVersion.text = "${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})"
         binding.activeModeIcon.isVisible = HookEntry.isHookClientSupport
         binding.inactiveModeIcon.isGone = HookEntry.isHookClientSupport
