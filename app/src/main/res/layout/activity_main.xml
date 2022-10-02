@@ -36,7 +36,7 @@
             android:layout_height="27dp"
             android:layout_marginEnd="5dp"
             android:alpha="0.85"
-            android:src="@mipmap/ic_github"
+            android:src="@drawable/ic_github"
             android:tint="@color/colorTextGray"
             android:tooltipText="项目地址" />
     </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="5dp"
-            android:src="@mipmap/ic_warn"
+            android:src="@drawable/ic_warn"
             android:tint="@color/white" />
 
         <LinearLayout
@@ -250,7 +250,7 @@
                     android:layout_height="15dp"
                     android:layout_marginEnd="15dp"
                     android:alpha="0.85"
-                    android:src="@mipmap/ic_about"
+                    android:src="@drawable/ic_about"
                     android:tint="@color/colorTextDark" />
 
                 <TextView

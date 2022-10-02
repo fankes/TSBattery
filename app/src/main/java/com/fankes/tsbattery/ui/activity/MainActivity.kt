@@ -81,7 +81,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 判断 Hook 状态 */
         if (YukiHookAPI.Status.isModuleActive) {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
-            binding.mainImgStatus.setImageResource(R.mipmap.ic_success)
+            binding.mainImgStatus.setImageResource(R.drawable.ic_success)
             binding.mainTextStatus.text = "模块已激活"
             binding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
