@@ -282,11 +282,21 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center|start">
 
-                    <ImageView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/ic_shot_icon" />
+                        app:cardBackgroundColor="#FF00BCD4"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:padding="2.5dp"
+                            android:src="@drawable/ic_fast_op" />
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -364,11 +374,21 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|start">
 
-                    <ImageView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/ic_home" />
+                        app:cardBackgroundColor="#FFFF9800"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:padding="2.5dp"
+                            android:src="@drawable/ic_home" />
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -428,11 +448,21 @@
                     android:layout_marginBottom="15dp"
                     android:gravity="center|start">
 
-                    <ImageView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@mipmap/ic_help" />
+                        app:cardBackgroundColor="#FF03A9F4"
+                        app:cardCornerRadius="50dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_info" />
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:layout_width="match_parent"
