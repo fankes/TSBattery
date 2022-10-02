@@ -35,8 +35,8 @@ import com.fankes.tsbattery.hook.HookEntry
 import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
-import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.appVersionName
+import com.fankes.tsbattery.utils.factory.dp
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.*
@@ -86,7 +86,7 @@ object QQTIMHooker : YukiBaseHooker() {
     private val isQQ get() = packageName == PackageName.QQ
 
     /** 当前宿主的版本 */
-    private var appVersionName = "<unknown>"
+    private var hostVersionName = "<unknown>"
 
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
@@ -106,7 +106,7 @@ object QQTIMHooker : YukiBaseHooker() {
      * - ❗Hook 错了方法会造成闪退！
      */
     private fun hookQQBaseChatPie() {
-        if (isQQ) when (appVersionName) {
+        if (isQQ) when (hostVersionName) {
             "8.0.0" -> {
                 hookBaseChatPie(methodName = "bq")
                 hookBaseChatPie(methodName = "aL")
@@ -217,7 +217,7 @@ object QQTIMHooker : YukiBaseHooker() {
             }
             else -> {
                 HookEntry.isHookClientSupport = false
-                loggerD(msg = "$appVersionName not supported!")
+                loggerD(msg = "$hostVersionName not supported!")
             }
         }
     }
@@ -512,7 +512,7 @@ object QQTIMHooker : YukiBaseHooker() {
                 if (hasCalledSuper.not()) baseConfiguration = baseContext.resources.configuration
             }
             onCreate {
-                appVersionName = appVersionName
+                hostVersionName = appVersionName
                 ConfigData.init(context = this)
                 registerModuleAppActivities(AboutActivityClass)
                 if (ConfigData.isDisableAllHook) return@onCreate
