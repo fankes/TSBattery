@@ -47,8 +47,7 @@ class HookEntry : IYukiHookXposedInit {
     }
 
     override fun onHook() = encase {
-        loadApp(PackageName.QQ, QQTIMHooker)
-        loadApp(PackageName.TIM, QQTIMHooker)
+        loadApp(PackageName.QQ, PackageName.TIM) { loadHooker(QQTIMHooker) }
         loadApp(PackageName.WECHAT, WeChatHooker)
     }
 }
