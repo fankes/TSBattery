@@ -28,6 +28,7 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ServiceCompat
+import androidx.fragment.app.Fragment
 import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
@@ -57,6 +58,9 @@ object QQTIMHooker : YukiBaseHooker() {
 
     /** QQ、TIM 存在的类 */
     private const val QQSettingSettingActivityClass = "${PackageName.QQ}.activity.QQSettingSettingActivity"
+
+    /** QQ 新版存在的类 (Pad 模式) */
+    private const val QQSettingSettingFragmentClass = "${PackageName.QQ}.fragment.QQSettingSettingFragment"
 
     /** QQ、TIM 存在的类 */
     private const val AboutActivityClass = "${PackageName.QQ}.activity.AboutActivity"
@@ -88,6 +92,12 @@ object QQTIMHooker : YukiBaseHooker() {
 
     /** 当前宿主的版本 */
     private var hostVersionName = "<unknown>"
+
+    /**
+     * 通过 [Activity] or [Fragment] 实例得到上下文
+     * @return [Activity] or null
+     */
+    private fun Any.compatToActivity() = if (this is Activity) this else current().method { name = "getActivity"; superClass() }.invoke()
 
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
@@ -511,6 +521,48 @@ object QQTIMHooker : YukiBaseHooker() {
         }.ignoredHookClassNotFoundFailure()
     }
 
+    /**
+     * Hook QQ 的设置界面添加模块设置入口
+     * @param instance 当前设置界面实例
+     * @param instanceClass 当前设置界面 [Class] 实例
+     */
+    private fun hookQQSettingsUI(instance: Any?, instanceClass: Class<*>) {
+        /** 当前的顶级 Item 实例 */
+        val formItemRefRoot = instanceClass.field {
+            // TODO: 这里的 "type" 在之后换成新用法
+            type(FormSimpleItemClass).index(num = 1)
+        }.ignored().get(instance).cast() ?: instanceClass.field {
+            // TODO: 这里的 "type" 在之后换成新用法
+            type(FormCommonSingleLineItemClass).index(num = 1)
+        }.ignored().get(instance).cast<View?>()
+        /** 创建一个新的 Item */
+        FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance?.compatToActivity()) { param(ContextClass) }?.current {
+            method {
+                name = "setLeftText"
+                param(CharSequenceType)
+            }.call("TSBattery")
+            method {
+                name = "setRightText"
+                param(CharSequenceType)
+            }.call("${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})")
+            method {
+                name = "setBgType"
+                param(IntType)
+            }.call(if (isQQ) 0 else 2)
+        }?.apply { setOnClickListener { context.startModuleSettings() } }?.also { item ->
+            var listGroup = formItemRefRoot?.parent as? ViewGroup?
+            val lparam = (if (listGroup?.childCount == 1) {
+                listGroup = listGroup.parent as? ViewGroup
+                (formItemRefRoot?.parent as? View?)?.layoutParams
+            } else formItemRefRoot?.layoutParams)
+                ?: ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            /** 设置圆角和间距 */
+            if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
+            /** 将 Item 添加到设置界面 */
+            listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
+        }
+    }
+
     override fun onHook() {
         onAppLifecycle {
             attachBaseContext { baseContext, hasCalledSuper ->
@@ -540,47 +592,24 @@ object QQTIMHooker : YukiBaseHooker() {
                     afterHook { instance<Activity>().jumpToModuleSettings() }
                 }
             }
-            /** 将条目注入设置界面 */
+            /** 将条目注入设置界面 (Activity) */
             QQSettingSettingActivityClass.hook {
                 injectMember {
                     method {
                         name = "doOnCreate"
                         param(BundleClass)
                     }
-                    afterHook {
-                        /** 当前的顶级 Item 实例 */
-                        val formItemRefRoot = field {
-                            type(FormSimpleItemClass).index(num = 1)
-                        }.ignored().get(instance).cast() ?: field {
-                            type(FormCommonSingleLineItemClass).index(num = 1)
-                        }.ignored().get(instance).cast<View?>()
-                        /** 创建一个新的 Item */
-                        FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance) { param(ContextClass) }?.current {
-                            method {
-                                name = "setLeftText"
-                                param(CharSequenceType)
-                            }.call("TSBattery")
-                            method {
-                                name = "setRightText"
-                                param(CharSequenceType)
-                            }.call(BuildConfig.VERSION_NAME)
-                            method {
-                                name = "setBgType"
-                                param(IntType)
-                            }.call(if (isQQ) 0 else 2)
-                        }?.apply { setOnClickListener { instance<Activity>().startModuleSettings() } }?.also { item ->
-                            var listGroup = formItemRefRoot?.parent as? ViewGroup?
-                            val lparam = (if (listGroup?.childCount == 1) {
-                                listGroup = listGroup.parent as? ViewGroup
-                                (formItemRefRoot?.parent as? View?)?.layoutParams
-                            } else formItemRefRoot?.layoutParams)
-                                ?: ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                            /** 设置圆角和间距 */
-                            if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
-                            /** 将 Item 添加到设置界面 */
-                            listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
-                        }
+                    afterHook { hookQQSettingsUI(instance, instanceClass) }
+                }
+            }
+            /** 将条目注入设置界面 (Fragment) */
+            QQSettingSettingFragmentClass.hook {
+                injectMember {
+                    method {
+                        name = "doOnCreateView"
+                        paramCount = 3
                     }
+                    afterHook { hookQQSettingsUI(instance, instanceClass) }
                 }
             }
         }
