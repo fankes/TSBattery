@@ -43,6 +43,7 @@ import com.highcapable.yukihookapi.hook.factory.*
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.log.loggerI
+import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.*
 import com.highcapable.yukihookapi.hook.type.java.*
 
@@ -217,7 +218,7 @@ object QQTIMHooker : YukiBaseHooker() {
             }
             else -> {
                 HookEntry.isHookClientSupport = false
-                loggerD(msg = "$hostVersionName not supported!")
+                loggerW(msg = "$hostVersionName not supported!")
             }
         }
     }
