@@ -7,7 +7,7 @@
 [![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
 [![Telegram](https://img.shields.io/badge/Follow-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
 <br/><br/>
-![banner](https://github.com/fankes/TSBattery/blob/master/banner.png)<br/>
+![banner](https://github.com/fankes/TSBattery/blob/master/banner.png?raw=true)<br/>
 A new way to save your battery avoid cancer apps hacker it.
 
 TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块。
