@@ -226,7 +226,7 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie(methodName = "y3")
                 hookBaseChatPie(methodName = "H")
             }
-            "8.9.15", "8.9.18" -> {
+            "8.9.15", "8.9.18", "8.9.19" -> {
                 hookBaseChatPie(methodName = "w3")
                 hookBaseChatPie(methodName = "H")
             }
