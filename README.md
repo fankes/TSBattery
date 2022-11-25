@@ -32,10 +32,35 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 ## 请勿用于非法用途
 
-- 本模块完全开源免费，如果好用你可以打赏支持开发，但是请不要用于非法用途。
+本模块完全开源免费，如果好用你可以打赏支持开发，但是请不要用于非法用途。
 
-- 本模块发布地址仅有 [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)、
-  [Release](https://github.com/fankes/TSBattery/releases) 及 [蓝奏云](https://fankes.lanzouy.com/b02zfz3sj)，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
+## 发行渠道说明
+
+- [Automatic Build on Commit](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml)
+
+上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **Github Actions** 进行查看，本更新由开源的流程自动编译发布，**不保证其稳定性**，所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+
+- [Release](https://github.com/fankes/TSBattery/releases)
+- [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
+- [蓝奏云 **密码：tsbt**](https://fankes.lanzouy.com/b02zfz3sj)
+
+上述更新为手动发布的稳定版，具体更新内容可点击上方的文字前往指定的发布页面查看，稳定版的更新将会同时发布到上述地址中，同步更新。
+
+本模块发布地址仅限于上述所列出的地址，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
+
+## 发行状态说明
+
+![Blank](https://img.shields.io/badge/build-passing-brightgreen)
+
+上述状态为当前稳定版与自动构建版本一致或当前代码改动与稳定版无功能差异。
+
+![Blank](https://img.shields.io/badge/build-pending-dbab09)
+
+上述状态为存在自动构建版本和新功能的更新但当前并未发布稳定版，处于预发行状态。
+
+![Blank](https://img.shields.io/badge/build-problem-red)
+
+上述状态为当前发行的稳定版可能存在严重问题但并未及时进行修复且并未发布稳定版。
 
 ## 开始贡献
 
