@@ -230,6 +230,10 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie(methodName = "w3")
                 hookBaseChatPie(methodName = "H")
             }
+            "8.9.23" -> {
+                hookBaseChatPie(methodName = "z3")
+                hookBaseChatPie(methodName = "H")
+            }
             else -> {
                 HookEntry.isHookClientSupport = false
                 loggerW(msg = "$hostVersionName not supported!")
