@@ -619,7 +619,7 @@ object QQTIMHooker : YukiBaseHooker() {
                     }
                     afterHook { hookQQSettingsUI(instance, instanceClass) }
                 }
-            }
+            }.ignoredHookClassNotFoundFailure()
         }
     }
 }
