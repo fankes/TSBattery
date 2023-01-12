@@ -334,7 +334,7 @@ object QQTIMHooker : YukiBaseHooker() {
             injectMember {
                 method {
                     name = "a"
-                    param(StringType, LongType)
+                    param(StringClass, LongType)
                     returnType = UnitType
                 }
                 intercept()
@@ -401,7 +401,7 @@ object QQTIMHooker : YukiBaseHooker() {
             injectMember {
                 method {
                     name = "onHook"
-                    param(StringType, AnyType, AnyArrayClass, AnyType)
+                    param(StringClass, AnyClass, AnyArrayClass, AnyClass)
                 }
                 intercept()
             }
@@ -504,14 +504,14 @@ object QQTIMHooker : YukiBaseHooker() {
             injectMember {
                 method {
                     name = "onWriteLog"
-                    param(StringType, StringType)
+                    param(StringClass, StringClass)
                 }
                 intercept()
             }
             injectMember {
                 method {
                     name = "onCmdRequest"
-                    param(StringType)
+                    param(StringClass)
                 }
                 intercept()
             }
@@ -540,21 +540,17 @@ object QQTIMHooker : YukiBaseHooker() {
     private fun hookQQSettingsUI(instance: Any?, instanceClass: Class<*>) {
         /** 当前的顶级 Item 实例 */
         val formItemRefRoot = instanceClass.field {
-            // TODO: 这里的 "type" 在之后换成新用法
-            type(FormSimpleItemClass).index(num = 1)
-        }.ignored().get(instance).cast() ?: instanceClass.field {
-            // TODO: 这里的 "type" 在之后换成新用法
-            type(FormCommonSingleLineItemClass).index(num = 1)
-        }.ignored().get(instance).cast<View?>()
+            type { it.name == FormSimpleItemClass || it.name == FormCommonSingleLineItemClass }.index(num = 1)
+        }.get(instance).cast<View?>()
         /** 创建一个新的 Item */
         FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance?.compatToActivity()) { param(ContextClass) }?.current {
             method {
                 name = "setLeftText"
-                param(CharSequenceType)
+                param(CharSequenceClass)
             }.call("TSBattery")
             method {
                 name = "setRightText"
-                param(CharSequenceType)
+                param(CharSequenceClass)
             }.call("${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})")
             method {
                 name = "setBgType"
