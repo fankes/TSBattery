@@ -167,12 +167,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     /** 刷新模块激活使用的方式 */
     private fun refreshActivateExecutor() {
-        when {
-            YukiHookAPI.Status.executorVersion > 0 ->
-                binding.mainTextApiWay.text =
-                    "Activated by ${YukiHookAPI.Status.executorName} API ${YukiHookAPI.Status.executorVersion}"
-            YukiHookAPI.Status.isTaiChiModuleActive -> binding.mainTextApiWay.text = "Activated by TaiChi"
-            else -> binding.mainTextApiWay.text = "Activated by anonymous"
-        }
+        if (YukiHookAPI.Status.Executor.apiLevel > 0)
+            binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
+        else binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name}"
     }
 }
