@@ -81,6 +81,9 @@ object QQTIMHooker : YukiBaseHooker() {
     private val BaseChatPieClass =
         VariousClass("${PackageName.QQ}.activity.aio.core.BaseChatPie", "${PackageName.QQ}.activity.BaseChatPie")
 
+    /** 一个内部进程的名称 (与 X5 浏览器内核有关) */
+    private val privilegedProcessName = "$packageName:privileged_process"
+
     /** 默认的 [Configuration] */
     var baseConfiguration: Configuration? = null
 
@@ -578,6 +581,8 @@ object QQTIMHooker : YukiBaseHooker() {
             }
             onCreate {
                 hostVersionName = appVersionName
+                /** 不注入此进程防止部分系统发生 X5 浏览器内核崩溃问题 */
+                if (processName.startsWith(privilegedProcessName)) return@onCreate
                 ConfigData.init(context = this)
                 registerModuleAppActivities(AboutActivityClass)
                 if (ConfigData.isDisableAllHook) return@onCreate
