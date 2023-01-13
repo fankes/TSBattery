@@ -63,8 +63,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 "${value.trim().let { it.substring(0, it.lastIndex) }}\n\n其余版本请自行测试是否有效。"
             } else "empty"
         }
-        private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)"
-        private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼"
+        private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)。"
+        private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼。"
 
         /** 预发布的版本标识 */
         private const val pendingFlag = ""
