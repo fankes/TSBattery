@@ -355,7 +355,7 @@
                         android:layout_marginBottom="10dp"
                         android:alpha="0.6"
                         android:lineSpacingExtra="6dp"
-                        android:text="关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务(HMS)或(GMS)可以尝试关闭。"
+                        android:text="关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务 (HMS) 或 (MIPUSH) 可以尝试关闭。"
                         android:textColor="@color/colorTextDark"
                         android:textSize="12sp" />
 
