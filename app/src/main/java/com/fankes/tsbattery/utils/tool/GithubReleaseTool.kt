@@ -103,7 +103,7 @@ object GithubReleaseTool {
                     (context as? Activity?)?.runOnUiThread {
                         context.showDialog {
                             title = "网络不可用"
-                            msg = "模块的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
+                            msg = "应用的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
                             confirmButton(text = "去开启") { context.openSelfSetting() }
                             cancelButton()
                             noCancelable()
@@ -123,8 +123,8 @@ object GithubReleaseTool {
      */
     private fun String.localTime() = replace("T", " ").replace("Z", "").let {
         runCatching {
-            val local = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = Calendar.getInstance().timeZone }
-            val current = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("GMT") }
+            val local = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ROOT).apply { timeZone = Calendar.getInstance().timeZone }
+            val current = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("GMT") }
             local.format(current.parse(it))
         }.getOrNull() ?: it
     }
