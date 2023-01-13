@@ -204,7 +204,7 @@
                                 android:layout_height="wrap_content"
                                 android:alpha="0.85"
                                 android:singleLine="true"
-                                android:text="检测到未适配的版本"
+                                android:text="未适配"
                                 android:textColor="@color/colorTextGray"
                                 android:textSize="12sp" />
 
@@ -223,6 +223,26 @@
                             android:id="@+id/current_mode_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:alpha="0.85"
+                            android:singleLine="true"
+                            android:text="|"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/executor_info_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:alpha="0.85"
                             android:singleLine="true"
                             android:textColor="@color/colorTextGray"

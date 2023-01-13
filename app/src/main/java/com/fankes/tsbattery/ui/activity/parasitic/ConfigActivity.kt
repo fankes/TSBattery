@@ -40,6 +40,7 @@ import com.fankes.tsbattery.ui.activity.MainActivity
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
 import com.fankes.tsbattery.utils.factory.*
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
+import com.highcapable.yukihookapi.YukiHookAPI
 import kotlin.system.exitProcess
 
 class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
@@ -77,13 +78,14 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
         binding.activeModeIcon.isVisible = HookEntry.isHookClientSupport
         binding.inactiveModeIcon.isGone = HookEntry.isHookClientSupport
         binding.unsupportItem.isGone = HookEntry.isHookClientSupport
+        binding.executorInfoText.text = "${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
         /** 刷新当前模式文本 */
         fun refreshCurrentModeText() {
             binding.currentModeText.text = when {
                 ConfigData.isDisableAllHook -> "模块已停用"
-                packageName == PackageName.WECHAT -> "仅限基础省电模式"
-                ConfigData.isEnableQQTimProtectMode -> "已启用保守模式"
-                else -> "已启用完全模式"
+                packageName == PackageName.WECHAT -> "基础省电模式"
+                ConfigData.isEnableQQTimProtectMode -> "保守模式"
+                else -> "完全模式"
             }
         }
         refreshCurrentModeText()
