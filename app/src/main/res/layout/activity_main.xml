@@ -500,7 +500,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.8"
                     android:lineSpacingExtra="10dp"
-                    android:text="Q.如何使用？\nA.目前模块支持 LSPosed、LSPatch 以及太极(无极)框架，在太极和 LSPosed 的作用域中，只需勾选 QQ、TIM、微信即可，模块可以做到即插即用，激活后无需重启手机，重启 QQ、TIM 或微信就可以了。"
+                    android:text="Q.如何使用？\nA.目前模块支持 LSPosed、LSPatch 以及太极和一些常见的免 Root 框架，在太极和 LSPosed 的作用域中，只需勾选 QQ、TIM、微信即可，模块可以做到即插即用，激活后无需重启手机，重启 QQ、TIM 或微信就可以了。"
                     android:textColor="@color/colorTextDark"
                     android:textSize="12sp" />
 
