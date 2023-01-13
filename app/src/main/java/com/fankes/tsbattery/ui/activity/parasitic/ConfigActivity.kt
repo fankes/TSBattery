@@ -116,7 +116,7 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
 
     /** 替换占位符到当前 APP 名称 */
     private fun TextView.replaceToAppName() {
-        text = text.toString().replace(oldValue = "{APP_NAME}", appName)
+        text = text.toString().replace("{APP_NAME}", appName)
     }
 
     /** 重新设置 DPI 防止 QQ、TIM 修改它 */

@@ -121,7 +121,7 @@ object GithubReleaseTool {
      * 格式化时间为本地时区
      * @return [String] 本地时区时间
      */
-    private fun String.localTime() = replace(oldValue = "T", newValue = " ").replace(oldValue = "Z", newValue = "").let {
+    private fun String.localTime() = replace("T", " ").replace("Z", "").let {
         runCatching {
             val local = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = Calendar.getInstance().timeZone }
             val current = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("GMT") }
