@@ -571,7 +571,7 @@ object QQTIMHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
-        onAppLifecycle {
+        onAppLifecycle(isOnFailureThrowToApp = false) {
             attachBaseContext { baseContext, hasCalledSuper ->
                 if (hasCalledSuper.not()) baseConfiguration = baseContext.resources.configuration
             }
