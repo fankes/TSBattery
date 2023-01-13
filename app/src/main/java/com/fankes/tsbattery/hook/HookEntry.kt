@@ -32,13 +32,10 @@ import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 
 @InjectYukiHookWithXposed(isUsingResourcesHook = false)
-class HookEntry : IYukiHookXposedInit {
+object HookEntry : IYukiHookXposedInit {
 
-    companion object {
-
-        /** 是否完全支持当前版本 */
-        var isHookClientSupport = true
-    }
+    /** 是否完全支持当前版本 */
+    var isHookClientSupport = true
 
     override fun onInit() = configs {
         debugLog { tag = "TSBattery" }
