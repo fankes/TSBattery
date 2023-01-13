@@ -535,13 +535,12 @@ object QQTIMHooker : YukiBaseHooker() {
     /**
      * Hook QQ 的设置界面添加模块设置入口
      * @param instance 当前设置界面实例
-     * @param instanceClass 当前设置界面 [Class] 实例
      */
-    private fun hookQQSettingsUI(instance: Any?, instanceClass: Class<*>) {
+    private fun hookQQSettingsUI(instance: Any?) {
         /** 当前的顶级 Item 实例 */
-        val formItemRefRoot = instanceClass.field {
+        val formItemRefRoot = instance?.current()?.field {
             type { it.name == FormSimpleItemClass || it.name == FormCommonSingleLineItemClass }.index(num = 1)
-        }.get(instance).cast<View?>()
+        }?.cast<View?>()
         /** 创建一个新的 Item */
         FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance?.compatToActivity()) { param(ContextClass) }?.current {
             method {
@@ -608,7 +607,7 @@ object QQTIMHooker : YukiBaseHooker() {
                         name = "doOnCreate"
                         param(BundleClass)
                     }
-                    afterHook { hookQQSettingsUI(instance, instanceClass) }
+                    afterHook { hookQQSettingsUI(instance) }
                 }
             }
             /** 将条目注入设置界面 (Fragment) */
@@ -618,7 +617,7 @@ object QQTIMHooker : YukiBaseHooker() {
                         name = "doOnCreateView"
                         paramCount = 3
                     }
-                    afterHook { hookQQSettingsUI(instance, instanceClass) }
+                    afterHook { hookQQSettingsUI(instance) }
                 }
             }.ignoredHookClassNotFoundFailure()
         }
