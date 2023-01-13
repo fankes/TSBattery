@@ -47,7 +47,7 @@ object YukiPromoteTool {
             context.showDialog {
                 title = "面向开发者的推广"
                 msg = "你想快速拥有一个自己的 Xposed 模块吗，你只需要拥有基础的 Android 开发经验以及使用 Kotlin 编程语言即可。\n\n" +
-                        "快来体验 YukiHookAPI，这是一个使用 Kotlin 重新构建的高效 Xposed Hook API，助你的开发变得更轻松。"
+                        "快来体验 YukiHookAPI，这是一个使用 Kotlin 构建的高效 Hook API 与 Xposed 模块解决方案，助你的开发变得更轻松。"
                 confirmButton(text = "去看看") {
                     context.openBrowser(url = "https://github.com/fankes/YukiHookAPI")
                     saveReaded()
