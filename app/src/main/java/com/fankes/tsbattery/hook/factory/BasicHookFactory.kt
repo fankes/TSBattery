@@ -53,7 +53,7 @@ private fun Context.isQQNightMode() = runCatching {
         paramCount = 1
     }.get().string(MobileQQClass.toClass(classLoader)
         .field { name = "sMobileQQ" }.ignored().get().current(ignored = true)?.field { name = "mAppRuntime" }?.any()
-    ).let { it.endsWith(suffix = "1103") || it.endsWith(suffix = "2920") }
+    ).let { it.endsWith("1103") || it.endsWith("2920") }
 }.getOrNull() ?: false
 
 /** 启动模块设置 [Activity] */
