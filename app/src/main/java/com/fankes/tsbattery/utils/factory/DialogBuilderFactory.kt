@@ -1,6 +1,6 @@
 /*
  * TSBattery - A new way to save your battery avoid cancer apps hacker it.
- * Copyright (C) 2019-2022 Fankes Studio(qzmmcn@163.com)
+ * Copyright (C) 2017-2023 Fankes Studio(qzmmcn@163.com)
  * https://github.com/fankes/TSBattery
  *
  * This software is non-free but opensource software: you can redistribute it
