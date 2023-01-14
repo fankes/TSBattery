@@ -73,7 +73,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)
 
 ```
-Copyright (C) 2019-2022 Fankes Studio(qzmmcn@163.com)
+Copyright (C) 2017-2023 Fankes Studio(qzmmcn@163.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -91,4 +91,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Powered by [YukiHookAPI](https://github.com/fankes/YukiHookAPI)
 
-版权所有 © 2019-2022 Fankes Studio(qzmmcn@163.com)
+版权所有 © 2017-2023 Fankes Studio(qzmmcn@163.com)
