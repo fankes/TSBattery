@@ -286,7 +286,7 @@
                     android:paddingRight="15dp"
                     android:paddingBottom="15dp">
 
-                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                    <com.fankes.tsbattery.ui.widget.MaterialSwitch
                         android:id="@+id/disable_all_hook_switch"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
@@ -326,7 +326,7 @@
                     android:paddingTop="10dp"
                     android:paddingRight="15dp">
 
-                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                    <com.fankes.tsbattery.ui.widget.MaterialSwitch
                         android:id="@+id/qq_tim_protect_mode_switch"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
@@ -360,7 +360,7 @@
                     android:paddingRight="15dp"
                     android:paddingBottom="15dp">
 
-                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                    <com.fankes.tsbattery.ui.widget.MaterialSwitch
                         android:id="@+id/qq_tim_core_service_switch"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
@@ -379,7 +379,7 @@
                         android:textColor="@color/colorTextDark"
                         android:textSize="12sp" />
 
-                    <com.fankes.tsbattery.ui.view.MaterialSwitch
+                    <com.fankes.tsbattery.ui.widget.MaterialSwitch
                         android:id="@+id/qq_tim_core_service_child_switch"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"

@@ -400,7 +400,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <com.fankes.tsbattery.ui.view.MaterialSwitch
+                <com.fankes.tsbattery.ui.widget.MaterialSwitch
                     android:id="@+id/hide_icon_in_launcher_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
