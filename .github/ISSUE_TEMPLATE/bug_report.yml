@@ -1,0 +1,104 @@
+name: 问题与 BUG 反馈
+description: 问题反馈必须使用此模板进行提交
+labels: [ bug ]
+title: "[问题与 BUG 反馈] (在这里简要描述问题原因)"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 请在下方填写问题发生的具体原因和复现步骤。
+        
+        我们只接受从官方渠道或应用市场下载的 QQ、TIM、微信，如果你正在第三方修改版，请不要提交任何 BUG 与问题，我们无义务去解决，请自求多福。
+        
+        请务必知悉：部分问题可能是 APP 自身产生的 BUG，发生这种情况模块没有义务去负责解决与修复，你可以尝试关闭模块以验证该问题是否来源于 APP 自身原因。
+        
+        发生异常、崩溃、闪退或功能性问题，必须提交问题 Log (日志)，没有 Log 的 issues 将直接被关闭。
+  - type: input
+    attributes:
+      label: 模块版本
+      description: 请填写当前使用的模块完整版本号，例如：**3.0**
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: 作用域 APP
+      description: 请选择出现问题的作用域 APP。
+      options:
+        - QQ
+        - TIM
+        - 微信
+        - 两者或以上
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: 作用域 APP 版本
+      description: |
+        这里填写当前作用域 APP 的版本，例如：**QQ 8.9.28**、**微信 8.0.30**
+        如果存在多个有问题的作用域 APP，请使用顿号分隔依次填写
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Android 版本
+      options:
+        - 13
+        - 12L/12.1
+        - 12
+        - 11
+        - 10
+        - 9
+        - 8.1
+        - 8.0.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Xposed 框架名称与版本号
+      description: 请填写当前使用的 Xposed 框架，例如：**LSPosed 1.8.4(次版本号)**
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: 系统是否已 Root
+      options:
+        - 否
+        - 是
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: 与当前作用域 APP 同作用域的 Xposed 模块
+      description: |
+        此模块的作用域为 QQ、TIM、微信，为确保非其它模块冲突造成的问题，请一定要填写当前你同时激活的相关模块。
+        若没有，请直接在下方填写“无”。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 详细描述问题发生的具体原因
+      description: 请在下方详细描述问题发生的具体场景、复现步骤和经过，以便我们能够按照你所描述的步骤复现这个问题。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 提供模块问题 Log 或必要 Log
+      description: LSPosed 可在日志管理中查看并筛选包含 `TSBattery` 的日志。
+      value: |
+        <details><summary>展开查看</summary><pre><code>
+
+        (此处粘贴问题 Log)
+
+        </code></pre></details>
+        <!-- 提交时请将括号内容包括括号全部删除，粘贴你复制的日志，不要破坏代码格式 -->
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: 确认一下你提交的信息
+      description: |
+        为了确保 issues 的质量和避免浪费不必要的时间，未勾选下方选项的 issues 将直接被关闭。
+        请一定确保你已经**勾选下方的选项**后再提交。
+      options:
+        - label: 我确保上述信息准确无误
+          required: false
