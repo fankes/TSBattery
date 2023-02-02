@@ -128,12 +128,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             /** 振动提醒 */
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
-        /** 设置桌面图标显示隐藏 */
-        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
-        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
-            if (btn.isPressed.not()) return@setOnCheckedChangeListener
-            hideOrShowLauncherIcon(b)
-        }
         /** 快捷操作 QQ */
         binding.quickQqButton.setOnClickListener { startModuleSettings(PackageName.QQ) }
         /** 快捷操作 TIM */
@@ -145,6 +139,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 恰饭！ */
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
+        }
+        /** 设置桌面图标显示隐藏 */
+        binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
+        binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            hideOrShowLauncherIcon(b)
         }
     }
 
