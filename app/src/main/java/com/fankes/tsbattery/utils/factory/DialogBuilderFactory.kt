@@ -29,11 +29,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.fankes.tsbattery.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.highcapable.yukihookapi.annotation.CauseProblemsApi
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 
@@ -89,7 +89,10 @@ class DialogBuilder(val context: Context) {
                 customLayoutView = LinearLayout(context).apply {
                     orientation = LinearLayout.HORIZONTAL
                     gravity = Gravity.CENTER or Gravity.START
-                    addView(ProgressBar(context))
+                    addView(CircularProgressIndicator(context).apply {
+                        isIndeterminate = true
+                        trackCornerRadius = 10.dp(context)
+                    })
                     addView(View(context).apply { layoutParams = ViewGroup.LayoutParams(20.dp(context), 5) })
                     addView(TextView(context).apply {
                         tag = "progressContent"
