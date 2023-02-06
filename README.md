@@ -36,7 +36,7 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 - [Automatic Build on Commit](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml)
 
-上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **Github Actions** 进行查看，本更新由开源的流程自动编译发布，**不保证其稳定性**，所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **GitHub Actions** 进行查看，本更新由开源的流程自动编译发布，**不保证其稳定性**，所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
 
 - [Release](https://github.com/fankes/TSBattery/releases)
 - [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
