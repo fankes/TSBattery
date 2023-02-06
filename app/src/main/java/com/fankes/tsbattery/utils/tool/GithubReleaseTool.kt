@@ -36,7 +36,7 @@ import java.io.Serializable
 import java.util.*
 
 /**
- * 获取 Github Release 最新版本工具类
+ * 获取 GitHub Release 最新版本工具类
  */
 object GithubReleaseTool {
 
@@ -130,7 +130,7 @@ object GithubReleaseTool {
     }
 
     /**
-     * Github Release bean
+     * GitHub Release bean
      * @param name 版本名称
      * @param htmlUrl 网页地址
      * @param content 更新日志
