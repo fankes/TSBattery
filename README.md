@@ -66,6 +66,10 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 - [CONTRIBUTING](https://github.com/fankes/TSBattery/blob/master/CONTRIBUTING.md)
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=fankes/TSBattery&type=Date)
+
 ## 许可证
 
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)
