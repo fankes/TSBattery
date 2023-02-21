@@ -54,7 +54,7 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
-    aaptOptions.additionalParameters '--allow-reserved-package-id', '--package-id', '0x64'
+    aaptOptions.additionalParameters '--allow-reserved-package-id', '--package-id', '0x37'
 }
 
 dependencies {
