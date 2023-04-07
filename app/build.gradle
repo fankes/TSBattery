@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.google.devtools.ksp' version '1.7.22-1.0.8'
+    id 'com.google.devtools.ksp' version '1.8.20-1.0.10'
 }
 
 android {
@@ -63,7 +63,7 @@ dependencies {
     ksp 'com.highcapable.yukihookapi:ksp-xposed:1.1.8'
     implementation 'com.github.duanhong169:drawabletoolbox:1.0.7'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
