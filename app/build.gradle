@@ -1,38 +1,51 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'com.google.devtools.ksp' version '1.8.20-1.0.10'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
 }
 
 android {
     signingConfigs {
-        debug {
-            storeFile file('../keystore/public')
-            storePassword '123456'
-            keyAlias 'public'
-            keyPassword '123456'
+        universal {
+            def dirPath = rootProject.ext.app.signingConfigs.secretConfigsDirPath
+            def fileName = rootProject.ext.app.signingConfigs.secretConfigsFileName
+            def configs = new JsonSlurper().parse(file("${dirPath}/${fileName}"))
+            keyAlias configs.keyAlias
+            keyPassword configs.keyPassword
+            storeFile file("${dirPath}/${configs.storeFileName}")
+            storePassword configs.storePassword
             v1SigningEnabled true
             v2SigningEnabled true
         }
     }
-    compileSdkVersion 33
+
+    namespace 'com.fankes.tsbattery'
+    compileSdk rootProject.ext.android.compileSdk
 
     defaultConfig {
-        applicationId "com.fankes.tsbattery"
-        minSdk 22
-        targetSdk 33
-        versionCode rootProject.ext.appVersionCode
-        versionName rootProject.ext.appVersionName
+        applicationId 'com.fankes.tsbattery'
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdk rootProject.ext.android.minSdk
+        targetSdk rootProject.ext.android.targetSdk
+
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.universal
+        }
         release {
-            minifyEnabled rootProject.ext.enableR8
-            shrinkResources rootProject.ext.enableR8
-            zipAlignEnabled rootProject.ext.enableR8
-            signingConfig signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            signingConfig signingConfigs.universal
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
