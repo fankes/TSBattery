@@ -26,7 +26,7 @@ import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.utils.factory.openBrowser
 import com.fankes.tsbattery.utils.factory.showDialog
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.factory.modulePrefs
+import com.highcapable.yukihookapi.hook.factory.prefs
 import com.highcapable.yukihookapi.hook.xposed.prefs.data.PrefsData
 
 /**
@@ -42,8 +42,8 @@ object YukiPromoteTool {
      * @param context 实例
      */
     fun promote(context: Context) {
-        fun saveReaded() = context.modulePrefs.put(YUKI_PROMOTE_READED, value = true)
-        if (context.modulePrefs.get(YUKI_PROMOTE_READED).not())
+        fun saveReaded() = context.prefs().edit { put(YUKI_PROMOTE_READED, value = true) }
+        if (context.prefs().get(YUKI_PROMOTE_READED).not())
             context.showDialog {
                 title = "面向开发者的推广"
                 msg = "你想快速拥有一个自己的 Xposed 模块吗，你只需要拥有基础的 Android 开发经验以及使用 Kotlin 编程语言即可。\n\n" +

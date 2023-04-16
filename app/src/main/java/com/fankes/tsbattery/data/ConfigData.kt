@@ -19,11 +19,14 @@
  *
  * This file is Created by fankes on 2022/9/28.
  */
+@file:Suppress("StaticFieldLeak")
+
 package com.fankes.tsbattery.data
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.widget.CompoundButton
+import com.highcapable.yukihookapi.hook.factory.prefs
+import com.highcapable.yukihookapi.hook.xposed.prefs.YukiHookPrefsBridge
 
 /**
  * 全局配置存储控制类
@@ -42,30 +45,30 @@ object ConfigData {
     /** 停用全部省电功能 (停用模块) */
     const val DISABLE_ALL_HOOK = "disable_all_hook"
 
-    /** 当前的 [SharedPreferences] */
-    private var sharePrefs: SharedPreferences? = null
+    /** 当前的 [YukiHookPrefsBridge] */
+    private var prefs: YukiHookPrefsBridge? = null
 
     /**
-     * 读取 [SharedPreferences]
+     * 读取 [YukiHookPrefsBridge]
      * @param key 键值名称
      * @param value 键值内容
      * @return [Boolean]
      */
-    private fun getBoolean(key: String, value: Boolean = false) = sharePrefs?.getBoolean(key, value) ?: value
+    private fun getBoolean(key: String, value: Boolean = false) = prefs?.getBoolean(key, value) ?: value
 
     /**
-     * 存入 [SharedPreferences]
+     * 存入 [YukiHookPrefsBridge]
      * @param key 键值名称
      * @param value 键值内容
      */
-    private fun putBoolean(key: String, value: Boolean = false) = sharePrefs?.edit()?.putBoolean(key, value)?.apply()
+    private fun putBoolean(key: String, value: Boolean = false) = prefs?.edit { putBoolean(key, value) }
 
     /**
-     * 初始化 [SharedPreferences]
+     * 初始化 [YukiHookPrefsBridge]
      * @param context 实例
      */
     fun init(context: Context) {
-        sharePrefs = context.getSharedPreferences("tsbattery_config", Context.MODE_PRIVATE)
+        prefs = context.prefs(name = "tsbattery_config").native()
     }
 
     /**
