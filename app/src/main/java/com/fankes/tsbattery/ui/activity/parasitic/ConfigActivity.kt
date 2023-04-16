@@ -79,6 +79,22 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
         binding.inactiveModeIcon.isGone = HookEntry.isHookClientSupport
         binding.unsupportItem.isGone = HookEntry.isHookClientSupport
         binding.executorInfoText.text = "${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
+        binding.needRestartTipText.replaceToAppName()
+        binding.needRestartTipText.setOnClickListener {
+            showDialog {
+                title = "需要重新启动"
+                msg = "你必须重新启动${appName}才能使当前更改生效，现在重新启动吗？"
+                confirmButton {
+                    cancel()
+                    finish()
+                    exitProcess(status = 0)
+                }
+                cancelButton(text = "稍后再说") {
+                    cancel()
+                    it.isVisible = false
+                }
+            }
+        }
         /** 刷新当前模式文本 */
         fun refreshCurrentModeText() {
             binding.currentModeText.text = when {
@@ -96,24 +112,15 @@ class ConfigActivity : BaseActivity<ActivityConfigBinding>() {
         refreshConfigItems()
         binding.infoTipText.replaceToAppName()
         binding.qqTimProtectTipText.replaceToAppName()
-        binding.disableAllHookSwitch.bind(ConfigData.DISABLE_ALL_HOOK) { refreshConfigItems(); refreshCurrentModeText(); showRestartDialog() }
-        binding.qqTimProtectModeSwitch.bind(ConfigData.ENABLE_QQ_TIM_PROTECT_MODE) { refreshCurrentModeText(); showRestartDialog() }
-        binding.qqTimCoreServiceSwitch.bind(ConfigData.ENABLE_KILL_QQ_TIM_CORESERVICE) { showRestartDialog() }
-        binding.qqTimCoreServiceChildSwitch.bind(ConfigData.ENABLE_KILLE_QQ_TIM_CORESERVICE_CHILD) { showRestartDialog() }
+        binding.disableAllHookSwitch.bind(ConfigData.DISABLE_ALL_HOOK) { refreshConfigItems(); refreshCurrentModeText(); showNeedRestartTip() }
+        binding.qqTimProtectModeSwitch.bind(ConfigData.ENABLE_QQ_TIM_PROTECT_MODE) { refreshCurrentModeText(); showNeedRestartTip() }
+        binding.qqTimCoreServiceSwitch.bind(ConfigData.ENABLE_KILL_QQ_TIM_CORESERVICE) { showNeedRestartTip() }
+        binding.qqTimCoreServiceChildSwitch.bind(ConfigData.ENABLE_KILLE_QQ_TIM_CORESERVICE_CHILD) { showNeedRestartTip() }
     }
 
-    /** 显示重新启动对话框 */
-    private fun showRestartDialog() {
-        showDialog {
-            title = "需要重新启动"
-            msg = "你必须重新启动${appName}才能使当前更改生效，现在重新启动吗？"
-            confirmButton {
-                cancel()
-                finish()
-                exitProcess(status = 0)
-            }
-            cancelButton(text = "稍后再说")
-        }
+    /** 显示需要重新启动提示 */
+    private fun showNeedRestartTip() {
+        binding.needRestartTipText.isVisible = true
     }
 
     /** 替换占位符到当前 APP 名称 */
