@@ -249,6 +249,14 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie(methodName = "C3")
                 hookBaseChatPie(methodName = "H")
             }
+            "8.9.58" -> {
+                hookBaseChatPie(methodName = "B3")
+                hookBaseChatPie(methodName = "J")
+            }
+            "8.9.63" -> {
+                hookBaseChatPie(methodName = "A3")
+                hookBaseChatPie(methodName = "J")
+            }
             else -> {
                 HookEntry.isHookClientSupport = false
                 loggerW(msg = "$hostVersionName not supported!")
