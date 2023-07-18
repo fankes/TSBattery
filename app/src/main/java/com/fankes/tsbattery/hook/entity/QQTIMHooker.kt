@@ -244,9 +244,13 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie("B3")
                 hookBaseChatPie("H")
             }
-            "8.9.53", "8.9.55" -> {
+            "8.9.53", "8.9.55", "8.9.58" -> {
                 hookBaseChatPie("C3")
                 hookBaseChatPie("H")
+            }
+            "8.9.63", "8.9.68" -> {
+                hookBaseChatPie("t3")
+                hookBaseChatPie("J")
             }
             else -> {
                 HookEntry.isHookClientSupport = false
