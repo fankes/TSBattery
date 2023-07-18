@@ -78,8 +78,7 @@ object QQTIMHooker : YukiBaseHooker() {
     private const val CoreService_KernelServiceClass = "${PackageName.QQ}.app.CoreService\$KernelService"
 
     /** 根据多个版本存的不同的类 */
-    private val BaseChatPieClass =
-        VariousClass("${PackageName.QQ}.activity.aio.core.BaseChatPie", "${PackageName.QQ}.activity.BaseChatPie")
+    private val BaseChatPieClass = VariousClass("${PackageName.QQ}.activity.aio.core.BaseChatPie", "${PackageName.QQ}.activity.BaseChatPie")
 
     /** 一个内部进程的名称 (与 X5 浏览器内核有关) */
     private val privilegedProcessName = "$packageName:privileged_process"
@@ -122,132 +121,132 @@ object QQTIMHooker : YukiBaseHooker() {
     private fun hookQQBaseChatPie() {
         if (isQQ) when (hostVersionName) {
             "8.0.0" -> {
-                hookBaseChatPie(methodName = "bq")
-                hookBaseChatPie(methodName = "aL")
+                hookBaseChatPie("bq")
+                hookBaseChatPie("aL")
             }
             "8.0.5", "8.0.7" -> {
-                hookBaseChatPie(methodName = "bw")
-                hookBaseChatPie(methodName = "aQ")
+                hookBaseChatPie("bw")
+                hookBaseChatPie("aQ")
             }
             "8.1.0", "8.1.3" -> {
-                hookBaseChatPie(methodName = "bE")
-                hookBaseChatPie(methodName = "aT")
+                hookBaseChatPie("bE")
+                hookBaseChatPie("aT")
             }
             "8.1.5" -> {
-                hookBaseChatPie(methodName = "bF")
-                hookBaseChatPie(methodName = "aT")
+                hookBaseChatPie("bF")
+                hookBaseChatPie("aT")
             }
             "8.1.8", "8.2.0", "8.2.6" -> {
-                hookBaseChatPie(methodName = "bC")
-                hookBaseChatPie(methodName = "aT")
+                hookBaseChatPie("bC")
+                hookBaseChatPie("aT")
             }
             "8.2.7", "8.2.8", "8.2.11", "8.3.0" -> {
-                hookBaseChatPie(methodName = "bE")
-                hookBaseChatPie(methodName = "aV")
+                hookBaseChatPie("bE")
+                hookBaseChatPie("aV")
             }
             "8.3.5" -> {
-                hookBaseChatPie(methodName = "bR")
-                hookBaseChatPie(methodName = "aX")
+                hookBaseChatPie("bR")
+                hookBaseChatPie("aX")
             }
             "8.3.6" -> {
-                hookBaseChatPie(methodName = "cp")
-                hookBaseChatPie(methodName = "aX")
+                hookBaseChatPie("cp")
+                hookBaseChatPie("aX")
             }
             "8.3.9" -> {
-                hookBaseChatPie(methodName = "cj")
-                hookBaseChatPie(methodName = "aT")
+                hookBaseChatPie("cj")
+                hookBaseChatPie("aT")
             }
             "8.4.1", "8.4.5" -> {
-                hookBaseChatPie(methodName = "ck")
-                hookBaseChatPie(methodName = "aT")
+                hookBaseChatPie("ck")
+                hookBaseChatPie("aT")
             }
             "8.4.8", "8.4.10", "8.4.17", "8.4.18", "8.5.0" -> {
-                hookBaseChatPie(methodName = "remainScreenOn")
-                hookBaseChatPie(methodName = "cancelRemainScreenOn")
+                hookBaseChatPie("remainScreenOn")
+                hookBaseChatPie("cancelRemainScreenOn")
             }
             "8.5.5" -> {
-                hookBaseChatPie(methodName = "bT")
-                hookBaseChatPie(methodName = "aN")
+                hookBaseChatPie("bT")
+                hookBaseChatPie("aN")
             }
             "8.6.0", "8.6.5", "8.7.0", "8.7.5", "8.7.8", "8.8.0", "8.8.3", "8.8.5" -> {
-                hookBaseChatPie(methodName = "ag")
-                hookBaseChatPie(methodName = "ah")
+                hookBaseChatPie("ag")
+                hookBaseChatPie("ah")
             }
             "8.8.11", "8.8.12" -> {
-                hookBaseChatPie(methodName = "bc")
-                hookBaseChatPie(methodName = "bd")
+                hookBaseChatPie("bc")
+                hookBaseChatPie("bd")
             }
             "8.8.17", "8.8.20" -> {
-                hookBaseChatPie(methodName = "bd")
-                hookBaseChatPie(methodName = "be")
+                hookBaseChatPie("bd")
+                hookBaseChatPie("be")
             }
             "8.8.23", "8.8.28" -> {
-                hookBaseChatPie(methodName = "bf")
-                hookBaseChatPie(methodName = "bg")
+                hookBaseChatPie("bf")
+                hookBaseChatPie("bg")
             }
             "8.8.33" -> {
-                hookBaseChatPie(methodName = "bg")
-                hookBaseChatPie(methodName = "bh")
+                hookBaseChatPie("bg")
+                hookBaseChatPie("bh")
             }
             "8.8.35", "8.8.38" -> {
-                hookBaseChatPie(methodName = "bi")
-                hookBaseChatPie(methodName = "bj")
+                hookBaseChatPie("bi")
+                hookBaseChatPie("bj")
             }
             "8.8.50" -> {
-                hookBaseChatPie(methodName = "bj")
-                hookBaseChatPie(methodName = "bk")
+                hookBaseChatPie("bj")
+                hookBaseChatPie("bk")
             }
             "8.8.55", "8.8.68", "8.8.80" -> {
-                hookBaseChatPie(methodName = "bk")
-                hookBaseChatPie(methodName = "bl")
+                hookBaseChatPie("bk")
+                hookBaseChatPie("bl")
             }
             "8.8.83", "8.8.85", "8.8.88", "8.8.90" -> {
-                hookBaseChatPie(methodName = "bl")
-                hookBaseChatPie(methodName = "bm")
+                hookBaseChatPie("bl")
+                hookBaseChatPie("bm")
             }
             "8.8.93", "8.8.95" -> {
-                hookBaseChatPie(methodName = "J3")
-                hookBaseChatPie(methodName = "S")
+                hookBaseChatPie("J3")
+                hookBaseChatPie("S")
             }
             "8.8.98" -> {
-                hookBaseChatPie(methodName = "M3")
-                hookBaseChatPie(methodName = "S")
+                hookBaseChatPie("M3")
+                hookBaseChatPie("S")
             }
             "8.9.0", "8.9.1", "8.9.2" -> {
-                hookBaseChatPie(methodName = "N3")
-                hookBaseChatPie(methodName = "S")
+                hookBaseChatPie("N3")
+                hookBaseChatPie("S")
             }
             "8.9.3", "8.9.5" -> {
-                hookBaseChatPie(methodName = "H3")
-                hookBaseChatPie(methodName = "P")
+                hookBaseChatPie("H3")
+                hookBaseChatPie("P")
             }
             "8.9.8", "8.9.10" -> {
-                hookBaseChatPie(methodName = "H3")
-                hookBaseChatPie(methodName = "N")
+                hookBaseChatPie("H3")
+                hookBaseChatPie("N")
             }
             "8.9.13" -> {
-                hookBaseChatPie(methodName = "y3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("y3")
+                hookBaseChatPie("H")
             }
             "8.9.15", "8.9.18", "8.9.19", "8.9.20" -> {
-                hookBaseChatPie(methodName = "w3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("w3")
+                hookBaseChatPie("H")
             }
             "8.9.23", "8.9.25" -> {
-                hookBaseChatPie(methodName = "z3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("z3")
+                hookBaseChatPie("H")
             }
             "8.9.28", "8.9.30", "8.9.33" -> {
-                hookBaseChatPie(methodName = "A3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("A3")
+                hookBaseChatPie("H")
             }
             "8.9.35", "8.9.38", "8.9.50" -> {
-                hookBaseChatPie(methodName = "B3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("B3")
+                hookBaseChatPie("H")
             }
             "8.9.53", "8.9.55" -> {
-                hookBaseChatPie(methodName = "C3")
-                hookBaseChatPie(methodName = "H")
+                hookBaseChatPie("C3")
+                hookBaseChatPie("H")
             }
             else -> {
                 HookEntry.isHookClientSupport = false
