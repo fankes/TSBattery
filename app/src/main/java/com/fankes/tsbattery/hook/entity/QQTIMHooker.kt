@@ -23,6 +23,7 @@ package com.fankes.tsbattery.hook.entity
 
 import android.app.Activity
 import android.app.Service
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.view.View
@@ -30,10 +31,12 @@ import android.view.ViewGroup
 import androidx.core.app.ServiceCompat
 import androidx.fragment.app.Fragment
 import com.fankes.tsbattery.BuildConfig
+import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.hook.HookEntry
 import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
+import com.fankes.tsbattery.hook.factory.isQQNightMode
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.appVersionName
@@ -47,6 +50,7 @@ import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
 import com.highcapable.yukihookapi.hook.type.android.*
 import com.highcapable.yukihookapi.hook.type.java.*
+import java.lang.reflect.Proxy
 
 /**
  * Hook QQ、TIM
@@ -56,14 +60,23 @@ object QQTIMHooker : YukiBaseHooker() {
     /** QQ、TIM 存在的类 */
     const val JumpActivityClass = "${PackageName.QQ}.activity.JumpActivity"
 
-    /** QQ、TIM 存在的类 */
+    /** QQ、TIM 存在的类 (NT 版本不再存在) */
     private const val QQSettingSettingActivityClass = "${PackageName.QQ}.activity.QQSettingSettingActivity"
 
-    /** QQ 新版存在的类 (Pad 模式) */
+    /** QQ 新版存在的类 (Pad 模式 - NT 版本不再存在) */
     private const val QQSettingSettingFragmentClass = "${PackageName.QQ}.fragment.QQSettingSettingFragment"
 
-    /** QQ、TIM 存在的类 */
+    /** QQ、TIM 存在的类 (NT 版本不再存在) */
     private const val AboutActivityClass = "${PackageName.QQ}.activity.AboutActivity"
+
+    /** QQ 新版本存在的类 */
+    private const val GeneralSettingActivityClass = "${PackageName.QQ}.activity.GeneralSettingActivity"
+
+    /** QQ 新版本 (NT) 存在的类 */
+    private const val MainSettingFragmentClass = "${PackageName.QQ}.setting.main.MainSettingFragment"
+
+    /** QQ 新版本 (NT) 存在的类 */
+    private const val MainSettingConfigProviderClass = "${PackageName.QQ}.setting.main.MainSettingConfigProvider"
 
     /** QQ、TIM 新版本存在的类 */
     private const val FormSimpleItemClass = "${PackageName.QQ}.widget.FormSimpleItem"
@@ -91,6 +104,14 @@ object QQTIMHooker : YukiBaseHooker() {
      * @return [Boolean]
      */
     private val isQQ get() = packageName == PackageName.QQ
+
+    /**
+     * 当前是否为 QQ 的 NT 版本
+     *
+     * 在 QQ NT 中 [AboutActivityClass] 已被移除 - 以此作为判断条件
+     * @return [Boolean]
+     */
+    private val isQQNTVersion get() = isQQ && AboutActivityClass.hasClass().not()
 
     /** 当前宿主的版本 */
     private var hostVersionName = "<unknown>"
@@ -543,11 +564,68 @@ object QQTIMHooker : YukiBaseHooker() {
         }.ignoredHookClassNotFoundFailure()
     }
 
+    /** Hook QQ 的设置界面添加模块设置入口 (新版) */
+    private fun hookQQSettingsUi() {
+        if (MainSettingFragmentClass.hasClass().not()) return loggerE(msg = "Could not found main setting class, hook aborted")
+        val kotlinUnit = "kotlin.Unit"
+        val kotlinFunction0 = "kotlin.jvm.functions.Function0"
+        val simpleItemProcessorClass = searchClass {
+            from("${PackageName.QQ}.setting.processor").absolute()
+            constructor { param(ContextClass, IntType, CharSequenceClass, IntType) }
+            method {
+                param(kotlinFunction0)
+                returnType = UnitType
+            }
+            field().count { it >= 6 }
+        }.get() ?: return loggerE(msg = "Could not found processor class, hook aborted")
+
+        /**
+         * 创建入口点条目
+         * @param context 当前实例
+         * @return [Any]
+         */
+        fun createTSEntryItem(context: Context): Any {
+            /** 为了使用图标资源 ID - 这里需要重新注入模块资源防止不生效 */
+            context.injectModuleAppResources()
+            val iconResId = if (context.isQQNightMode()) R.mipmap.ic_tsbattery_entry_night else R.mipmap.ic_tsbattery_entry_day
+            return simpleItemProcessorClass.buildOf(context, R.id.tsbattery_qq_entry_item_id, "TSBattery", iconResId) {
+                param(ContextClass, IntType, CharSequenceClass, IntType)
+            }?.also { entryItem ->
+                val onClickMethod = simpleItemProcessorClass.method {
+                    param { it[0].name == kotlinFunction0 }
+                    paramCount = 1
+                    returnType = UnitType
+                }.giveAll().lastOrNull() ?: error("Could not found processor method")
+                val proxyOnClick = Proxy.newProxyInstance(appClassLoader, arrayOf(onClickMethod.parameterTypes[0])) { any, method, args ->
+                    if (method.name == "invoke") {
+                        context.startModuleSettings()
+                        kotlinUnit.toClass().field { name = "INSTANCE" }.get().any()
+                    } else method.invoke(any, args)
+                }; onClickMethod.invoke(entryItem, proxyOnClick)
+            } ?: error("Could not create TSBattery entry item")
+        }
+        MainSettingConfigProviderClass.hook {
+            injectMember {
+                method {
+                    param(ContextClass)
+                    returnType = ListClass
+                }
+                afterHook {
+                    val context = args().first().cast<Context>() ?: return@afterHook
+                    val processor = result<MutableList<Any?>>() ?: return@afterHook
+                    processor.add(1, processor[0]?.javaClass?.buildOf(arrayListOf<Any>().apply { add(createTSEntryItem(context)) }, "", "") {
+                        param(ListClass, CharSequenceClass, CharSequenceClass)
+                    })
+                }
+            }
+        }
+    }
+
     /**
-     * Hook QQ 的设置界面添加模块设置入口
+     * Hook QQ 的设置界面添加模块设置入口 (旧版)
      * @param instance 当前设置界面实例
      */
-    private fun hookQQSettingsUI(instance: Any?) {
+    private fun hookQQSettingsUiLegacy(instance: Any?) {
         /** 当前的顶级 Item 实例 */
         val formItemRefRoot = instance?.current()?.field {
             type { it.name == FormSimpleItemClass || it.name == FormCommonSingleLineItemClass }.index(num = 1)
@@ -590,7 +668,9 @@ object QQTIMHooker : YukiBaseHooker() {
                 /** 不注入此进程防止部分系统发生 X5 浏览器内核崩溃问题 */
                 if (processName.startsWith(privilegedProcessName)) return@onCreate
                 ConfigData.init(context = this)
-                registerModuleAppActivities(AboutActivityClass)
+                if (isQQNTVersion)
+                    registerModuleAppActivities(GeneralSettingActivityClass)
+                else registerModuleAppActivities(AboutActivityClass)
                 if (ConfigData.isDisableAllHook) return@onCreate
                 hookSystemWakeLock()
                 hookQQBaseChatPie()
@@ -611,26 +691,30 @@ object QQTIMHooker : YukiBaseHooker() {
                     afterHook { instance<Activity>().jumpToModuleSettings() }
                 }
             }
-            /** 将条目注入设置界面 (Activity) */
-            QQSettingSettingActivityClass.hook {
-                injectMember {
-                    method {
-                        name = "doOnCreate"
-                        param(BundleClass)
+            /** Hook 设置界面入口点 */
+            if (isQQNTVersion) hookQQSettingsUi()
+            else {
+                /** 将条目注入设置界面 (Activity) */
+                QQSettingSettingActivityClass.hook {
+                    injectMember {
+                        method {
+                            name = "doOnCreate"
+                            param(BundleClass)
+                        }
+                        afterHook { hookQQSettingsUiLegacy(instance) }
                     }
-                    afterHook { hookQQSettingsUI(instance) }
                 }
+                /** 将条目注入设置界面 (Fragment) */
+                QQSettingSettingFragmentClass.hook {
+                    injectMember {
+                        method {
+                            name = "doOnCreateView"
+                            paramCount = 3
+                        }
+                        afterHook { hookQQSettingsUiLegacy(instance) }
+                    }
+                }.ignoredHookClassNotFoundFailure()
             }
-            /** 将条目注入设置界面 (Fragment) */
-            QQSettingSettingFragmentClass.hook {
-                injectMember {
-                    method {
-                        name = "doOnCreateView"
-                        paramCount = 3
-                    }
-                    afterHook { hookQQSettingsUI(instance) }
-                }
-            }.ignoredHookClassNotFoundFailure()
         }
     }
 }

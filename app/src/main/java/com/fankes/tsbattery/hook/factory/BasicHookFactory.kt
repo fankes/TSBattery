@@ -47,7 +47,7 @@ private val ThemeUtilClass = VariousClass("${PackageName.QQ}.theme.ThemeUtil", "
  * QQ、TIM 主题是否为夜间模式
  * @return [Boolean]
  */
-private fun Context.isQQNightMode() = runCatching {
+fun Context.isQQNightMode() = runCatching {
     ThemeUtilClass.get(classLoader).method {
         name = "getUserCurrentThemeId"
         paramCount = 1
