@@ -37,6 +37,12 @@
 # 排除注入的 Activity
 -keep class com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
 
+# 防止某些类被 R8 混淆 (可能是 BUG)
+# FIXME: 已知问题字符串类名 (即使是常量) 也会被 R8 处理为混淆后的类名
+# FIXME: 所以目前只能把不允许 R8 处理的类 keep 掉，同时在当前模块中也不会被混淆就是了
+-keep class kotlin.Unit
+-keep class kotlin.jvm.functions.Function0
+
 -assumenosideeffects class kotlin.jvm.internal.Intrinsics {
     public static *** throwUninitializedProperty(...);
     public static *** throwUninitializedPropertyAccessException(...);
