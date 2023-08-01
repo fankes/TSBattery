@@ -273,7 +273,7 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookBaseChatPie("t3")
                 hookBaseChatPie("J")
             }
-            "8.9.70" -> {
+            "8.9.70", "8.9.71" -> {
                 hookBaseChatPie("u3")
                 hookBaseChatPie("J")
             }
