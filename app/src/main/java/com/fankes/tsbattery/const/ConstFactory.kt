@@ -19,7 +19,12 @@
  *
  * This file is Created by fankes on 2022/9/29.
  */
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.fankes.tsbattery.const
+
+import com.fankes.tsbattery.generated.AppProperties
+import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 
 /**
  * 包名常量定义类
@@ -43,4 +48,27 @@ object JumpEvent {
 
     /** 启动模块设置 */
     const val OPEN_MODULE_SETTING = "tsbattery_open_module_settings"
+}
+
+/**
+ * 模块版本常量定义类
+ */
+object ModuleVersion {
+
+    /** 当前 GitHub 提交的 ID (CI 自动构建) */
+    const val GITHUB_COMMIT_ID = AppProperties.GITHUB_CI_COMMIT_ID
+
+    /** 版本名称 */
+    const val NAME = BuildConfigWrapper.VERSION_NAME
+
+    /** 版本号 */
+    const val CODE = BuildConfigWrapper.VERSION_CODE
+
+    /** 是否为 CI 自动构建版本 */
+    val isCiMode = GITHUB_COMMIT_ID.isNotBlank()
+
+    /** 当前版本名称后缀 */
+    val suffix = GITHUB_COMMIT_ID.let { if (it.isNotBlank()) "-$it" else "" }
+
+    override fun toString() = "$NAME$suffix($CODE)"
 }
