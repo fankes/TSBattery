@@ -19,8 +19,6 @@
  *
  * This file is Created by fankes on 2022/1/30.
  */
-@file:Suppress("UNCHECKED_CAST")
-
 package com.fankes.tsbattery.ui.activity.base
 
 import android.os.Build

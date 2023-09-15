@@ -19,7 +19,7 @@
  *
  * This file is Created by fankes on 2022/3/13.
  */
-@file:Suppress("unused")
+@file:Suppress("unused", "UnusedReceiverParameter")
 
 package com.fankes.tsbattery.utils.factory
 
