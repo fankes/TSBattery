@@ -42,6 +42,7 @@ body:
     attributes:
       label: Android 版本
       options:
+        - 14
         - 13
         - 12L/12.1
         - 12
