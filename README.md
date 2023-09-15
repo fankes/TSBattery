@@ -1,42 +1,47 @@
 # TSBattery
 
-[![Blank](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/fankes/TSBattery)
-[![Blank](https://img.shields.io/badge/license-AGPL3.0-blue)](https://github.com/fankes/TSBattery/blob/master/LICENSE)
-[![Blank](https://img.shields.io/badge/version-v4.3-green)](https://github.com/fankes/TSBattery/releases)
-[![Blank](https://img.shields.io/github/downloads/fankes/TSBattery/total?label=Release)](https://github.com/fankes/TSBattery/releases)
-[![Blank](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20Repo&logo=Android&style=flat&labelColor=F48FB1&logoColor=ffffff)](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
-[![Telegram](https://img.shields.io/badge/Follow-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
-<br/><br/>
-![banner](https://github.com/fankes/TSBattery/blob/master/banner.png?raw=true)<br/>
+[![GitHub license](https://img.shields.io/github/license/fankes/TSBattery?color=blue)](https://github.com/fankes/TSBattery/blob/master/LICENSE)
+[![GitHub CI](https://img.shields.io/github/actions/workflow/status/fankes/TSBattery/commit_ci.yml?label=CI%20builds)](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml)
+[![GitHub release](https://img.shields.io/github/v/release/fankes/TSBattery?display_name=release&logo=github&color=green)](https://github.com/fankes/TSBattery/releases)
+![GitHub all releases](https://img.shields.io/github/downloads/fankes/TSBattery/total?label=downloads)
+![GitHub all releases](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20downloads&labelColor=F48FB1)
+
+[![Telegram CI](https://img.shields.io/badge/CI%20builds-Telegram-blue.svg?logo=telegram)](https://t.me/TSBATTERY_CI)
+[![Telegram](https://img.shields.io/badge/discussion-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
+[![QQ](https://img.shields.io/badge/discussion-QQ-blue.svg?logo=tencent-qq&logoColor=red)](https://qm.qq.com/cgi-bin/qm/qr?k=dp2h5YhWiga9WWb_Oh7kSHmx01X8I8ii&jump_from=webapi&authKey=Za5CaFP0lk7+Zgsk2KpoBD7sSaYbeXbsDgFjiWelOeH4VSionpxFJ7V0qQBSqvFM)
+[![QQ 频道](https://img.shields.io/badge/discussion-QQ%20频道-blue.svg?logo=tencent-qq&logoColor=red)](https://pd.qq.com/s/44gcy28h)
+
+![Banner](https://github.com/fankes/TSBattery/blob/master/img-src/banner.png?raw=true)
+
 A new way to save your battery avoid cancer apps hacker it.
 
 TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块。
 
-## Developer
+## For Non-Chinese Users
 
-[酷安 @星夜不荟](http://www.coolapk.com/u/876977)
+This Xposed Module is for use by specific apps for users in mainland China, you should not need it.
 
 ## 适配说明
 
-- 解锁 BL 并安装 **Magisk** 的设备建议使用 [LSPosed](https://github.com/LSPosed/LSPosed)
+- 解锁 BootLoader 并安装 **KernelSU**、**Magisk** 的设备建议使用 [LSPosed](https://github.com/LSPosed/LSPosed)
 
-- 可以使用 **~~EdXposed~~**，但随时停止支持
+- **太极 (无极)** 支持性不是很好，建议使用 [LSPatch](https://github.com/LSPosed/LSPatch)
 
-- **太极无极 · 阴** 支持性不是很好，建议使用 [LSPatch](https://github.com/LSPosed/LSPatch)
+- 支持一些第三方 Xposed 框架，但是不保证其稳定性
 
 - 支持一些第三方免 Root 框架例如**应用转生**、**SandVXposed**，但是不推荐使用，可能会造成封号风险
 
-- 如果在微信设置界面右上角你无法找到 **TSBattery** 的图标，请尝试同时激活 [WeXposed (微X模块)](https://github.com/Xposed-Modules-Repo/com.fkzhang.wechatxposed)
-
-## 请勿用于非法用途
-
-本模块完全开源免费，如果好用你可以打赏支持开发，但是请不要用于非法用途。
+- 如果在微信设置界面右上角你无法找到 **TSBattery**
+  的图标，请尝试同时激活 [WeXposed (微X模块)](https://github.com/Xposed-Modules-Repo/com.fkzhang.wechatxposed)
 
 ## 发行渠道说明
 
 - [Automatic Build on Commit](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml)
 
-上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **GitHub Actions** 进行查看，本更新由开源的流程自动编译发布，**不保证其稳定性**，所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **GitHub Actions** 进行查看，本更新由开源的流程自动编译发布，
+**不保证其稳定性**， 所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+
+如果你需要直接下载 CI 自动构建打包的安装包，请点击顶部的 `CI builds | Telegram` 标签加入 Telegram CI 自动构建频道。
 
 - [Release](https://github.com/fankes/TSBattery/releases)
 - [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
@@ -46,25 +51,23 @@ TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed �
 
 本模块发布地址仅限于上述所列出的地址，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
 
-## 发行状态说明
+## 请勿用于非法用途
 
-![Blank](https://img.shields.io/badge/build-passing-brightgreen)
+本模块完全开源免费，如果好用你可以打赏支持开发，但是请不要用于非法用途。
 
-上述状态为当前稳定版与自动构建版本一致或当前代码改动与稳定版无功能差异。
+## 项目推广
 
-![Blank](https://img.shields.io/badge/build-pending-dbab09)
+如果你正在寻找一个可以自动管理 Gradle 项目依赖的 Gradle 插件，你可以了解一下 [SweetDependency](https://github.com/HighCapable/SweetDependency) 项目。
 
-上述状态为存在自动构建版本和新功能的更新但当前并未发布稳定版，处于预发行状态。
+如果你正在寻找一个可以自动生成属性键值的 Gradle 插件，你可以了解一下 [SweetProperty](https://github.com/HighCapable/SweetProperty) 项目。
 
-![Blank](https://img.shields.io/badge/build-problem-red)
+本项目同样使用了 **SweetDependency** 和 **SweetProperty**。
 
-上述状态为当前发行的稳定版可能存在严重问题但并未及时进行修复且并未发布稳定版。
+## 捐赠支持
 
-## 开始贡献
+工作不易，无意外情况此项目将继续维护下去，提供更多可能，欢迎打赏。
 
-欢迎为此项目进行新版本的适配代码贡献！<br/>
-
-- [CONTRIBUTING](https://github.com/fankes/TSBattery/blob/master/CONTRIBUTING.md)
+<img src="https://github.com/fankes/fankes/blob/main/img-src/payment_code.jpg?raw=true" width = "500" alt="Payment Code"/>
 
 ## Star History
 
@@ -88,7 +91,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
 Powered by [YukiHookAPI](https://github.com/fankes/YukiHookAPI)
