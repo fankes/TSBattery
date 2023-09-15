@@ -40,7 +40,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.PackageInfoCompat
-import com.fankes.tsbattery.BuildConfig
+import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication.Companion.appContext
 
@@ -227,7 +227,7 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
  */
 fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
     packageManager?.setComponentEnabledSetting(
-        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home"),
+        ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home"),
         if (isShow) PackageManager.COMPONENT_ENABLED_STATE_DISABLED else PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
         PackageManager.DONT_KILL_APP
     )
@@ -239,5 +239,5 @@ fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
  */
 val Context.isLauncherIconShowing
     get() = packageManager?.getComponentEnabledSetting(
-        ComponentName(packageName, "${BuildConfig.APPLICATION_ID}.Home")
+        ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home")
     ) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED

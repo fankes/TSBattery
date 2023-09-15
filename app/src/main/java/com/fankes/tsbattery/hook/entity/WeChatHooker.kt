@@ -19,6 +19,8 @@
  *
  * This file is Created by fankes on 2022/9/29.
  */
+@file:Suppress("ConstPropertyName")
+
 package com.fankes.tsbattery.hook.entity
 
 import android.app.Activity
@@ -95,13 +97,11 @@ object WeChatHooker : YukiBaseHooker() {
         onAppLifecycle {
             onCreate {
                 ConfigData.init(context = this)
-                registerModuleAppActivities(
-                    when {
-                        EmptyActivityClass.hasClass() -> EmptyActivityClass
-                        WelabMainUIClass.hasClass() -> WelabMainUIClass
-                        else -> error("Inject WeChat Activity Proxy failed, unsupport version $appVersionName($appVersionCode)")
-                    }
-                )
+                registerModuleAppActivities(when {
+                    EmptyActivityClass.hasClass() -> EmptyActivityClass
+                    WelabMainUIClass.hasClass() -> WelabMainUIClass
+                    else -> error("Inject WeChat Activity Proxy failed, unsupport version $appVersionName($appVersionCode)")
+                })
                 if (ConfigData.isDisableAllHook) return@onCreate
                 hookSystemWakeLock()
                 loggerI(msg = "All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")

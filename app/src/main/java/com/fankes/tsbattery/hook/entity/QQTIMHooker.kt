@@ -19,6 +19,8 @@
  *
  * This file is Created by fankes on 2022/9/29.
  */
+@file:Suppress("ConstPropertyName")
+
 package com.fankes.tsbattery.hook.entity
 
 import android.app.Activity
@@ -30,8 +32,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ServiceCompat
 import androidx.fragment.app.Fragment
-import com.fankes.tsbattery.BuildConfig
 import com.fankes.tsbattery.R
+import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.hook.HookEntry
@@ -43,13 +45,31 @@ import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
 import com.highcapable.yukihookapi.hook.bean.VariousClass
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.highcapable.yukihookapi.hook.factory.*
+import com.highcapable.yukihookapi.hook.factory.buildOf
+import com.highcapable.yukihookapi.hook.factory.current
+import com.highcapable.yukihookapi.hook.factory.field
+import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
+import com.highcapable.yukihookapi.hook.factory.method
+import com.highcapable.yukihookapi.hook.factory.processName
+import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
 import com.highcapable.yukihookapi.hook.log.loggerD
 import com.highcapable.yukihookapi.hook.log.loggerE
 import com.highcapable.yukihookapi.hook.log.loggerI
 import com.highcapable.yukihookapi.hook.log.loggerW
-import com.highcapable.yukihookapi.hook.type.android.*
-import com.highcapable.yukihookapi.hook.type.java.*
+import com.highcapable.yukihookapi.hook.type.android.BuildClass
+import com.highcapable.yukihookapi.hook.type.android.BundleClass
+import com.highcapable.yukihookapi.hook.type.android.ContextClass
+import com.highcapable.yukihookapi.hook.type.android.IntentClass
+import com.highcapable.yukihookapi.hook.type.android.MessageClass
+import com.highcapable.yukihookapi.hook.type.java.AnyArrayClass
+import com.highcapable.yukihookapi.hook.type.java.AnyClass
+import com.highcapable.yukihookapi.hook.type.java.BooleanType
+import com.highcapable.yukihookapi.hook.type.java.CharSequenceClass
+import com.highcapable.yukihookapi.hook.type.java.IntType
+import com.highcapable.yukihookapi.hook.type.java.ListClass
+import com.highcapable.yukihookapi.hook.type.java.LongType
+import com.highcapable.yukihookapi.hook.type.java.StringClass
+import com.highcapable.yukihookapi.hook.type.java.UnitType
 import java.lang.reflect.Proxy
 
 /**
@@ -647,7 +667,7 @@ object QQTIMHooker : YukiBaseHooker() {
             method {
                 name = "setRightText"
                 param(CharSequenceClass)
-            }.call("${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})")
+            }.call(ModuleVersion.toString())
             method {
                 name = "setBgType"
                 param(IntType)
@@ -676,9 +696,10 @@ object QQTIMHooker : YukiBaseHooker() {
                 /** 不注入此进程防止部分系统发生 X5 浏览器内核崩溃问题 */
                 if (processName.startsWith(privilegedProcessName)) return@onCreate
                 ConfigData.init(context = this)
-                if (isQQNTVersion)
-                    registerModuleAppActivities(GeneralSettingActivityClass)
-                else registerModuleAppActivities(AboutActivityClass)
+                registerModuleAppActivities(when {
+                    isQQNTVersion -> GeneralSettingActivityClass
+                    else -> AboutActivityClass
+                })
                 if (ConfigData.isDisableAllHook) return@onCreate
                 hookSystemWakeLock()
                 hookQQBaseChatPie()

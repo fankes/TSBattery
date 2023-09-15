@@ -27,17 +27,24 @@ import android.content.ComponentName
 import android.content.Intent
 import android.view.HapticFeedbackConstants
 import androidx.core.view.isVisible
-import com.fankes.tsbattery.BuildConfig
+import com.fankes.projectpromote.ProjectPromote
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.JumpEvent
+import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.databinding.ActivityMainBinding
 import com.fankes.tsbattery.hook.entity.QQTIMHooker
 import com.fankes.tsbattery.hook.entity.WeChatHooker
 import com.fankes.tsbattery.ui.activity.base.BaseActivity
-import com.fankes.tsbattery.utils.factory.*
+import com.fankes.tsbattery.utils.factory.appVersionBrandOf
+import com.fankes.tsbattery.utils.factory.hideOrShowLauncherIcon
+import com.fankes.tsbattery.utils.factory.isInstall
+import com.fankes.tsbattery.utils.factory.isLauncherIconShowing
+import com.fankes.tsbattery.utils.factory.openBrowser
+import com.fankes.tsbattery.utils.factory.showDialog
+import com.fankes.tsbattery.utils.factory.snake
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
-import com.fankes.tsbattery.utils.tool.YukiPromoteTool
+import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.highcapable.yukihookapi.YukiHookAPI
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -65,16 +72,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 "${value.trim().let { it.substring(0, it.lastIndex) }}\n\n其余版本请自行测试是否有效。"
             } else "empty"
         }
-        private const val timSupportVersion = "2+、3+ (并未完全测试每个版本)。"
-        private const val wechatSupportVersion = "全版本仅支持基础省电，更多功能依然画饼。"
-
-        /** 预发布的版本标识 */
-        private const val pendingFlag = ""
+        private const val TIM_SUPPORT_VERSION = "2+、3+ (并未完全测试每个版本)。"
+        private const val WECHAT_SUPPORT_VERSION = "全版本仅支持基础省电，更多功能依然画饼。"
     }
 
     override fun onCreate() {
         /** 检查更新 */
-        GithubReleaseTool.checkingForUpdate(context = this, BuildConfig.VERSION_NAME) { version, function ->
+        GithubReleaseTool.checkingForUpdate(context = this, ModuleVersion.NAME) { version, function ->
             binding.mainTextReleaseVersion.apply {
                 text = "点击更新 $version"
                 isVisible = true
@@ -89,7 +93,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             binding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
             /** 推广、恰饭 */
-            YukiPromoteTool.promote(context = this)
+            ProjectPromote.show(activity = this, ModuleVersion.toString())
         } else
             showDialog {
                 title = "模块没有激活"
@@ -102,7 +106,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTextTimVer.text = PackageName.TIM.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         binding.mainTextWechatVer.text = PackageName.WECHAT.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         /** 设置文本 */
-        binding.mainTextVersion.text = "模块版本：${BuildConfig.VERSION_NAME} $pendingFlag"
+        binding.mainTextVersion.text = "模块版本：${ModuleVersion.NAME}"
+        /** 设置 CI 自动构建标识 */
+        if (ModuleVersion.isCiMode)
+            binding.mainTextReleaseVersion.apply {
+                text = "CI ${ModuleVersion.GITHUB_COMMIT_ID}"
+                isVisible = true
+                setOnClickListener {
+                    showDialog {
+                        title = "CI 自动构建说明"
+                        msg = """
+                          你正在使用的是 CI 自动构建版本，Commit ID 为 ${ModuleVersion.GITHUB_COMMIT_ID}。
+                          
+                          它是由代码提交后自动触发并构建、自动编译发布的，并未经任何稳定性测试，使用风险自负。
+                          
+                          CI 构建的版本不支持太极 (也请不要提交 CI 版本的适配，因为它们是不稳定的)，你可以使用 LSPosed / LSPatch。
+                        """.trimIndent()
+                        confirmButton(text = "我知道了")
+                        noCancelable()
+                    }
+                }
+            }
         binding.mainQqItem.setOnClickListener {
             showDialog {
                 title = "兼容的 QQ 版本"
@@ -115,7 +139,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainTimItem.setOnClickListener {
             showDialog {
                 title = "兼容的 TIM 版本"
-                msg = timSupportVersion
+                msg = TIM_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
             /** 振动提醒 */
@@ -124,7 +148,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainWechatItem.setOnClickListener {
             showDialog {
                 title = "兼容的微信版本"
-                msg = wechatSupportVersion
+                msg = WECHAT_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
             /** 振动提醒 */
@@ -147,6 +171,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
+        }
+        /** 判断当前启动模式 */
+        if (packageName != BuildConfigWrapper.APPLICATION_ID) {
+            binding.quickActionItem.isVisible = false
+            binding.displaySettingItem.isVisible = false
         }
     }
 
