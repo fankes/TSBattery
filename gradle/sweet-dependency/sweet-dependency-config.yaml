@@ -1,0 +1,75 @@
+preferences:
+  autowire-on-sync-mode: UPDATE_OPTIONAL_DEPENDENCIES
+  repositories-mode: FAIL_ON_PROJECT_REPOS
+
+repositories:
+  gradle-plugin-portal:
+    scope: PLUGINS
+  google:
+  maven-central:
+  jit-pack:
+  sonatype-oss-releases:
+  rovo89-xposed-api:
+    scope: LIBRARIES
+    url: https://api.xposed.info/
+    content:
+      include:
+        group:
+          de.robv.android.xposed
+  fankes-maven-releases:
+    url: https://raw.githubusercontent.com/fankes/maven-repository/main/repository/releases
+
+plugins:
+  com.android.application:
+    alias: android-application
+    version: 8.1.1
+  org.jetbrains.kotlin.android:
+    alias: kotlin-android
+    version: 1.9.10
+  com.google.devtools.ksp:
+    alias: kotlin-ksp
+    version: 1.9.10-1.0.13
+
+libraries:
+  com.fankes.projectpromote:
+    project-promote:
+      version: 1.0.0
+      repositories:
+        fankes-maven-releases
+  de.robv.android.xposed:
+    api:
+      version: 82
+      repositories:
+        rovo89-xposed-api
+  com.highcapable.yukihookapi:
+    api:
+      version: 1.1.11
+    ksp-xposed:
+      version-ref: <this>::api
+  com.github.duanhong169:
+    drawabletoolbox:
+      version: 1.0.7
+  com.squareup.okhttp3:
+    okhttp:
+      version: 5.0.0-alpha.11
+  androidx.core:
+    core-ktx:
+      version: 1.12.0
+  androidx.appcompat:
+    appcompat:
+      version: 1.6.1
+  com.google.android.material:
+    material:
+      version: 1.9.0
+  androidx.constraintlayout:
+    constraintlayout:
+      version: 2.1.4
+  androidx.test.ext:
+    junit:
+      version: 1.1.5
+  androidx.test.espresso:
+    espresso-core:
+      version: 3.5.1
+  junit:
+    junit:
+      version: 4.13.2
