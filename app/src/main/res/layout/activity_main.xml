@@ -265,6 +265,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/quick_action_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -356,6 +357,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/display_setting_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -590,7 +592,8 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/bg_qr_pay" />
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/bg_payment_code" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
