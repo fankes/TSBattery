@@ -17,7 +17,7 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2022/1/30.
+ * This file is created by fankes on 2022/1/30.
  */
 package com.fankes.tsbattery.ui.activity.base
 

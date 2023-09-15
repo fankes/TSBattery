@@ -17,7 +17,7 @@
  * and eula along with this software.  If not, see
  * <https://www.gnu.org/licenses/>
  *
- * This file is Created by fankes on 2021/9/4.
+ * This file is created by fankes on 2021/9/4.
  */
 @file:Suppress("SetTextI18n", "LocalVariableName", "SameParameterValue")
 
