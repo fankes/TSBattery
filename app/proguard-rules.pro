@@ -32,7 +32,7 @@
 -adaptresourcefilecontents
 
 -renamesourcefileattribute P
--keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,Signature,LineNumberTable
 
 # 排除注入的 Activity
 -keep class com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
@@ -49,6 +49,7 @@
 }
 
 -keep class * extends android.app.Activity
--keepclassmembers class * implements androidx.viewbinding.ViewBinding {
+-keep class * implements androidx.viewbinding.ViewBinding {
+    <init>();
     *** inflate(android.view.LayoutInflater);
 }
