@@ -50,29 +50,7 @@ import com.highcapable.yukihookapi.YukiHookAPI
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     companion object {
-
-        private val qqSupportVersions = arrayOf(
-            "8.0.0", "8.0.5", "8.0.7", "8.1.0", "8.1.3", "8.1.5", "8.1.8",
-            "8.2.0", "8.2.6", "8.2.7", "8.2.8", "8.2.11", "8.3.0", "8.3.5",
-            "8.3.6", "8.3.9", "8.4.1", "8.4.5", "8.4.8", "8.4.10", "8.4.17",
-            "8.4.18", "8.5.0", "8.5.5", "8.6.0", "8.6.5", "8.7.0", "8.7.5",
-            "8.7.8", "8.8.0", "8.8.3", "8.8.5", "8.8.11", "8.8.12", "8.8.17",
-            "8.8.20", "8.8.23", "8.8.28", "8.8.33", "8.8.35", "8.8.38", "8.8.50",
-            "8.8.55", "8.8.68", "8.8.80", "8.8.83", "8.8.85", "8.8.88", "8.8.90",
-            "8.8.93", "8.8.95", "8.8.98", "8.9.0", "8.9.1", "8.9.2", "8.9.3",
-            "8.9.5", "8.9.8", "8.9.10", "8.9.13", "8.9.15", "8.9.18", "8.9.19",
-            "8.9.20", "8.9.23", "8.9.25", "8.9.28", "8.9.30", "8.9.33", "8.9.35",
-            "8.9.38", "8.9.50", "8.9.53", "8.9.55", "8.9.58", "8.9.63", "8.9.68",
-            "8.9.70", "8.9.71", "8.9.73", "8.9.75", "8.9.76", "8.9.78",
-            "8.9.80", "8.9.83"
-        )
-        private val qqSupportVersion by lazy {
-            if (qqSupportVersions.isNotEmpty()) {
-                var value = ""
-                qqSupportVersions.forEach { value += "$it、" }
-                "${value.trim().let { it.substring(0, it.lastIndex) }}\n\n其余版本请自行测试是否有效。"
-            } else "empty"
-        }
+        private const val QQ_SUPPORT_VERSION = "理论支持 8.0.0+ 及以上版本。"
         private const val TIM_SUPPORT_VERSION = "2+、3+ (并未完全测试每个版本)。"
         private const val WECHAT_SUPPORT_VERSION = "全版本仅支持基础省电，更多功能依然画饼。"
     }
@@ -131,7 +109,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.mainQqItem.setOnClickListener {
             showDialog {
                 title = "兼容的 QQ 版本"
-                msg = qqSupportVersion
+                msg = QQ_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
             /** 振动提醒 */
