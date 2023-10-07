@@ -75,7 +75,7 @@ inline val Context.isNotSystemInDarkMode get() = !isSystemInDarkMode
  * @return [PackageInfo] or null
  */
 private fun Context.getPackageInfoCompat(packageName: String, flag: Number = 0) = runCatching {
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
     if (Build.VERSION.SDK_INT >= 33)
         packageManager?.getPackageInfo(packageName, PackageInfoFlags.of(flag.toLong()))
     else packageManager?.getPackageInfo(packageName, flag.toInt())

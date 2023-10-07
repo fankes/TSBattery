@@ -45,9 +45,10 @@ import com.fankes.tsbattery.utils.factory.dp
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
+import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.factory.processName
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
-import com.highcapable.yukihookapi.hook.log.loggerI
+import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.ViewClass
 
 /**
@@ -58,16 +59,19 @@ import com.highcapable.yukihookapi.hook.type.android.ViewClass
 object WeChatHooker : YukiBaseHooker() {
 
     /** 微信存在的类 - 未测试每个版本是否都存在 */
-    const val LauncherUIClass = "${PackageName.WECHAT}.ui.LauncherUI"
+    const val LauncherUIClassName = "${PackageName.WECHAT}.ui.LauncherUI"
 
     /** 微信存在的类 - 未测试每个版本是否都存在 */
-    private const val EmptyActivityClass = "${PackageName.WECHAT}.ui.EmptyActivity"
+    private val LauncherUIClass by lazyClassOrNull("${PackageName.WECHAT}.ui.LauncherUI")
 
     /** 微信存在的类 - 未测试每个版本是否都存在 */
-    private const val WelabMainUIClass = "${PackageName.WECHAT}.plugin.welab.ui.WelabMainUI"
+    private val EmptyActivityClass by lazyClassOrNull("${PackageName.WECHAT}.ui.EmptyActivity")
 
     /** 微信存在的类 - 未测试每个版本是否都存在 */
-    private const val SettingsUIClass = "${PackageName.WECHAT}.plugin.setting.ui.setting.SettingsUI"
+    private val WelabMainUIClass by lazyClassOrNull("${PackageName.WECHAT}.plugin.welab.ui.WelabMainUI")
+
+    /** 微信存在的类 - 未测试每个版本是否都存在 */
+    private val SettingsUIClass by lazyClassOrNull("${PackageName.WECHAT}.plugin.setting.ui.setting.SettingsUI")
 
     /** TSBattery 图标 TAG 名称 */
     private const val TSBARRERY_ICON_TAG = "tsbattery_icon"
@@ -98,51 +102,41 @@ object WeChatHooker : YukiBaseHooker() {
             onCreate {
                 ConfigData.init(context = this)
                 registerModuleAppActivities(when {
-                    EmptyActivityClass.hasClass() -> EmptyActivityClass
-                    WelabMainUIClass.hasClass() -> WelabMainUIClass
+                    EmptyActivityClass != null -> EmptyActivityClass
+                    WelabMainUIClass != null -> WelabMainUIClass
                     else -> error("Inject WeChat Activity Proxy failed, unsupport version $appVersionName($appVersionCode)")
                 })
                 if (ConfigData.isDisableAllHook) return@onCreate
                 hookSystemWakeLock()
-                loggerI(msg = "All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
+                YLog.info("All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
             }
         }
         /** 仅注入主进程 */
         withProcess(mainProcessName) {
             /** Hook 跳转事件 */
-            LauncherUIClass.hook {
-                injectMember {
-                    method {
-                        name = "onResume"
-                        emptyParam()
-                    }
-                    afterHook { instance<Activity>().jumpToModuleSettings(isFinish = false) }
-                }
-            }
+            LauncherUIClass?.method {
+                name = "onResume"
+                emptyParam()
+            }?.hook()?.after { instance<Activity>().jumpToModuleSettings(isFinish = false) }
             /** 向设置界面右上角添加按钮 */
-            SettingsUIClass.hook {
-                injectMember {
-                    method {
-                        name = "onResume"
-                        emptyParam()
-                    }
-                    afterHook {
-                        method {
-                            name = "get_fragment"
-                            emptyParam()
-                            superClass(isOnlySuperClass = true)
-                        }.get(instance).call()?.current()?.method {
-                            name = "getView"
-                            emptyParam()
-                            returnType = ViewClass
-                            superClass(isOnlySuperClass = true)
-                        }?.invoke<ViewGroup?>()?.also {
-                            it.context?.injectModuleAppResources()
-                            runCatching { it.getChildAt(0) as? ViewGroup? }.getOrNull()?.also { rootView ->
-                                if (rootView.findViewWithTag<View>(TSBARRERY_ICON_TAG) == null)
-                                    rootView.addView(createPreferenceIcon(it.context))
-                            }
-                        }
+            SettingsUIClass?.method {
+                name = "onResume"
+                emptyParam()
+            }?.hook()?.after {
+                SettingsUIClass?.method {
+                    name = "get_fragment"
+                    emptyParam()
+                    superClass(isOnlySuperClass = true)
+                }?.get(instance)?.call()?.current()?.method {
+                    name = "getView"
+                    emptyParam()
+                    returnType = ViewClass
+                    superClass(isOnlySuperClass = true)
+                }?.invoke<ViewGroup?>()?.also {
+                    it.context?.injectModuleAppResources()
+                    runCatching { it.getChildAt(0) as? ViewGroup? }.getOrNull()?.also { rootView ->
+                        if (rootView.findViewWithTag<View>(TSBARRERY_ICON_TAG) == null)
+                            rootView.addView(createPreferenceIcon(it.context))
                     }
                 }
             }

@@ -189,7 +189,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             startActivity(Intent().apply {
                 component = ComponentName(
                     packageName,
-                    if (packageName != PackageName.WECHAT) QQTIMHooker.JumpActivityClass else WeChatHooker.LauncherUIClass
+                    if (packageName != PackageName.WECHAT) QQTIMHooker.JumpActivityClassName else WeChatHooker.LauncherUIClassName
                 )
                 putExtra(JumpEvent.OPEN_MODULE_SETTING, YukiHookAPI.Status.compiledTimestamp)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK

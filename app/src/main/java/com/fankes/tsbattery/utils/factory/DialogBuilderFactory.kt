@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2022/1/7.
  */
-@file:Suppress("unused", "OPT_IN_USAGE", "EXPERIMENTAL_API_USAGE")
+@file:Suppress("unused")
 
 package com.fankes.tsbattery.utils.factory
 
@@ -34,7 +34,6 @@ import androidx.appcompat.app.AlertDialog
 import com.fankes.tsbattery.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.highcapable.yukihookapi.annotation.CauseProblemsApi
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 
 /**
@@ -134,7 +133,6 @@ class DialogBuilder(val context: Context) {
     fun cancel() = dialogInstance?.cancel()
 
     /** 显示对话框 */
-    @CauseProblemsApi
     fun show() = runInSafe {
         instance?.create()?.apply {
             customLayoutView?.let { setView(it) }

@@ -52,10 +52,7 @@ import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.factory.processName
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
-import com.highcapable.yukihookapi.hook.log.loggerD
-import com.highcapable.yukihookapi.hook.log.loggerE
-import com.highcapable.yukihookapi.hook.log.loggerI
-import com.highcapable.yukihookapi.hook.log.loggerW
+import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.BuildClass
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.android.ContextClass
@@ -78,40 +75,48 @@ import java.lang.reflect.Proxy
 object QQTIMHooker : YukiBaseHooker() {
 
     /** QQ、TIM 存在的类 */
-    const val JumpActivityClass = "${PackageName.QQ}.activity.JumpActivity"
+    const val JumpActivityClassName = "${PackageName.QQ}.activity.JumpActivity"
+
+    /** QQ、TIM 存在的类 */
+    private val JumpActivityClass by lazyClassOrNull(JumpActivityClassName)
 
     /** QQ、TIM 存在的类 (NT 版本不再存在) */
-    private const val QQSettingSettingActivityClass = "${PackageName.QQ}.activity.QQSettingSettingActivity"
+    private val QQSettingSettingActivityClass by lazyClassOrNull("${PackageName.QQ}.activity.QQSettingSettingActivity")
 
     /** QQ 新版存在的类 (Pad 模式 - NT 版本不再存在) */
-    private const val QQSettingSettingFragmentClass = "${PackageName.QQ}.fragment.QQSettingSettingFragment"
+    private val QQSettingSettingFragmentClass by lazyClassOrNull("${PackageName.QQ}.fragment.QQSettingSettingFragment")
 
     /** QQ、TIM 存在的类 (NT 版本不再存在) */
-    private const val AboutActivityClass = "${PackageName.QQ}.activity.AboutActivity"
+    private val AboutActivityClass by lazyClassOrNull("${PackageName.QQ}.activity.AboutActivity")
 
     /** QQ 新版本存在的类 */
-    private const val GeneralSettingActivityClass = "${PackageName.QQ}.activity.GeneralSettingActivity"
+    private val GeneralSettingActivityClass by lazyClassOrNull("${PackageName.QQ}.activity.GeneralSettingActivity")
 
     /** QQ 新版本 (NT) 存在的类 */
-    private const val MainSettingFragmentClass = "${PackageName.QQ}.setting.main.MainSettingFragment"
+    private val MainSettingFragmentClass by lazyClassOrNull("${PackageName.QQ}.setting.main.MainSettingFragment")
 
     /** QQ 新版本 (NT) 存在的类 */
-    private const val MainSettingConfigProviderClass = "${PackageName.QQ}.setting.main.MainSettingConfigProvider"
+    private val MainSettingConfigProviderClass by lazyClassOrNull("${PackageName.QQ}.setting.main.MainSettingConfigProvider")
 
     /** QQ、TIM 新版本存在的类 */
-    private const val FormSimpleItemClass = "${PackageName.QQ}.widget.FormSimpleItem"
+    private val FormSimpleItemClass by lazyClassOrNull("${PackageName.QQ}.widget.FormSimpleItem")
 
     /** QQ、TIM 旧版本存在的类 */
-    private const val FormCommonSingleLineItemClass = "${PackageName.QQ}.widget.FormCommonSingleLineItem"
+    private val FormCommonSingleLineItemClass by lazyClassOrNull("${PackageName.QQ}.widget.FormCommonSingleLineItem")
 
     /** QQ、TIM 存在的类 */
-    private const val CoreServiceClass = "${PackageName.QQ}.app.CoreService"
+    private val CoreServiceClass by lazyClassOrNull("${PackageName.QQ}.app.CoreService")
 
     /** QQ、TIM 存在的类 */
-    private const val CoreService_KernelServiceClass = "${PackageName.QQ}.app.CoreService\$KernelService"
+    private val CoreService_KernelServiceClass by lazyClassOrNull("${PackageName.QQ}.app.CoreService\$KernelService")
 
     /** 根据多个版本存的不同的类 */
-    private val BaseChatPieClass = VariousClass("${PackageName.QQ}.activity.aio.core.BaseChatPie", "${PackageName.QQ}.activity.BaseChatPie")
+    private val BaseChatPieClass by lazyClassOrNull(
+        VariousClass(
+            "${PackageName.QQ}.activity.aio.core.BaseChatPie",
+            "${PackageName.QQ}.activity.BaseChatPie"
+        )
+    )
 
     /** 一个内部进程的名称 (与 X5 浏览器内核有关) */
     private val privilegedProcessName = "$packageName:privileged_process"
@@ -131,7 +136,7 @@ object QQTIMHooker : YukiBaseHooker() {
      * 在 QQ NT 中 [AboutActivityClass] 已被移除 - 以此作为判断条件
      * @return [Boolean]
      */
-    private val isQQNTVersion get() = isQQ && AboutActivityClass.hasClass().not()
+    private val isQQNTVersion get() = isQQ && AboutActivityClass == null
 
     /** 当前宿主的版本 */
     private var hostVersionName = "<unknown>"
@@ -303,7 +308,7 @@ object QQTIMHooker : YukiBaseHooker() {
             }
             else -> {
                 HookEntry.isHookClientSupport = false
-                loggerW(msg = "$hostVersionName not supported!")
+                YLog.warn("$hostVersionName not supported!")
             }
         }
     }
@@ -313,72 +318,55 @@ object QQTIMHooker : YukiBaseHooker() {
      * @param methodName 方法名
      */
     private fun hookBaseChatPie(methodName: String) {
-        BaseChatPieClass.hook {
-            injectMember {
-                method {
-                    name = methodName
-                    emptyParam()
-                    returnType = UnitType
-                }
-                intercept()
-            }
-        }
+        BaseChatPieClass?.method {
+            name = methodName
+            emptyParam()
+            returnType = UnitType
+        }?.hook()?.intercept()
     }
 
     /** Hook CoreService QQ、TIM */
     private fun hookCoreService() {
-        CoreServiceClass.hook {
+        CoreServiceClass?.apply {
             if (isQQ) {
-                injectMember {
-                    method { name = "startTempService" }
-                    intercept()
-                }.ignoredNoSuchMemberFailure()
-                injectMember {
-                    method {
-                        name = "startCoreService"
-                        param(BooleanType)
-                    }
-                    intercept()
-                }.ignoredNoSuchMemberFailure()
-                injectMember {
-                    method {
-                        name = "onStartCommand"
-                        param(IntentClass, IntType, IntType)
-                    }
-                    replaceTo(any = 2)
-                }.ignoredNoSuchMemberFailure()
-            }
-            injectMember {
-                method { name = "onCreate" }
-                afterHook {
-                    if (ConfigData.isEnableKillQQTimCoreService)
-                        instance<Service>().apply {
-                            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-                            stopSelf()
-                            loggerD(msg = "Shutdown CoreService OK!")
-                        }
-                }
-            }
-        }
-        CoreService_KernelServiceClass.hook {
-            injectMember {
-                method { name = "onCreate" }
-                afterHook {
-                    if (ConfigData.isEnableKillQQTimCoreServiceChild)
-                        instance<Service>().apply {
-                            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-                            stopSelf()
-                            loggerD(msg = "Shutdown CoreService\$KernelService OK!")
-                        }
-                }
-            }
-            injectMember {
+                method {
+                    name = "startTempService"
+                }.ignored().hook().intercept()
+                method {
+                    name = "startCoreService"
+                    param(BooleanType)
+                }.ignored().hook().intercept()
                 method {
                     name = "onStartCommand"
                     param(IntentClass, IntType, IntType)
-                }
-                replaceTo(any = 2)
-            }.ignoredNoSuchMemberFailure()
+                }.ignored().hook().replaceTo(any = 2)
+            }
+            method {
+                name = "onCreate"
+            }.ignored().hook().after {
+                if (ConfigData.isEnableKillQQTimCoreService)
+                    instance<Service>().apply {
+                        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                        stopSelf()
+                        YLog.debug("Shutdown CoreService OK!")
+                    }
+            }
+        }
+        CoreService_KernelServiceClass?.apply {
+            method {
+                name = "onCreate"
+            }.ignored().hook().after {
+                if (ConfigData.isEnableKillQQTimCoreServiceChild)
+                    instance<Service>().apply {
+                        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                        stopSelf()
+                        YLog.debug("Shutdown CoreService\$KernelService OK!")
+                    }
+            }
+            method {
+                name = "onStartCommand"
+                param(IntentClass, IntType, IntType)
+            }.ignored().hook().replaceTo(any = 2)
         }
     }
 
@@ -390,63 +378,53 @@ object QQTIMHooker : YukiBaseHooker() {
          * 每个版本的差异暂未做排查
          * 旧版本理论上没有这个类
          */
-        findClass(name = "${PackageName.QQ}.msf.service.y").hook {
-            injectMember {
-                method {
-                    name = "a"
-                    param(StringClass, LongType)
-                    returnType = UnitType
-                }
-                intercept()
-            }.onAllFailure { loggerE(msg = "Hook MsfService Failed $it") }
-        }.ignoredHookClassNotFoundFailure()
+        "${PackageName.QQ}.msf.service.y".toClassOrNull()
+            ?.method {
+                name = "a"
+                param(StringClass, LongType)
+                returnType = UnitType
+            }?.ignored()?.hook()?.intercept()
         /**
          * 干掉自动上传服务的电源锁
          * 每个版本的差异暂未做排查
          */
-        findClass(name = "com.tencent.upload.impl.UploadServiceImpl").hook {
-            injectMember {
-                method { name = "acquireWakeLockIfNot" }
-                intercept()
-            }.onAllFailure { loggerE(msg = "Hook UploadServiceImpl Failed $it") }
-        }.ignoredHookClassNotFoundFailure()
+        "com.tencent.upload.impl.UploadServiceImpl".toClassOrNull()
+            ?.method {
+                name = "acquireWakeLockIfNot"
+            }?.ignored()?.hook()?.intercept()
         /**
-         * Hook 掉一个一像素保活 [Activity] 真的我怎么都想不到讯哥的程序员做出这种事情
+         * Hook 掉一个一像素保活 Activity 真的我怎么都想不到讯哥的程序员做出这种事情
          * 这个东西经过测试会在锁屏的时候吊起来，解锁的时候自动 finish()，无限耍流氓耗电
          * 2022/1/25 后期查证：锁屏界面消息快速回复窗口的解锁后拉起保活界面，也是毒瘤
          */
-        findClass(name = "${PackageName.QQ}.activity.QQLSUnlockActivity").hook {
-            injectMember {
-                method {
-                    name = "onCreate"
-                    param(BundleClass)
-                }
+        "${PackageName.QQ}.activity.QQLSUnlockActivity".toClassOrNull()
+            ?.method {
+                name = "onCreate"
+                param(BundleClass)
+            }?.ignored()?.hook {
                 var origDevice = ""
-                beforeHook {
+                before {
                     /** 由于在 onCreate 里有一行判断只要型号是 xiaomi 的设备就开电源锁，所以说这里临时替换成菊花厂 */
                     origDevice = Build.MANUFACTURER
                     if (Build.MANUFACTURER.lowercase() == "xiaomi")
                         BuildClass.field { name = "MANUFACTURER" }.get().set("HUAWEI")
                 }
-                afterHook {
+                after {
                     instance<Activity>().finish()
                     /** 这里再把型号替换回去 - 不影响应用变量等 Xposed 模块修改的型号 */
                     BuildClass.field { name = "MANUFACTURER" }.get().set(origDevice)
                 }
             }
-        }
         /**
          * 这个东西同上
-         * 反正也是一个一像素保活的 [Activity]
+         * 反正也是一个一像素保活的 Activity
          * 讯哥的程序员真的有你的
          * 2022/1/25 后期查证：锁屏界面消息快速回复窗口
          */
-        findClass("${PackageName.QQ}.activity.QQLSActivity\$14", "ktq").hook {
-            injectMember {
-                method { name = "run" }
-                intercept()
-            }.ignoredAllFailure()
-        }.ignoredHookClassNotFoundFailure()
+        VariousClass("${PackageName.QQ}.activity.QQLSActivity\$14", "ktq").toClassOrNull()
+            ?.method {
+                name = "run"
+            }?.ignored()?.hook()?.intercept()
         /**
          * 这个是毒瘤核心类
          * WakeLockMonitor
@@ -457,144 +435,97 @@ object QQTIMHooker : YukiBaseHooker() {
          * 👮🏻 经过排查 Play 版本没这个类...... Emmmm 不想说啥了
          * ✅ 备注：8.9.x 版本已经基本移除了这个功能，没有再发现存在这个类
          */
-        findClass(name = "com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor").hook {
-            injectMember {
-                method {
-                    name = "onHook"
-                    param(StringClass, AnyClass, AnyArrayClass, AnyClass)
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "doReport"
-                    param("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity", IntType)
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "afterHookedMethod"
-                    param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "beforeHookedMethod"
-                    param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
-                }
-                intercept()
-            }
-            injectMember {
-                method { name = "onAppBackground" }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "onOtherProcReport"
-                    param(BundleClass)
-                }
-                intercept()
-            }
-            injectMember {
-                method { name = "onProcessRun30Min" }
-                intercept()
-            }
-            injectMember {
-                method { name = "onProcessBG5Min" }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "writeReport"
-                    param(BooleanType)
-                }
-                intercept()
-            }
-        }.ignoredHookClassNotFoundFailure()
+        "com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor".toClassOrNull()?.apply {
+            method {
+                name = "onHook"
+                param(StringClass, AnyClass, AnyArrayClass, AnyClass)
+            }.ignored().hook().intercept()
+            method {
+                name = "doReport"
+                param("com.tencent.qapmsdk.qqbattery.monitor.WakeLockMonitor\$WakeLockEntity", IntType)
+            }.ignored().hook().intercept()
+            method {
+                name = "afterHookedMethod"
+                param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
+            }.ignored().hook().intercept()
+            method {
+                name = "beforeHookedMethod"
+                param("com.tencent.qapmsdk.qqbattery.monitor.MethodHookParam")
+            }.ignored().hook().intercept()
+            method {
+                name = "onAppBackground"
+            }.ignored().hook().intercept()
+            method {
+                name = "onOtherProcReport"
+                param(BundleClass)
+            }.ignored().hook().intercept()
+            method {
+                name = "onProcessRun30Min"
+            }.ignored().hook().intercept()
+            method {
+                name = "onProcessBG5Min"
+            }.ignored().hook().intercept()
+            method {
+                name = "writeReport"
+                param(BooleanType)
+            }.ignored().hook().intercept()
+        }
         /**
          * 这个是毒瘤核心操作类
          * 功能同上、全部拦截
          * 👮🏻 经过排查 Play 版本也没这个类...... Emmmm 不想说啥了
          * ✅ 备注：8.9.x 版本已经基本移除了这个功能，没有再发现存在这个类
          */
-        findClass(name = "com.tencent.qapmsdk.qqbattery.QQBatteryMonitor").hook {
-            injectMember {
-                method { name = "start" }
-                intercept()
-            }
-            injectMember {
-                method { name = "stop" }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "handleMessage"
-                    param(MessageClass)
-                }
-                replaceToTrue()
-            }
-            injectMember {
-                method { name = "startMonitorInner" }
-                intercept()
-            }
-            injectMember {
-                method { name = "onAppBackground" }
-                intercept()
-            }
-            injectMember {
-                method { name = "onAppForeground" }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "setLogWhite"
-                    paramCount = 2
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "setCmdWhite"
-                    paramCount = 2
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "onWriteLog"
-                    param(StringClass, StringClass)
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "onCmdRequest"
-                    param(StringClass)
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "addData"
-                    paramCount = 4
-                }
-                intercept()
-            }
-            injectMember {
-                method {
-                    name = "onGpsScan"
-                    paramCount = 2
-                }
-                intercept()
-            }
-        }.ignoredHookClassNotFoundFailure()
+        "com.tencent.qapmsdk.qqbattery.QQBatteryMonitor".toClassOrNull()?.apply {
+            method {
+                name = "start"
+            }.ignored().hook().intercept()
+            method {
+                name = "stop"
+            }.ignored().hook().intercept()
+            method {
+                name = "handleMessage"
+                param(MessageClass)
+            }.ignored().hook().intercept()
+            method {
+                name = "startMonitorInner"
+            }.ignored().hook().intercept()
+            method {
+                name = "onAppBackground"
+            }.ignored().hook().intercept()
+            method {
+                name = "onAppForeground"
+            }.ignored().hook().intercept()
+            method {
+                name = "setLogWhite"
+                paramCount = 2
+            }.ignored().hook().intercept()
+            method {
+                name = "setCmdWhite"
+                paramCount = 2
+            }.ignored().hook().intercept()
+            method {
+                name = "onWriteLog"
+                param(StringClass, StringClass)
+            }.ignored().hook().intercept()
+            method {
+                name = "onCmdRequest"
+                param(StringClass)
+            }.ignored().hook().intercept()
+            method {
+                name = "addData"
+                paramCount = 4
+            }.ignored().hook().intercept()
+            method {
+                name = "onGpsScan"
+                paramCount = 2
+            }.ignored().hook().intercept()
+        }
     }
 
     /** Hook QQ 的设置界面添加模块设置入口 (新版) */
     private fun hookQQSettingsUi() {
-        if (MainSettingFragmentClass.hasClass().not()) return loggerE(msg = "Could not found main setting class, hook aborted")
+        if (MainSettingFragmentClass == null) return YLog.error("Could not found main setting class, hook aborted")
         val kotlinUnit = "kotlin.Unit"
         val kotlinFunction0 = "kotlin.jvm.functions.Function0"
         val simpleItemProcessorClass = searchClass {
@@ -605,7 +536,7 @@ object QQTIMHooker : YukiBaseHooker() {
                 returnType = UnitType
             }
             field().count { it >= 6 }
-        }.get() ?: return loggerE(msg = "Could not found processor class, hook aborted")
+        }.get() ?: return YLog.error("Could not found processor class, hook aborted")
 
         /**
          * 创建入口点条目
@@ -623,7 +554,7 @@ object QQTIMHooker : YukiBaseHooker() {
                     param { it[0].name == kotlinFunction0 }
                     paramCount = 1
                     returnType = UnitType
-                }.giveAll().lastOrNull() ?: error("Could not found processor method")
+                }.giveAll().firstOrNull() ?: error("Could not found processor method")
                 val proxyOnClick = Proxy.newProxyInstance(appClassLoader, arrayOf(onClickMethod.parameterTypes[0])) { any, method, args ->
                     if (method.name == "invoke") {
                         context.startModuleSettings()
@@ -632,20 +563,15 @@ object QQTIMHooker : YukiBaseHooker() {
                 }; onClickMethod.invoke(entryItem, proxyOnClick)
             } ?: error("Could not create TSBattery entry item")
         }
-        MainSettingConfigProviderClass.hook {
-            injectMember {
-                method {
-                    param(ContextClass)
-                    returnType = ListClass
-                }
-                afterHook {
-                    val context = args().first().cast<Context>() ?: return@afterHook
-                    val processor = result<MutableList<Any?>>() ?: return@afterHook
-                    processor.add(1, processor[0]?.javaClass?.buildOf(arrayListOf<Any>().apply { add(createTSEntryItem(context)) }, "", "") {
-                        param(ListClass, CharSequenceClass, CharSequenceClass)
-                    })
-                }
-            }
+        MainSettingConfigProviderClass?.method {
+            param(ContextClass)
+            returnType = ListClass
+        }?.hook()?.after {
+            val context = args().first().cast<Context>() ?: return@after
+            val processor = result<MutableList<Any?>>() ?: return@after
+            processor.add(1, processor[0]?.javaClass?.buildOf(arrayListOf<Any>().apply { add(createTSEntryItem(context)) }, "", "") {
+                param(ListClass, CharSequenceClass, CharSequenceClass)
+            })
         }
     }
 
@@ -656,10 +582,10 @@ object QQTIMHooker : YukiBaseHooker() {
     private fun hookQQSettingsUiLegacy(instance: Any?) {
         /** 当前的顶级 Item 实例 */
         val formItemRefRoot = instance?.current()?.field {
-            type { it.name == FormSimpleItemClass || it.name == FormCommonSingleLineItemClass }.index(num = 1)
+            type { it == FormSimpleItemClass || it == FormCommonSingleLineItemClass }.index(num = 1)
         }?.cast<View?>()
         /** 创建一个新的 Item */
-        FormSimpleItemClass.toClassOrNull()?.buildOf<View>(instance?.compatToActivity()) { param(ContextClass) }?.current {
+        FormSimpleItemClass?.buildOf<View>(instance?.compatToActivity()) { param(ContextClass) }?.current {
             method {
                 name = "setLeftText"
                 param(CharSequenceClass)
@@ -705,44 +631,29 @@ object QQTIMHooker : YukiBaseHooker() {
                 hookQQBaseChatPie()
                 hookCoreService()
                 hookQQDisgusting()
-                loggerI(msg = "All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
+                YLog.info("All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
             }
         }
         /** 仅注入主进程 */
         withProcess(mainProcessName) {
             /** Hook 跳转事件 */
-            JumpActivityClass.hook {
-                injectMember {
-                    method {
-                        name = "doOnCreate"
-                        param(BundleClass)
-                    }
-                    afterHook { instance<Activity>().jumpToModuleSettings() }
-                }
-            }
+            JumpActivityClass?.method {
+                name = "doOnCreate"
+                param(BundleClass)
+            }?.hook()?.after { instance<Activity>().jumpToModuleSettings() }
             /** Hook 设置界面入口点 */
             if (isQQNTVersion) hookQQSettingsUi()
             else {
                 /** 将条目注入设置界面 (Activity) */
-                QQSettingSettingActivityClass.hook {
-                    injectMember {
-                        method {
-                            name = "doOnCreate"
-                            param(BundleClass)
-                        }
-                        afterHook { hookQQSettingsUiLegacy(instance) }
-                    }
-                }
+                QQSettingSettingActivityClass?.method {
+                    name = "doOnCreate"
+                    param(BundleClass)
+                }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
                 /** 将条目注入设置界面 (Fragment) */
-                QQSettingSettingFragmentClass.hook {
-                    injectMember {
-                        method {
-                            name = "doOnCreateView"
-                            paramCount = 3
-                        }
-                        afterHook { hookQQSettingsUiLegacy(instance) }
-                    }
-                }.ignoredHookClassNotFoundFailure()
+                QQSettingSettingFragmentClass?.method {
+                    name = "doOnCreateView"
+                    paramCount = 3
+                }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
             }
         }
     }
