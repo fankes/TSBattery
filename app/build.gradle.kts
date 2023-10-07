@@ -71,6 +71,7 @@ dependencies {
     implementation(com.highcapable.yukihookapi.api)
     ksp(com.highcapable.yukihookapi.ksp.xposed)
     implementation(com.fankes.projectpromote.project.promote)
+    implementation(org.luckypray.dexkit)
     implementation(com.github.duanhong169.drawabletoolbox)
     implementation(com.squareup.okhttp3.okhttp)
     implementation(androidx.core.core.ktx)

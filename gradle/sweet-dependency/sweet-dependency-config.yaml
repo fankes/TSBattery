@@ -46,6 +46,9 @@ libraries:
       version: 1.2.0
     ksp-xposed:
       version-ref: <this>::api
+  org.luckypray:
+    dexkit:
+      version: 2.0.0-rc4
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7

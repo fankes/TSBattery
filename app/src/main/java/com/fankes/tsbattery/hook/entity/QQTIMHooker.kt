@@ -36,11 +36,11 @@ import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
-import com.fankes.tsbattery.hook.HookEntry
 import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.isQQNightMode
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
+import com.fankes.tsbattery.hook.helper.DexKitHelper
 import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
 import com.highcapable.yukihookapi.hook.bean.VariousClass
@@ -50,7 +50,6 @@ import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
 import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.factory.processName
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
 import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.BuildClass
@@ -67,6 +66,7 @@ import com.highcapable.yukihookapi.hook.type.java.ListClass
 import com.highcapable.yukihookapi.hook.type.java.LongType
 import com.highcapable.yukihookapi.hook.type.java.StringClass
 import com.highcapable.yukihookapi.hook.type.java.UnitType
+import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 
 /**
@@ -118,6 +118,16 @@ object QQTIMHooker : YukiBaseHooker() {
         )
     )
 
+    /**
+     * DexKit 搜索结果数据实现类
+     */
+    private object DexKitData {
+        var BaseChatPie_RemainScreenOnMethod: Method? = null
+        var BaseChatPie_CancelRemainScreenOnMethod: Method? = null
+        var SimpleItemProcessorClass: Class<*>? = null
+        var SimpleItemProcessorClass_OnClickMethod: Method? = null
+    }
+
     /** 一个内部进程的名称 (与 X5 浏览器内核有关) */
     private val privilegedProcessName = "$packageName:privileged_process"
 
@@ -147,6 +157,61 @@ object QQTIMHooker : YukiBaseHooker() {
      */
     private fun Any.compatToActivity() = if (this is Activity) this else current().method { name = "getActivity"; superClass() }.invoke()
 
+    /** 使用 DexKit 进行搜索 */
+    private fun searchUsingDexKit() {
+        val classLoader = appClassLoader ?: return
+        DexKitHelper.create(this) {
+            BaseChatPieClass?.name?.also { baseChatPieClassName ->
+                DexKitData.BaseChatPie_RemainScreenOnMethod =
+                    findMethod {
+                        matcher {
+                            declaredClass(baseChatPieClassName)
+                            usingStrings("remainScreenOn")
+                            paramCount = 0
+                            returnType = UnitType.name
+                        }
+                    }.firstOrNull()?.getMethodInstance(classLoader)
+                DexKitData.BaseChatPie_CancelRemainScreenOnMethod =
+                    findMethod {
+                        matcher {
+                            declaredClass(baseChatPieClassName)
+                            usingStrings("cancelRemainScreenOn")
+                            paramCount = 0
+                            returnType = UnitType.name
+                        }
+                    }.firstOrNull()?.getMethodInstance(classLoader)
+            }
+            val kotlinFunction0 = "kotlin.jvm.functions.Function0"
+            findClass {
+                searchPackages("${PackageName.QQ}.setting.processor")
+                matcher {
+                    methods {
+                        add {
+                            name = "<init>"
+                            paramTypes(ContextClass.name, IntType.name, CharSequenceClass.name, IntType.name)
+                        }
+                        add {
+                            paramTypes(kotlinFunction0)
+                            returnType = UnitType.name
+                        }
+                    }
+                    fields { count(6..Int.MAX_VALUE) }
+                }
+            }.firstOrNull()?.name?.also { className ->
+                DexKitData.SimpleItemProcessorClass = className.toClass()
+                DexKitData.SimpleItemProcessorClass_OnClickMethod =
+                    findMethod {
+                        matcher {
+                            declaredClass = className
+                            paramTypes(kotlinFunction0)
+                            returnType = UnitType.name
+                            usingNumbers(2)
+                        }
+                    }.firstOrNull()?.getMethodInstance(classLoader)
+            }
+        }
+    }
+
     /**
      * 这个类 QQ 的 BaseChatPie 是控制聊天界面的
      *
@@ -154,175 +219,16 @@ object QQTIMHooker : YukiBaseHooker() {
      *
      * remainScreenOn、cancelRemainScreenOn
      *
-     * 这两个方法一个是挂起电源锁常驻亮屏
-     *
-     * 一个是停止常驻亮屏
-     *
-     * 不由分说每个版本混淆的方法名都会变
-     *
-     * 所以说每个版本重新适配 - 也可以提交分支帮我适配
-     *
-     * - ❗Hook 错了方法会造成闪退！
+     * 这两个方法一个是挂起电源锁常驻亮屏 - 一个是停止常驻亮屏
      */
     private fun hookQQBaseChatPie() {
-        if (isQQ) when (hostVersionName) {
-            "8.0.0" -> {
-                hookBaseChatPie("bq")
-                hookBaseChatPie("aL")
-            }
-            "8.0.5", "8.0.7" -> {
-                hookBaseChatPie("bw")
-                hookBaseChatPie("aQ")
-            }
-            "8.1.0", "8.1.3" -> {
-                hookBaseChatPie("bE")
-                hookBaseChatPie("aT")
-            }
-            "8.1.5" -> {
-                hookBaseChatPie("bF")
-                hookBaseChatPie("aT")
-            }
-            "8.1.8", "8.2.0", "8.2.6" -> {
-                hookBaseChatPie("bC")
-                hookBaseChatPie("aT")
-            }
-            "8.2.7", "8.2.8", "8.2.11", "8.3.0" -> {
-                hookBaseChatPie("bE")
-                hookBaseChatPie("aV")
-            }
-            "8.3.5" -> {
-                hookBaseChatPie("bR")
-                hookBaseChatPie("aX")
-            }
-            "8.3.6" -> {
-                hookBaseChatPie("cp")
-                hookBaseChatPie("aX")
-            }
-            "8.3.9" -> {
-                hookBaseChatPie("cj")
-                hookBaseChatPie("aT")
-            }
-            "8.4.1", "8.4.5" -> {
-                hookBaseChatPie("ck")
-                hookBaseChatPie("aT")
-            }
-            "8.4.8", "8.4.10", "8.4.17", "8.4.18", "8.5.0" -> {
-                hookBaseChatPie("remainScreenOn")
-                hookBaseChatPie("cancelRemainScreenOn")
-            }
-            "8.5.5" -> {
-                hookBaseChatPie("bT")
-                hookBaseChatPie("aN")
-            }
-            "8.6.0", "8.6.5", "8.7.0", "8.7.5", "8.7.8", "8.8.0", "8.8.3", "8.8.5" -> {
-                hookBaseChatPie("ag")
-                hookBaseChatPie("ah")
-            }
-            "8.8.11", "8.8.12" -> {
-                hookBaseChatPie("bc")
-                hookBaseChatPie("bd")
-            }
-            "8.8.17", "8.8.20" -> {
-                hookBaseChatPie("bd")
-                hookBaseChatPie("be")
-            }
-            "8.8.23", "8.8.28" -> {
-                hookBaseChatPie("bf")
-                hookBaseChatPie("bg")
-            }
-            "8.8.33" -> {
-                hookBaseChatPie("bg")
-                hookBaseChatPie("bh")
-            }
-            "8.8.35", "8.8.38" -> {
-                hookBaseChatPie("bi")
-                hookBaseChatPie("bj")
-            }
-            "8.8.50" -> {
-                hookBaseChatPie("bj")
-                hookBaseChatPie("bk")
-            }
-            "8.8.55", "8.8.68", "8.8.80" -> {
-                hookBaseChatPie("bk")
-                hookBaseChatPie("bl")
-            }
-            "8.8.83", "8.8.85", "8.8.88", "8.8.90" -> {
-                hookBaseChatPie("bl")
-                hookBaseChatPie("bm")
-            }
-            "8.8.93", "8.8.95" -> {
-                hookBaseChatPie("J3")
-                hookBaseChatPie("S")
-            }
-            "8.8.98" -> {
-                hookBaseChatPie("M3")
-                hookBaseChatPie("S")
-            }
-            "8.9.0", "8.9.1", "8.9.2" -> {
-                hookBaseChatPie("N3")
-                hookBaseChatPie("S")
-            }
-            "8.9.3", "8.9.5" -> {
-                hookBaseChatPie("H3")
-                hookBaseChatPie("P")
-            }
-            "8.9.8", "8.9.10" -> {
-                hookBaseChatPie("H3")
-                hookBaseChatPie("N")
-            }
-            "8.9.13" -> {
-                hookBaseChatPie("y3")
-                hookBaseChatPie("H")
-            }
-            "8.9.15", "8.9.18", "8.9.19", "8.9.20" -> {
-                hookBaseChatPie("w3")
-                hookBaseChatPie("H")
-            }
-            "8.9.23", "8.9.25" -> {
-                hookBaseChatPie("z3")
-                hookBaseChatPie("H")
-            }
-            "8.9.28", "8.9.30", "8.9.33" -> {
-                hookBaseChatPie("A3")
-                hookBaseChatPie("H")
-            }
-            "8.9.35", "8.9.38", "8.9.50" -> {
-                hookBaseChatPie("B3")
-                hookBaseChatPie("H")
-            }
-            "8.9.53", "8.9.55", "8.9.58" -> {
-                hookBaseChatPie("C3")
-                hookBaseChatPie("H")
-            }
-            "8.9.63", "8.9.68" -> {
-                hookBaseChatPie("t3")
-                hookBaseChatPie("J")
-            }
-            "8.9.70", "8.9.71", "8.9.73", "8.9.75", "8.9.76" -> {
-                hookBaseChatPie("u3")
-                hookBaseChatPie("J")
-            }
-            "8.9.78", "8.9.80", "8.9.83" -> {
-                hookBaseChatPie("v3")
-                hookBaseChatPie("I")
-            }
-            else -> {
-                HookEntry.isHookClientSupport = false
-                YLog.warn("$hostVersionName not supported!")
-            }
-        }
-    }
-
-    /**
-     * 拦截 [BaseChatPieClass] 的目标方法体封装
-     * @param methodName 方法名
-     */
-    private fun hookBaseChatPie(methodName: String) {
-        BaseChatPieClass?.method {
-            name = methodName
-            emptyParam()
-            returnType = UnitType
-        }?.hook()?.intercept()
+        /**
+         * 打印警告信息
+         * @param index 序号
+         */
+        fun warn(index: Int) = YLog.warn("$hostVersionName [$index] not support!")
+        DexKitData.BaseChatPie_RemainScreenOnMethod?.hook()?.intercept() ?: warn(index = 0)
+        DexKitData.BaseChatPie_CancelRemainScreenOnMethod?.hook()?.intercept() ?: warn(index = 1)
     }
 
     /** Hook CoreService QQ、TIM */
@@ -527,16 +433,7 @@ object QQTIMHooker : YukiBaseHooker() {
     private fun hookQQSettingsUi() {
         if (MainSettingFragmentClass == null) return YLog.error("Could not found main setting class, hook aborted")
         val kotlinUnit = "kotlin.Unit"
-        val kotlinFunction0 = "kotlin.jvm.functions.Function0"
-        val simpleItemProcessorClass = searchClass {
-            from("${PackageName.QQ}.setting.processor").absolute()
-            constructor { param(ContextClass, IntType, CharSequenceClass, IntType) }
-            method {
-                param(kotlinFunction0)
-                returnType = UnitType
-            }
-            field().count { it >= 6 }
-        }.get() ?: return YLog.error("Could not found processor class, hook aborted")
+        val simpleItemProcessorClass = DexKitData.SimpleItemProcessorClass ?: return YLog.error("Could not found processor class, hook aborted")
 
         /**
          * 创建入口点条目
@@ -550,11 +447,7 @@ object QQTIMHooker : YukiBaseHooker() {
             return simpleItemProcessorClass.buildOf(context, R.id.tsbattery_qq_entry_item_id, "TSBattery", iconResId) {
                 param(ContextClass, IntType, CharSequenceClass, IntType)
             }?.also { entryItem ->
-                val onClickMethod = simpleItemProcessorClass.method {
-                    param { it[0].name == kotlinFunction0 }
-                    paramCount = 1
-                    returnType = UnitType
-                }.giveAll().firstOrNull() ?: error("Could not found processor method")
+                val onClickMethod = DexKitData.SimpleItemProcessorClass_OnClickMethod ?: error("Could not found processor method")
                 val proxyOnClick = Proxy.newProxyInstance(appClassLoader, arrayOf(onClickMethod.parameterTypes[0])) { any, method, args ->
                     if (method.name == "invoke") {
                         context.startModuleSettings()
@@ -613,6 +506,7 @@ object QQTIMHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
+        searchUsingDexKit()
         onAppLifecycle(isOnFailureThrowToApp = false) {
             attachBaseContext { baseContext, hasCalledSuper ->
                 if (hasCalledSuper.not()) baseConfiguration = baseContext.resources.configuration
