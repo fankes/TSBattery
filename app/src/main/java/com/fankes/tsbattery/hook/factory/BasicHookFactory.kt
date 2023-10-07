@@ -81,13 +81,8 @@ fun Activity.jumpToModuleSettings(isFinish: Boolean = true) {
 
 /** Hook 系统电源锁 */
 fun PackageParam.hookSystemWakeLock() {
-    PowerManager_WakeLockClass.hook {
-        injectMember {
-            method {
-                name = "acquireLocked"
-                emptyParam()
-            }
-            intercept()
-        }
-    }
+    PowerManager_WakeLockClass.method {
+        name = "acquireLocked"
+        emptyParam()
+    }.hook().intercept()
 }

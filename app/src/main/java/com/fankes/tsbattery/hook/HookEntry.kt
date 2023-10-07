@@ -29,7 +29,7 @@ import com.highcapable.yukihookapi.hook.factory.configs
 import com.highcapable.yukihookapi.hook.factory.encase
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
 
-@InjectYukiHookWithXposed(isUsingResourcesHook = false)
+@InjectYukiHookWithXposed
 object HookEntry : IYukiHookXposedInit {
 
     /** 是否完全支持当前版本 */
