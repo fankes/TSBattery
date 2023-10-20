@@ -36,6 +36,7 @@ import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
+import com.fankes.tsbattery.hook.HookEntry
 import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.isQQNightMode
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
@@ -226,7 +227,10 @@ object QQTIMHooker : YukiBaseHooker() {
          * 打印警告信息
          * @param index 序号
          */
-        fun warn(index: Int) = YLog.warn("$hostVersionName [$index] not support!")
+        fun warn(index: Int) {
+            HookEntry.isHookClientSupport = false
+            YLog.warn("$hostVersionName [$index] not support!")
+        }
         DexKitData.BaseChatPie_RemainScreenOnMethod?.hook()?.intercept() ?: warn(index = 0)
         DexKitData.BaseChatPie_CancelRemainScreenOnMethod?.hook()?.intercept() ?: warn(index = 1)
     }
