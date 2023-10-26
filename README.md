@@ -6,7 +6,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/fankes/TSBattery/total?label=downloads)
 ![GitHub all releases](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20downloads&labelColor=F48FB1)
 
-[![Telegram CI](https://img.shields.io/badge/CI%20builds-Telegram-blue.svg?logo=telegram)](https://t.me/TSBATTERY_CI)
+[![Telegram CI](https://img.shields.io/badge/CI%20builds-Telegram-blue.svg?logo=telegram)](https://t.me/TSBattery_CI)
 [![Telegram](https://img.shields.io/badge/discussion-Telegram-blue.svg?logo=telegram)](https://t.me/XiaofangInternet)
 [![QQ](https://img.shields.io/badge/discussion-QQ-blue.svg?logo=tencent-qq&logoColor=red)](https://qm.qq.com/cgi-bin/qm/qr?k=dp2h5YhWiga9WWb_Oh7kSHmx01X8I8ii&jump_from=webapi&authKey=Za5CaFP0lk7+Zgsk2KpoBD7sSaYbeXbsDgFjiWelOeH4VSionpxFJ7V0qQBSqvFM)
 [![QQ 频道](https://img.shields.io/badge/discussion-QQ%20频道-blue.svg?logo=tencent-qq&logoColor=red)](https://pd.qq.com/s/44gcy28h)
@@ -34,20 +34,22 @@ This Xposed Module is for use by specific apps for users in mainland China, you 
 - 如果在微信设置界面右上角你无法找到 **TSBattery**
   的图标，请尝试同时激活 [WeXposed (微X模块)](https://github.com/Xposed-Modules-Repo/com.fkzhang.wechatxposed)
 
-## 发行渠道说明
+## 发行渠道
 
-- [Automatic Build on Commit](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml)
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub CI](https://github.com/fankes/TSBattery/actions/workflows/commit_ci.yml) | CI 自动构建 (测试版) |
+|------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|---------------|
 
-上述更新为代码 `commit` 后自动触发，具体更新内容可点击上方的文字前往 **GitHub Actions** 进行查看，本更新由开源的流程自动编译发布，
-**不保证其稳定性**， 所发布的版本**仅供测试**，且不会特殊说明甚至可能会变更版本号或保持与当前稳定版相同的版本号。
+| <img src="https://github.com/peter-iakovlev/Telegram/blob/public/Icon.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [Telegram CI 频道](https://t.me/TSBattery_CI) | CI 自动构建 (测试版) |
+|-----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|---------------|
 
-如果你需要直接下载 CI 自动构建打包的安装包，请点击顶部的 `CI builds | Telegram` 标签加入 Telegram CI 自动构建频道。
+| <img src="https://avatars.githubusercontent.com/in/15368?s=64&v=4" width = "30" height = "30" alt="LOGO"/> | [GitHub Releases](https://github.com/fankes/TSBattery/releases) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|-----------|
 
-- [Release](https://github.com/fankes/TSBattery/releases)
-- [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases)
-- [蓝奏云 **密码：tsbt**](https://fankes.lanzouy.com/b02zfz3sj)
+| <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----------|
 
-上述更新为手动发布的稳定版，具体更新内容可点击上方的文字前往指定的发布页面查看，稳定版的更新将会同时发布到上述地址中，同步更新。
+| <img src="https://cdn-icons-png.flaticon.com/128/1163/1163624.png" width = "30" height = "30" alt="LOGO"/> | [蓝奏云 **(密码：tsbt)**](https://fankes.lanzouy.com/b02zfz3sj) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|-----------|
 
 本模块发布地址仅限于上述所列出的地址，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
 
