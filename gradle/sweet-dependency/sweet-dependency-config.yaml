@@ -22,13 +22,13 @@ repositories:
 plugins:
   com.android.application:
     alias: android-application
-    version: 8.1.2
+    version: 8.2.0
   org.jetbrains.kotlin.android:
     alias: kotlin-android
-    version: 1.9.20
+    version: 1.9.21
   com.google.devtools.ksp:
     alias: kotlin-ksp
-    version: 1.9.20-1.0.14
+    version: 1.9.21-1.0.15
 
 libraries:
   com.fankes.projectpromote:
@@ -48,7 +48,7 @@ libraries:
       version-ref: <this>::api
   org.luckypray:
     dexkit:
-      version: 2.0.0-rc7
+      version: 2.0.0-rc9
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7
