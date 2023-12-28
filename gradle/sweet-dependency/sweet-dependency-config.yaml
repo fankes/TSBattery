@@ -25,10 +25,10 @@ plugins:
     version: 8.2.0
   org.jetbrains.kotlin.android:
     alias: kotlin-android
-    version: 1.9.21
+    version: 1.9.22
   com.google.devtools.ksp:
     alias: kotlin-ksp
-    version: 1.9.21-1.0.15
+    version: 1.9.22-1.0.16
 
 libraries:
   com.fankes.projectpromote:
@@ -48,13 +48,13 @@ libraries:
       version-ref: <this>::api
   org.luckypray:
     dexkit:
-      version: 2.0.0-rc9
+      version: 2.0.0
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7
   com.squareup.okhttp3:
     okhttp:
-      version: 5.0.0-alpha.11
+      version: 5.0.0-alpha.12
   androidx.core:
     core-ktx:
       version: 1.12.0
@@ -63,7 +63,7 @@ libraries:
       version: 1.6.1
   com.google.android.material:
     material:
-      version: 1.10.0
+      version: 1.11.0
   androidx.constraintlayout:
     constraintlayout:
       version: 2.1.4
