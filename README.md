@@ -79,7 +79,7 @@ This Xposed Module is for use by specific apps for users in mainland China, you 
 - [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)
 
 ```
-Copyright (C) 2017-2023 Fankes Studio(qzmmcn@163.com)
+Copyright (C) 2017-2024 Fankes Studio(qzmmcn@163.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -97,4 +97,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Powered by [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI)
 
-版权所有 © 2017-2023 Fankes Studio(qzmmcn@163.com)
+版权所有 © 2017-2024 Fankes Studio(qzmmcn@163.com)
