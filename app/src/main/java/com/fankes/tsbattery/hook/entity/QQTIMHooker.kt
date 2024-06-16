@@ -119,6 +119,9 @@ object QQTIMHooker : YukiBaseHooker() {
         )
     )
 
+    /** 是否存在 [BaseChatPieClass] */
+    private val hasBaseChatPieClass by lazy { BaseChatPieClass != null }
+
     /**
      * DexKit 搜索结果数据实现类
      */
@@ -221,8 +224,14 @@ object QQTIMHooker : YukiBaseHooker() {
      * remainScreenOn、cancelRemainScreenOn
      *
      * 这两个方法一个是挂起电源锁常驻亮屏 - 一个是停止常驻亮屏
+     *
+     * - 在 QQ NT 版本中完全移除了 BaseChatPie 类 - 所以不再处理
      */
     private fun hookQQBaseChatPie() {
+        if (hasBaseChatPieClass.not()) {
+            HookEntry.isHookClientSupport = true
+            return YLog.debug("Start for QQ NT version,.")
+        }
         /**
          * 打印警告信息
          * @param index 序号
