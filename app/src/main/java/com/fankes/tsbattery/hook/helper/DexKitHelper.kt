@@ -51,6 +51,6 @@ object DexKitHelper {
      */
     fun create(param: PackageParam, initiate: DexKitBridge.() -> Unit) {
         load()
-        runCatching { DexKitBridge.create(param.appInfo.sourceDir)?.use { initiate(it) } }
+        runCatching { DexKitBridge.create(param.appInfo.sourceDir).use { initiate(it) } }
     }
 }

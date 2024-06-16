@@ -171,7 +171,7 @@ object QQTIMHooker : YukiBaseHooker() {
                             paramCount = 0
                             returnType = UnitType.name
                         }
-                    }.firstOrNull()?.getMethodInstance(classLoader)
+                    }.singleOrNull()?.getMethodInstance(classLoader)
                 DexKitData.BaseChatPie_CancelRemainScreenOnMethod =
                     findMethod {
                         matcher {
@@ -180,7 +180,7 @@ object QQTIMHooker : YukiBaseHooker() {
                             paramCount = 0
                             returnType = UnitType.name
                         }
-                    }.firstOrNull()?.getMethodInstance(classLoader)
+                    }.singleOrNull()?.getMethodInstance(classLoader)
             }
             val kotlinFunction0 = "kotlin.jvm.functions.Function0"
             findClass {
@@ -198,7 +198,7 @@ object QQTIMHooker : YukiBaseHooker() {
                     }
                     fields { count(6..Int.MAX_VALUE) }
                 }
-            }.firstOrNull()?.name?.also { className ->
+            }.singleOrNull()?.name?.also { className ->
                 DexKitData.SimpleItemProcessorClass = className.toClass()
                 DexKitData.SimpleItemProcessorClass_OnClickMethod =
                     findMethod {
@@ -208,7 +208,7 @@ object QQTIMHooker : YukiBaseHooker() {
                             returnType = UnitType.name
                             usingNumbers(2)
                         }
-                    }.firstOrNull()?.getMethodInstance(classLoader)
+                    }.singleOrNull()?.getMethodInstance(classLoader)
             }
         }
     }
