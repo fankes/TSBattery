@@ -69,10 +69,10 @@ libraries:
       version: 2.1.4
   androidx.test.ext:
     junit:
-      version: 1.1.5
+      version: 1.2.1
   androidx.test.espresso:
     espresso-core:
-      version: 3.5.1
+      version: 3.6.1
   junit:
     junit:
       version: 4.13.2
