@@ -35,6 +35,7 @@ import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.param.PackageParam
 import com.highcapable.yukihookapi.hook.type.android.PowerManager_WakeLockClass
+import com.highcapable.yukihookapi.hook.type.java.IntType
 import kotlin.system.exitProcess
 
 /** QQ、TIM 存在的类 */
@@ -81,8 +82,14 @@ fun Activity.jumpToModuleSettings(isFinish: Boolean = true) {
 
 /** Hook 系统电源锁 */
 fun PackageParam.hookSystemWakeLock() {
-    PowerManager_WakeLockClass.method {
-        name = "acquireLocked"
-        emptyParam()
-    }.hook().intercept()
+    PowerManager_WakeLockClass.apply {
+        method {
+            name = "acquireLocked"
+            emptyParam()
+        }.hook().intercept()
+        method {
+            name = "release"
+            param(IntType)
+        }.hook().intercept()
+    }
 }
