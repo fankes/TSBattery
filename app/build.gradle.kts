@@ -58,7 +58,13 @@ androidComponents {
     onVariants(selector().all()) {
         it.outputs.forEach { output ->
             val currentType = it.buildType
-            val currentSuffix = property.github.ci.commit.id.let { suffix -> if (suffix.isNotBlank()) "-$suffix" else "" }
+
+            // Workaround for GitHub Actions.
+            // Why? I don't know, but it works.
+            // Unresolved reference. None of the following candidates is applicable because of receiver type mismatch:
+            //                       public inline fun CharSequence.isNotBlank(): Boolean defined in kotlin.text.
+            @Suppress("UNNECESSARY_SAFE_CALL")
+            val currentSuffix = property.github.ci.commit.id?.let { suffix -> if (suffix.isNotBlank()) "-$suffix" else "" }
             val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
             if (output is com.android.build.api.variant.impl.VariantOutputImpl)
                 output.outputFileName.set("${property.project.name}-v$currentVersion-$currentType.apk")
