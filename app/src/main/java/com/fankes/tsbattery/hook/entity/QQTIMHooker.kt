@@ -150,7 +150,7 @@ object QQTIMHooker : YukiBaseHooker() {
      * 在 QQ NT 中 [AboutActivityClass] 已被移除 - 以此作为判断条件
      * @return [Boolean]
      */
-    private val isQQNTVersion get() = isQQ && AboutActivityClass == null
+    private val isQQNTVersion get() = AboutActivityClass == null
 
     /** 当前宿主的版本 */
     private var hostVersionName = "<unknown>"
