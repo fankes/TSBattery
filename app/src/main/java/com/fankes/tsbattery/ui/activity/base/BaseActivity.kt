@@ -19,6 +19,8 @@
  *
  * This file is created by fankes on 2022/1/30.
  */
+@file:Suppress("DEPRECATION")
+
 package com.fankes.tsbattery.ui.activity.base
 
 import android.os.Build
@@ -46,6 +48,7 @@ abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
             name = "inflate"
             param(LayoutInflaterClass)
         }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
+        if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
