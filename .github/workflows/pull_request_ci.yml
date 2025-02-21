@@ -17,7 +17,7 @@ jobs:
     env:
       APK_OUTPUT_PATH: 'app/build/outputs/apk'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Prepare GitHub Env
         run: |
           GITHUB_SHA=${{ github.sha }}
@@ -28,7 +28,7 @@ jobs:
         with:
           cmake-version: '3.22.1'
       - name: Prepare Java 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           java-package: jdk
@@ -59,12 +59,12 @@ jobs:
           echo "DEBUG_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
           echo "RELEASE_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
       - name: Upload Artifacts (Debug)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.DEBUG_APK_PATH }}
           name: TSBattery-debug-${{ github.event.head_commit.id }}
       - name: Upload Artifacts (Release)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.RELEASE_APK_PATH }}
           name: TSBattery-release-${{ github.event.head_commit.id }}
