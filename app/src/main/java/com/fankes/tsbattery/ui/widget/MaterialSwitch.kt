@@ -31,8 +31,10 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.SwitchCompat
 import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
+import com.highcapable.hikage.annotation.HikageView
 import top.defaults.drawabletoolbox.DrawableBuilder
 
+@HikageView
 class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {
 
     private fun toColors(selected: Int, pressed: Int, normal: Int): ColorStateList {
