@@ -42,14 +42,12 @@ import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.appVersionCode
 import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.highcapable.yukihookapi.hook.factory.current
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
-import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.factory.processName
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
 import com.highcapable.yukihookapi.hook.log.YLog
-import com.highcapable.yukihookapi.hook.type.android.ViewClass
 
 /**
  * Hook 微信
@@ -114,24 +112,24 @@ object WeChatHooker : YukiBaseHooker() {
         /** 仅注入主进程 */
         withProcess(mainProcessName) {
             /** Hook 跳转事件 */
-            LauncherUIClass?.method {
+            LauncherUIClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "onResume"
-                emptyParam()
+                emptyParameters()
             }?.hook()?.after { instance<Activity>().jumpToModuleSettings(isFinish = false) }
             /** 向设置界面右上角添加按钮 */
-            SettingsUIClass?.method {
+            SettingsUIClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "onResume"
-                emptyParam()
+                emptyParameters()
             }?.hook()?.after {
-                SettingsUIClass?.method {
+                SettingsUIClass?.resolve()?.optional()?.firstMethodOrNull {
                     name = "get_fragment"
-                    emptyParam()
-                    superClass(isOnlySuperClass = true)
-                }?.get(instance)?.call()?.current()?.method {
+                    emptyParameters()
+                    superclass()
+                }?.of(instance)?.invoke()?.resolve()?.optional()?.firstMethodOrNull {
                     name = "getView"
-                    emptyParam()
-                    returnType = ViewClass
-                    superClass(isOnlySuperClass = true)
+                    emptyParameters()
+                    returnType = View::class
+                    superclass()
                 }?.invoke<ViewGroup?>()?.also {
                     it.context?.injectModuleAppResources()
                     runCatching { it.getChildAt(0) as? ViewGroup? }.getOrNull()?.also { rootView ->

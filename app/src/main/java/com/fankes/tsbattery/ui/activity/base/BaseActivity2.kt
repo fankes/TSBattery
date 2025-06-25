@@ -23,23 +23,26 @@
 
 package com.fankes.tsbattery.ui.activity.base
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.annotation.CallSuper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
-import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.base.ModuleAppCompatActivity
+import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
 import android.R as Android_R
 
-abstract class BaseActivity2 : ModuleAppCompatActivity() {
+abstract class BaseActivity2 : AppCompatActivity(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+        delegate.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
         /** 隐藏系统的标题栏 */
         supportActionBar?.hide()
@@ -60,4 +63,16 @@ abstract class BaseActivity2 : ModuleAppCompatActivity() {
 
     /** 回调 [onCreate] 方法 */
     abstract fun onCreate()
+
+    override fun getClassLoader() = delegate.getClassLoader()
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        delegate.onConfigurationChanged(newConfig)
+        super.onConfigurationChanged(newConfig)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        delegate.onRestoreInstanceState(savedInstanceState)
+        super.onRestoreInstanceState(savedInstanceState)
+    }
 }
