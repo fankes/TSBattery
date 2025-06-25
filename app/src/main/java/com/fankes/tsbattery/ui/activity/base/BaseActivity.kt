@@ -19,23 +19,24 @@
  *
  * This file is created by fankes on 2022/1/30.
  */
-@file:Suppress("DEPRECATION")
-
 package com.fankes.tsbattery.ui.activity.base
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
-import com.highcapable.yukihookapi.hook.factory.current
-import com.highcapable.yukihookapi.hook.factory.method
-import com.highcapable.yukihookapi.hook.type.android.LayoutInflaterClass
-import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.base.ModuleAppCompatActivity
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.extension.genericSuperclassTypeArguments
+import com.highcapable.kavaref.extension.toClassOrNull
+import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
 
-abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
+abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery
 
@@ -43,11 +44,13 @@ abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
     lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        delegate.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
-        binding = current().generic()?.argument()?.method {
+        val bindingClass = javaClass.genericSuperclassTypeArguments().firstOrNull()?.toClassOrNull()
+        binding = bindingClass?.resolve()?.optional()?.firstMethodOrNull {
             name = "inflate"
-            param(LayoutInflaterClass)
-        }?.get()?.invoke<VB>(layoutInflater) ?: error("binding failed")
+            parameters(LayoutInflater::class)
+        }?.invoke<VB>(layoutInflater) ?: error("binding failed")
         if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
         /** 隐藏系统的标题栏 */
@@ -57,6 +60,7 @@ abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
             isAppearanceLightStatusBars = isNotSystemInDarkMode
             isAppearanceLightNavigationBars = isNotSystemInDarkMode
         }
+        @Suppress("DEPRECATION")
         ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
             window?.statusBarColor = it
             window?.navigationBarColor = it
@@ -68,4 +72,16 @@ abstract class BaseActivity<VB : ViewBinding> : ModuleAppCompatActivity() {
 
     /** 回调 [onCreate] 方法 */
     abstract fun onCreate()
+
+    override fun getClassLoader() = delegate.getClassLoader()
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        delegate.onConfigurationChanged(newConfig) 
+        super.onConfigurationChanged(newConfig)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        delegate.onRestoreInstanceState(savedInstanceState) 
+        super.onRestoreInstanceState(savedInstanceState)
+    }
 }

@@ -24,18 +24,16 @@ package com.fankes.tsbattery.hook.factory
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.PowerManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.fankes.tsbattery.const.JumpEvent
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.hook.entity.QQTIMHooker.toClass
 import com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
+import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.extension.VariousClass
 import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.bean.VariousClass
-import com.highcapable.yukihookapi.hook.factory.field
-import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.param.PackageParam
-import com.highcapable.yukihookapi.hook.type.android.PowerManager_WakeLockClass
-import com.highcapable.yukihookapi.hook.type.java.IntType
 import kotlin.system.exitProcess
 
 /** QQ、TIM 存在的类 */
@@ -48,14 +46,27 @@ private val ThemeUtilClass = VariousClass("${PackageName.QQ}.theme.ThemeUtil", "
  * QQ、TIM 主题是否为夜间模式
  * @return [Boolean]
  */
-fun Context.isQQNightMode() = runCatching {
-    ThemeUtilClass.get(classLoader).method {
-        name = "getUserCurrentThemeId"
-        paramCount = 1
-    }.get().string(MobileQQClass.toClass(classLoader)
-        .field { name = "sMobileQQ" }.ignored().get().current(ignored = true)?.field { name = "mAppRuntime" }?.any()
-    ).let { it.endsWith("1103") || it.endsWith("2920") }
-}.getOrNull() ?: false
+fun Context.isQQNightMode(): Boolean {
+    val sMobileQQ = MobileQQClass.toClass(classLoader).resolve()
+        .optional()
+        .firstFieldOrNull {
+            name = "sMobileQQ"
+            superclass()
+        }?.get()
+    val mAppRuntime = sMobileQQ?.resolve()
+        ?.optional()
+        ?.firstFieldOrNull {
+            name = "mAppRuntime"
+            superclass()
+        }?.get()
+    val currentThemeId = ThemeUtilClass.load(classLoader).resolve()
+        .optional()
+        .firstMethodOrNull {
+            name = "getUserCurrentThemeId"
+            parameterCount = 1
+        }?.invokeQuietly<String>(mAppRuntime)
+    return currentThemeId?.let { it.endsWith("1103") || it.endsWith("2920") } == true
+}
 
 /** 启动模块设置 [Activity] */
 fun Context.startModuleSettings() {
@@ -82,14 +93,14 @@ fun Activity.jumpToModuleSettings(isFinish: Boolean = true) {
 
 /** Hook 系统电源锁 */
 fun PackageParam.hookSystemWakeLock() {
-    PowerManager_WakeLockClass.apply {
-        method {
+    PowerManager.WakeLock::class.resolve().apply {
+        firstMethod {
             name = "acquireLocked"
-            emptyParam()
+            emptyParameters()
         }.hook().intercept()
-        method {
+        firstMethod {
             name = "release"
-            param(IntType)
+            parameters(Int::class)
         }.hook().intercept()
     }
 }
