@@ -42,6 +42,7 @@ import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.appVersionCode
 import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
@@ -125,7 +126,7 @@ object WeChatHooker : YukiBaseHooker() {
                     name = "get_fragment"
                     emptyParameters()
                     superclass()
-                }?.of(instance)?.invoke()?.resolve()?.optional()?.firstMethodOrNull {
+                }?.of(instance)?.invoke()?.asResolver()?.optional()?.firstMethodOrNull {
                     name = "getView"
                     emptyParameters()
                     returnType = View::class

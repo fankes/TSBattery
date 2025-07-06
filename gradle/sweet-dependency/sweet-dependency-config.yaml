@@ -48,9 +48,9 @@ libraries:
       version-ref: <this>::api
   com.highcapable.kavaref:
     kavaref-core:
-      version: 1.0.0
+      version: 1.0.1
     kavaref-extension:
-      version: 1.0.0
+      version: 1.0.1
   com.highcapable.hikage:
     hikage-core:
       version: 1.0.1
