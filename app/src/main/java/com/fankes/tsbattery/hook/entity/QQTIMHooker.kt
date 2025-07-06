@@ -47,6 +47,7 @@ import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.hook.helper.DexKitHelper
 import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.kavaref.extension.ArrayClass
 import com.highcapable.kavaref.extension.VariousClass
@@ -150,7 +151,7 @@ object QQTIMHooker : YukiBaseHooker() {
      * @return [Activity] or null
      */
     private fun Any.compatToActivity() = if (this !is Activity)
-        resolve().optional().firstMethodOrNull { name = "getActivity"; superclass() }?.invoke()
+        asResolver().optional().firstMethodOrNull { name = "getActivity"; superclass() }?.invoke()
     else this
 
     /** 使用 DexKit 进行搜索 */
@@ -496,13 +497,13 @@ object QQTIMHooker : YukiBaseHooker() {
      */
     private fun hookQQSettingsUiLegacy(instance: Any?) {
         /** 当前的顶级 Item 实例 */
-        val formItemRefRoot = instance?.resolve()?.optional()?.lastFieldOrNull {
+        val formItemRefRoot = instance?.asResolver()?.optional()?.lastFieldOrNull {
             type { it == FormSimpleItemClass || it == FormCommonSingleLineItemClass }
         }?.get<View>()
 
         /** 创建一个新的 Item */
         val item = FormSimpleItemClass?.createInstanceAsTypeOrNull<View>(instance?.compatToActivity())
-        item?.resolve()?.optional()?.apply {
+        item?.asResolver()?.optional()?.apply {
             firstMethodOrNull {
                 name = "setLeftText"
                 parameters(CharSequence::class)

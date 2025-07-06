@@ -30,6 +30,7 @@ import com.fankes.tsbattery.const.JumpEvent
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.hook.entity.QQTIMHooker.toClass
 import com.fankes.tsbattery.ui.activity.parasitic.ConfigActivity
+import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.kavaref.extension.VariousClass
 import com.highcapable.yukihookapi.YukiHookAPI
@@ -53,7 +54,7 @@ fun Context.isQQNightMode(): Boolean {
             name = "sMobileQQ"
             superclass()
         }?.get()
-    val mAppRuntime = sMobileQQ?.resolve()
+    val mAppRuntime = sMobileQQ?.asResolver()
         ?.optional()
         ?.firstFieldOrNull {
             name = "mAppRuntime"
