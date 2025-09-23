@@ -25,10 +25,10 @@ plugins:
     version: 8.13.0
   org.jetbrains.kotlin.android:
     alias: kotlin-android
-    version: 2.2.10
+    version: 2.2.20
   com.google.devtools.ksp:
     alias: kotlin-ksp
-    version: 2.2.10-2.0.2
+    version: 2.2.20-2.0.3
 
 libraries:
   com.fankes.projectpromote:
@@ -48,7 +48,7 @@ libraries:
       version-ref: <this>::api
   com.highcapable.kavaref:
     kavaref-core:
-      version: 1.0.1
+      version: 1.0.2
     kavaref-extension:
       version: 1.0.1
   com.highcapable.hikage:
@@ -64,7 +64,7 @@ libraries:
       version: 1.0.1
   org.luckypray:
     dexkit:
-      version: 2.0.6
+      version: 2.0.7
   com.github.duanhong169:
     drawabletoolbox:
       version: 1.0.7
