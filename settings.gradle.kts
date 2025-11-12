@@ -22,6 +22,10 @@ plugins {
 gropify {
     global {
         common {
+            includeKeys(
+                "GITHUB_CI_COMMIT_ID",
+                "^project\\..*\$".toRegex()
+            )
             permanentKeyValues("GITHUB_CI_COMMIT_ID" to "")
             locations(GropifyLocation.RootProject, GropifyLocation.SystemEnv)
         }
