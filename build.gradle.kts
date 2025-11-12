@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    autowire(libs.plugins.android.application) apply false
-    autowire(libs.plugins.kotlin.android) apply false
-    autowire(libs.plugins.kotlin.ksp) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.ksp) apply false
 }
 
 allprojects {
