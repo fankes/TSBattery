@@ -578,23 +578,9 @@
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:lineSpacingExtra="6dp"
-                    android:text="恰饭时间\n点击前往酷安关注我，获取我的更多应用"
+                    android:text="点击这里前往酷安关注我，获取我的更多应用"
                     android:textColor="@color/colorTextGray"
                     android:textSize="16sp" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:cardCornerRadius="15dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/bg_payment_code" />
-                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"

@@ -45,6 +45,7 @@ import com.fankes.tsbattery.utils.factory.showDialog
 import com.fankes.tsbattery.utils.factory.snake
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
+import com.highcapable.betterandroid.ui.extension.view.isUnderline
 import com.highcapable.yukihookapi.YukiHookAPI
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -142,6 +143,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/fankes/TSBattery") }
         /** 恰饭！ */
+        binding.linkWithFollowMe.isUnderline = true
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
