@@ -29,6 +29,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.Keep
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
@@ -77,6 +78,7 @@ import com.highcapable.yukihookapi.hook.factory.classOf
 import kotlin.system.exitProcess
 import android.R as Android_R
 
+@Keep
 class ConfigActivity : BaseActivity2() {
 
     private lateinit var updateVersionText: TextView

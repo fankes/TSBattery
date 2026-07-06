@@ -29,6 +29,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.annotation.CallSuper
+import androidx.annotation.Keep
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import com.fankes.tsbattery.R
@@ -37,6 +38,7 @@ import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
 import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
 import android.R as Android_R
 
+@Keep
 abstract class BaseActivity2 : ComponentActivity(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery

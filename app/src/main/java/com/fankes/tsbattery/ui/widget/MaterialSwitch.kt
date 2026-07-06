@@ -29,11 +29,13 @@ import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.Switch
+import androidx.annotation.Keep
 import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
 import com.highcapable.hikage.annotation.HikageView
 import top.defaults.drawabletoolbox.DrawableBuilder
 
+@Keep
 @HikageView
 class MaterialSwitch(context: Context, attrs: AttributeSet?) : Switch(context, attrs) {
 

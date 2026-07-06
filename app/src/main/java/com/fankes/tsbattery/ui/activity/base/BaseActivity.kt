@@ -25,6 +25,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
@@ -36,6 +37,7 @@ import com.highcapable.kavaref.extension.genericSuperclassTypeArguments
 import com.highcapable.kavaref.extension.toClassOrNull
 import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
 
+@Keep
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery
