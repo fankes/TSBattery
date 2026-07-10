@@ -44,6 +44,11 @@ android {
     }
     lint { checkReleaseBuilds = false }
     androidResources.additionalParameters += listOf("--allow-reserved-package-id", "--package-id", "0x37")
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
 }
 
 androidComponents {
