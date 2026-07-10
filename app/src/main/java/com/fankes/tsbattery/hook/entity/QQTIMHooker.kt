@@ -40,8 +40,6 @@ import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.hook.HookEntry
-import com.fankes.tsbattery.hook.entity.QQTIMHooker.AboutActivityClass
-import com.fankes.tsbattery.hook.entity.QQTIMHooker.BaseChatPieClass
 import com.fankes.tsbattery.hook.factory.hookSystemWakeLock
 import com.fankes.tsbattery.hook.factory.isQQNightMode
 import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
