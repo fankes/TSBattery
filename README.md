@@ -75,7 +75,7 @@ This Xposed Module is for use by specific apps for users in mainland China, you 
 
 ## Star History
 
-![Star History Chart](https://api.star-history.com/svg?repos=fankes/TSBattery&type=Date)
+![Star History Chart](https://star-history.dera.page/svg?repos=fankes/TSBattery&type=Date)
 
 ## 许可证
 
