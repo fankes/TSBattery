@@ -571,6 +571,42 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
+                <LinearLayout
+                    android:id="@+id/layout_support_me"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_aifadian" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="6dp"
+                        android:text="捐赠支持"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/link_with_support_me"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="6dp"
+                        android:text="点击这里前往我的爱发电主页支持我"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/link_with_follow_me"
                     android:layout_width="match_parent"

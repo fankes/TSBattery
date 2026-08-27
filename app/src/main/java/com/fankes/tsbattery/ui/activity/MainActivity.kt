@@ -143,6 +143,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         /** 项目地址按钮点击事件 */
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/fankes/TSBattery") }
         /** 恰饭！ */
+        binding.layoutSupportMe.setOnClickListener {
+            openBrowser(url = "https://afdian.com/a/fankes")
+        }
+        binding.linkWithSupportMe.isUnderline = true
         binding.linkWithFollowMe.isUnderline = true
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
