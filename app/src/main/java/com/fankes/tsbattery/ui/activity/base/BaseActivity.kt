@@ -55,9 +55,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), ModuleActiv
         }?.invoke<VB>(layoutInflater) ?: error("binding failed")
         if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
         setContentView(binding.root)
-        /** 隐藏系统的标题栏 */
+        // 隐藏系统的标题栏
         supportActionBar?.hide()
-        /** 初始化沉浸状态栏 */
+        // 初始化沉浸状态栏
         WindowCompat.getInsetsController(window, window.decorView).apply {
             isAppearanceLightStatusBars = isNotSystemInDarkMode
             isAppearanceLightNavigationBars = isNotSystemInDarkMode
@@ -68,7 +68,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), ModuleActiv
             window?.navigationBarColor = it
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
         }
-        /** 装载子类 */
+        // 装载子类
         onCreate()
     }
 

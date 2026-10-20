@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2022/1/8.
  */
-@file:Suppress("SameParameterValue", "UseSwitchCompatOrMaterialCode")
+@file:Suppress("SameParameterValue")
 
 package com.fankes.tsbattery.ui.widget
 
@@ -28,8 +28,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.widget.Switch
 import androidx.annotation.Keep
+import androidx.appcompat.widget.SwitchCompat
 import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
 import com.highcapable.hikage.annotation.HikageView
@@ -37,7 +37,7 @@ import top.defaults.drawabletoolbox.DrawableBuilder
 
 @Keep
 @HikageView
-class MaterialSwitch(context: Context, attrs: AttributeSet?) : Switch(context, attrs) {
+class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {
 
     private fun toColors(selected: Int, pressed: Int, normal: Int): ColorStateList {
         val colors = intArrayOf(selected, pressed, normal)

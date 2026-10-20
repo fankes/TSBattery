@@ -23,10 +23,11 @@
 
 package com.fankes.tsbattery.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.CompoundButton
-import com.highcapable.yukihookapi.hook.factory.prefs
-import com.highcapable.yukihookapi.hook.xposed.prefs.YukiHookPrefsBridge
+import com.highcapable.yukihookapi.hook.factory.preferences
+import com.highcapable.yukihookapi.hook.xposed.preference.YukiHookPreferences
 
 /**
  * 全局配置存储控制类
@@ -45,30 +46,31 @@ object ConfigData {
     /** 停用全部省电功能 (停用模块) */
     const val DISABLE_ALL_HOOK = "disable_all_hook"
 
-    /** 当前的 [YukiHookPrefsBridge] */
-    private var prefs: YukiHookPrefsBridge? = null
+    /** 当前的 [YukiHookPreferences] */
+    @SuppressLint("StaticFieldLeak")
+    private var preferences: YukiHookPreferences? = null
 
     /**
-     * 读取 [YukiHookPrefsBridge]
+     * 读取 [YukiHookPreferences]
      * @param key 键值名称
      * @param value 键值内容
      * @return [Boolean]
      */
-    private fun getBoolean(key: String, value: Boolean = false) = prefs?.getBoolean(key, value) ?: value
+    private fun getBoolean(key: String, value: Boolean = false) = preferences?.getBoolean(key, value) ?: value
 
     /**
-     * 存入 [YukiHookPrefsBridge]
+     * 存入 [YukiHookPreferences]
      * @param key 键值名称
      * @param value 键值内容
      */
-    private fun putBoolean(key: String, value: Boolean = false) = prefs?.edit { putBoolean(key, value) }
+    private fun putBoolean(key: String, value: Boolean = false) = preferences?.edit { putBoolean(key, value) }
 
     /**
-     * 初始化 [YukiHookPrefsBridge]
+     * 初始化 [YukiHookPreferences]
      * @param context 实例
      */
     fun init(context: Context) {
-        prefs = context.prefs(name = "tsbattery_config").native()
+        preferences = context.preferences(name = "tsbattery_config").native()
     }
 
     /**

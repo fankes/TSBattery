@@ -56,15 +56,27 @@ jobs:
         run: |
           ./gradlew :app:assembleDebug
           ./gradlew :app:assembleRelease
-          echo "DEBUG_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/debug -name '*.apk')" >> $GITHUB_ENV
-          echo "RELEASE_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/release -name '*.apk')" >> $GITHUB_ENV
-      - name: Upload Artifacts (Debug)
+          echo "MODERN_DEBUG_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/modern/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "MODERN_RELEASE_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/modern/release -name '*.apk')" >> $GITHUB_ENV
+          echo "LEGACY_DEBUG_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/legacy/debug -name '*.apk')" >> $GITHUB_ENV
+          echo "LEGACY_RELEASE_APK_PATH=$(find ${{ env.APK_OUTPUT_PATH }}/legacy/release -name '*.apk')" >> $GITHUB_ENV
+      - name: Upload Artifacts (Modern Debug)
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.DEBUG_APK_PATH }}
-          name: TSBattery-debug-${{ github.event.head_commit.id }}
-      - name: Upload Artifacts (Release)
+          path: ${{ env.MODERN_DEBUG_APK_PATH }}
+          name: TSBattery-modern-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Modern Release)
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.RELEASE_APK_PATH }}
-          name: TSBattery-release-${{ github.event.head_commit.id }}
+          path: ${{ env.MODERN_RELEASE_APK_PATH }}
+          name: TSBattery-modern-release-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Legacy Debug)
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.LEGACY_DEBUG_APK_PATH }}
+          name: TSBattery-legacy-debug-${{ github.event.head_commit.id }}
+      - name: Upload Artifacts (Legacy Release)
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.LEGACY_RELEASE_APK_PATH }}
+          name: TSBattery-legacy-release-${{ github.event.head_commit.id }}

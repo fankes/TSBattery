@@ -45,8 +45,11 @@ import com.fankes.tsbattery.utils.factory.showDialog
 import com.fankes.tsbattery.utils.factory.snake
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
+import com.highcapable.betterandroid.ui.extension.component.runDelayed
 import com.highcapable.betterandroid.ui.extension.view.isUnderline
-import com.highcapable.yukihookapi.YukiHookAPI
+import com.highcapable.yukihookapi.YukiHook
+import com.highcapable.yukihookapi.runtime.YukiHookRuntime
+import kotlinx.coroutines.Job
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -57,7 +60,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onCreate() {
-        /** 检查更新 */
+        if (YukiHook.Status.runtime == YukiHookRuntime.LIBXPOSED) {
+            var unavailableJob: Job? = null
+            YukiHook.Status.observeFrameworkService(lifecycle) { available ->
+                // 第一次回调可能是 false，稍后连上会再回调 true，所以 false 先等一会
+                unavailableJob?.cancel()
+                if (available) onCreate(available = true)
+                else unavailableJob = runDelayed(500) { onCreate(available = false) }
+            }
+        } else onCreate(available = true)
+    }
+
+    private fun onCreate(available: Boolean) {
+        // 检查更新
         GithubReleaseTool.checkingForUpdate(context = this, ModuleVersion.NAME) { version, function ->
             binding.mainTextReleaseVersion.apply {
                 text = "点击更新 $version"
@@ -65,14 +80,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 setOnClickListener { function() }
             }
         }
-        /** 判断 Hook 状态 */
-        if (YukiHookAPI.Status.isModuleActive) {
+        // 判断 Hook 状态
+        if (available && YukiHook.Status.isModuleActive) {
             binding.mainLinStatus.setBackgroundResource(R.drawable.bg_green_round)
             binding.mainImgStatus.setImageResource(R.drawable.ic_success)
             binding.mainTextStatus.text = "模块已激活"
             binding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
-            /** 推广、恰饭 */
+            // 推广、恰饭
             ProjectPromote.show(activity = this, ModuleVersion.toString())
         } else
             showDialog {
@@ -81,13 +96,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 confirmButton(text = "我知道了")
                 noCancelable()
             }
-        /** 设置安装状态 */
+        // 设置安装状态
         binding.mainTextQqVer.text = PackageName.QQ.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         binding.mainTextTimVer.text = PackageName.TIM.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         binding.mainTextWechatVer.text = PackageName.WECHAT.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
-        /** 设置文本 */
+        // 设置文本
         binding.mainTextVersion.text = "模块版本：${ModuleVersion.NAME}"
-        /** 设置 CI 自动构建标识 */
+        // 设置 CI 自动构建标识
         if (ModuleVersion.isCiMode)
             binding.mainTextReleaseVersion.apply {
                 text = "CI ${ModuleVersion.GITHUB_COMMIT_ID}"
@@ -113,7 +128,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 msg = QQ_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
-            /** 振动提醒 */
+            // 振动提醒
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
         binding.mainTimItem.setOnClickListener {
@@ -122,7 +137,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 msg = TIM_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
-            /** 振动提醒 */
+            // 振动提醒
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
         binding.mainWechatItem.setOnClickListener {
@@ -131,18 +146,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 msg = WECHAT_SUPPORT_VERSION
                 confirmButton(text = "我知道了")
             }
-            /** 振动提醒 */
+            // 振动提醒
             it.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
-        /** 快捷操作 QQ */
+        // 快捷操作 QQ
         binding.quickQqButton.setOnClickListener { startModuleSettings(PackageName.QQ) }
-        /** 快捷操作 TIM */
+        // 快捷操作 TIM
         binding.quickTimButton.setOnClickListener { startModuleSettings(PackageName.TIM) }
-        /** 快捷操作微信 */
+        // 快捷操作微信
         binding.quickWechatButton.setOnClickListener { startModuleSettings(PackageName.WECHAT) }
-        /** 项目地址按钮点击事件 */
+        // 项目地址按钮点击事件
         binding.titleGithubIcon.setOnClickListener { openBrowser(url = "https://github.com/fankes/TSBattery") }
-        /** 恰饭！ */
+        // 恰饭！
         binding.layoutSupportMe.setOnClickListener {
             openBrowser(url = "https://afdian.com/a/fankes")
         }
@@ -151,13 +166,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.linkWithFollowMe.setOnClickListener {
             openBrowser(url = "https://www.coolapk.com/u/876977", packageName = "com.coolapk.market")
         }
-        /** 设置桌面图标显示隐藏 */
+        // 设置桌面图标显示隐藏
         binding.hideIconInLauncherSwitch.isChecked = isLauncherIconShowing.not()
         binding.hideIconInLauncherSwitch.setOnCheckedChangeListener { btn, b ->
             if (btn.isPressed.not()) return@setOnCheckedChangeListener
             hideOrShowLauncherIcon(b)
         }
-        /** 判断当前启动模式 */
+        // 判断当前启动模式
         if (packageName != BuildConfigWrapper.APPLICATION_ID) {
             binding.quickActionItem.isVisible = false
             binding.displaySettingItem.isVisible = false
@@ -175,7 +190,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     packageName,
                     if (packageName != PackageName.WECHAT) QQTIMHooker.JumpActivityClassName else WeChatHooker.LauncherUIClassName
                 )
-                putExtra(JumpEvent.OPEN_MODULE_SETTING, YukiHookAPI.Status.compiledTimestamp)
+                putExtra(JumpEvent.OPEN_MODULE_SETTING, YukiHook.Status.compiledTimestamp)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             })
         }.onFailure { snake(msg = "启动模块设置失败\n$it") } else snake(msg = "你没有安装此应用")
@@ -183,8 +198,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     /** 刷新模块激活使用的方式 */
     private fun refreshActivateExecutor() {
-        if (YukiHookAPI.Status.Executor.apiLevel > 0)
-            binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
-        else binding.mainTextApiWay.text = "Activated by ${YukiHookAPI.Status.Executor.name}"
+        if (YukiHook.Status.Executor.apiVersion > 0)
+            binding.mainTextApiWay.text = "Activated by ${YukiHook.Status.Executor.name} API ${YukiHook.Status.Executor.apiVersion}"
+        else binding.mainTextApiWay.text = "Activated by ${YukiHook.Status.Executor.name}"
     }
 }

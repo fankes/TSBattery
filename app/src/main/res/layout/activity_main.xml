@@ -645,7 +645,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@mipmap/ic_yukihookapi" />
+                    android:src="@mipmap/ic_yukihook" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -654,7 +654,7 @@
                     android:ellipsize="end"
                     android:lineSpacingExtra="6dp"
                     android:maxLines="2"
-                    android:text="此模块使用 YukiHookAPI 构建。\n了解更多 https://github.com/HighCapable/YukiHookAPI"
+                    android:text="此模块使用 YukiHook 构建。\n了解更多 https://github.com/HighCapable/YukiHook"
                     android:textColor="@color/colorTextGray"
                     android:textSize="11sp" />
             </LinearLayout>

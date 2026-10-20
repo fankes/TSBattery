@@ -40,15 +40,16 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.PackageInfoCompat
+import androidx.core.net.toUri
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
-import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication.Companion.appContext
+import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
 /**
  * 系统深色模式是否开启
  * @return [Boolean] 是否开启
  */
-val isSystemInDarkMode get() = appContext.isSystemInDarkMode
+val isSystemInDarkMode get() = ModuleApplication.requireContext().isSystemInDarkMode
 
 /**
  * 系统深色模式是否没开启
@@ -166,7 +167,7 @@ val Context.absoluteStatusBarHeight
  * 弹出 [Toast]
  * @param msg 提示内容
  */
-fun toast(msg: String) = appContext.toast(msg)
+fun toast(msg: String) = ModuleApplication.requireContext().toast(msg)
 
 /**
  * 弹出 [Toast]
@@ -191,7 +192,7 @@ fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {
  * 跳转 APP 自身设置界面
  * @param packageName 包名
  */
-fun Context.openSelfSetting(packageName: String = appContext.packageName) = runCatching {
+fun Context.openSelfSetting(packageName: String = ModuleApplication.requireContext().packageName) = runCatching {
     if (isInstall(packageName))
         startActivity(Intent().apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -210,8 +211,8 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
     startActivity(Intent().apply {
         if (packageName.isNotBlank()) setPackage(packageName)
         action = Intent.ACTION_VIEW
-        data = Uri.parse(url)
-        /** 防止顶栈一样重叠在自己的 APP 中 */
+        data = url.toUri()
+        // 防止顶栈一样重叠在自己的 APP 中
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }.onFailure {

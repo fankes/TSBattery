@@ -7,16 +7,27 @@ body:
     attributes:
       value: |
         ### 请在下方填写问题发生的具体原因和复现步骤。
-        
+
         我们只接受从官方渠道或应用市场下载的 QQ、TIM、微信，如果你正在第三方修改版，请不要提交任何 BUG 与问题，我们无义务去解决，请自求多福。
-        
+
         请务必知悉：部分问题可能是 APP 自身产生的 BUG，发生这种情况模块没有义务去负责解决与修复，你可以尝试关闭模块以验证该问题是否来源于 APP 自身原因。
-        
+
         发生异常、崩溃、闪退或功能性问题，必须提交问题 Log (日志)，没有 Log 的 issues 将直接被关闭。
   - type: input
     attributes:
       label: 模块版本
-      description: 请填写当前使用的模块完整版本号，例如：**3.0**
+      description: 请填写当前使用的模块完整版本号，例如：**4.0**
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: 模块类型
+      description: |
+        请选择当前安装的模块类型，可以从安装包的文件名中查看，例如：**TSBattery-vXxx(Xxx)-modern-release.apk**
+        **modern** 适用于支持 libxposed API 的 Xposed 框架，**legacy** 适用于仅支持 Xposed API 82 的传统 Xposed 框架
+      options:
+        - modern
+        - legacy
     validations:
       required: true
   - type: dropdown
@@ -42,6 +53,9 @@ body:
     attributes:
       label: Android 版本
       options:
+        - 17
+        - 16
+        - 15
         - 14
         - 13
         - 12L/12.1
@@ -51,12 +65,14 @@ body:
         - 9
         - 8.1
         - 8.0.0
+        - 7.1
+        - 7.0
     validations:
       required: true
   - type: input
     attributes:
-      label: Xposed 框架名称与版本号
-      description: 请填写当前使用的 Xposed 框架，例如：**LSPosed 1.8.4(次版本号)**
+      label: Xposed 框架名称与版本
+      description: 请填写当前使用的 Xposed 框架，例如：**LSPosed 2.0.0 (版本号)**
     validations:
       required: true
   - type: dropdown

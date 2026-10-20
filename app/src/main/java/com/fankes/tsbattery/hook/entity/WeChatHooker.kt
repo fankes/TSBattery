@@ -31,7 +31,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.res.ResourcesCompat
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.data.ConfigData
@@ -42,12 +41,15 @@ import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.appVersionCode
 import com.fankes.tsbattery.utils.factory.appVersionName
 import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
+import com.highcapable.betterandroid.ui.extension.view.firstChildOrNull
 import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.yukihookapi.extension.kavaref.hook
+import com.highcapable.yukihookapi.extension.kavaref.lazyClassOrNull
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
-import com.highcapable.yukihookapi.hook.factory.processName
-import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
+import com.highcapable.yukihookapi.hook.factory.injectModuleResources
+import com.highcapable.yukihookapi.hook.factory.registerModuleActivities
 import com.highcapable.yukihookapi.hook.log.YLog
 
 /**
@@ -89,7 +91,7 @@ object WeChatHooker : YukiBaseHooker() {
                 topMargin = context.absoluteStatusBarHeight + 15.dp(context)
                 rightMargin = 20.dp(context)
             }
-            setColorFilter(ResourcesCompat.getColor(resources, R.color.colorTextGray, null))
+            setColorFilter(resources.getColorCompat(R.color.colorTextGray, null))
             setImageResource(R.drawable.ic_icon)
             if (Build.VERSION.SDK_INT >= 26) tooltipText = "TSBattery 设置"
             setOnClickListener { context.startModuleSettings() }
@@ -97,27 +99,29 @@ object WeChatHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
-        onAppLifecycle {
+        withApplicationReady { application ->
+            application.registerModuleActivities(when {
+                EmptyActivityClass != null -> EmptyActivityClass
+                WelabMainUIClass != null -> WelabMainUIClass
+                else -> error("Inject WeChat Activity Proxy failed, unsupport version ${application.appVersionName}(${application.appVersionCode})")
+            }?.name)
+            if (ConfigData.isDisableAllHook) return@withApplicationReady
+            hookSystemWakeLock()
+            YLog.info("All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
+        }
+        registerAppLifecycle {
             onCreate {
                 ConfigData.init(context = this)
-                registerModuleAppActivities(when {
-                    EmptyActivityClass != null -> EmptyActivityClass
-                    WelabMainUIClass != null -> WelabMainUIClass
-                    else -> error("Inject WeChat Activity Proxy failed, unsupport version $appVersionName($appVersionCode)")
-                })
-                if (ConfigData.isDisableAllHook) return@onCreate
-                hookSystemWakeLock()
-                YLog.info("All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
             }
         }
-        /** 仅注入主进程 */
+        // 仅注入主进程
         withProcess(mainProcessName) {
-            /** Hook 跳转事件 */
+            // Hook 跳转事件
             LauncherUIClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "onResume"
                 emptyParameters()
             }?.hook()?.after { instance<Activity>().jumpToModuleSettings(isFinish = false) }
-            /** 向设置界面右上角添加按钮 */
+            // 向设置界面右上角添加按钮
             SettingsUIClass?.resolve()?.optional()?.firstMethodOrNull {
                 name = "onResume"
                 emptyParameters()
@@ -132,8 +136,8 @@ object WeChatHooker : YukiBaseHooker() {
                     returnType = View::class
                     superclass()
                 }?.invoke<ViewGroup?>()?.also {
-                    it.context?.injectModuleAppResources()
-                    runCatching { it.getChildAt(0) as? ViewGroup? }.getOrNull()?.also { rootView ->
+                    it.resources?.injectModuleResources()
+                    runCatching { it.firstChildOrNull<ViewGroup>() }.getOrNull()?.also { rootView ->
                         if (rootView.findViewWithTag<View>(TSBARRERY_ICON_TAG) == null)
                             rootView.addView(createPreferenceIcon(it.context))
                     }

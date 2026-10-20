@@ -24,21 +24,19 @@ package com.fankes.tsbattery.hook
 import com.fankes.tsbattery.const.PackageName
 import com.fankes.tsbattery.hook.entity.QQTIMHooker
 import com.fankes.tsbattery.hook.entity.WeChatHooker
-import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
-import com.highcapable.yukihookapi.hook.factory.configs
+import com.highcapable.yukihookapi.YukiHook.configure
 import com.highcapable.yukihookapi.hook.factory.encase
-import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
+import com.highcapable.yukihookapi.hook.xposed.YukiHookXposedModule
 
-@InjectYukiHookWithXposed
-object HookEntry : IYukiHookXposedInit {
+object HookEntry : YukiHookXposedModule {
 
     /** 是否完全支持当前版本 */
     var isHookClientSupport = true
 
-    override fun onInit() = configs {
-        debugLog { tag = "TSBattery" }
-        isDebug = false
-        isEnableDataChannel = false
+    override fun onInit() = configure {
+        logging { tag = "TSBattery" }
+        debug = false
+        dataChannel = false
     }
 
     override fun onHook() = encase {

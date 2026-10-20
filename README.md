@@ -25,11 +25,11 @@ This Xposed Module is for use by specific apps for users in mainland China, you 
 
 - 解锁 BootLoader 并安装 **KernelSU**、**Magisk** 的设备建议使用 [LSPosed](https://github.com/LSPosed/LSPosed)
 
-- **太极 (无极)** 支持性不是很好，建议使用 [LSPatch](https://github.com/LSPosed/LSPatch)
+- ~~**太极 (无极)** 支持性不是很好，建议使用 [LSPatch](https://github.com/LSPosed/LSPatch)~~
 
 - 支持一些第三方 Xposed 框架，但是不保证其稳定性
 
-- 支持一些第三方免 Root 框架例如**应用转生**、**SandVXposed**，但是不推荐使用，可能会造成封号风险
+- ~~支持一些第三方免 Root 框架例如**应用转生**、**SandVXposed**，但是不推荐使用，可能会造成封号风险~~
 
 - 如果在微信设置界面右上角你无法找到 **TSBattery**
   的图标，请尝试同时激活 [WeXposed (微X模块)](https://github.com/Xposed-Modules-Repo/com.fkzhang.wechatxposed)
@@ -98,6 +98,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
-Powered by [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI)
+Powered by [YukiHook](https://github.com/HighCapable/YukiHook)
 
 版权所有 © 2017 Fankes Studio(qzmmcn@163.com)

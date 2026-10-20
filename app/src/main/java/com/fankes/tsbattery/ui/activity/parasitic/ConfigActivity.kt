@@ -73,8 +73,8 @@ import com.highcapable.hikage.widget.android.widget.ScrollView
 import com.highcapable.hikage.widget.android.widget.TextView
 import com.highcapable.hikage.widget.androidx.cardview.widget.CardView
 import com.highcapable.hikage.widget.com.fankes.tsbattery.ui.widget.MaterialSwitch
-import com.highcapable.yukihookapi.YukiHookAPI
-import com.highcapable.yukihookapi.hook.factory.classOf
+import com.highcapable.kavaref.extension.classOf
+import com.highcapable.yukihookapi.YukiHook
 import kotlin.system.exitProcess
 import android.R as Android_R
 
@@ -372,7 +372,7 @@ class ConfigActivity : BaseActivity2() {
                                         isSingleLine = true
                                         textColor = colorResource(R.color.colorTextGray)
                                         textSize = 12f
-                                        text = "${YukiHookAPI.Status.Executor.name} API ${YukiHookAPI.Status.Executor.apiLevel}"
+                                        text = "${YukiHook.Status.Executor.name} API ${YukiHook.Status.Executor.apiVersion}"
                                         alpha = 0.85f
                                     }
                                 }
@@ -521,7 +521,7 @@ class ConfigActivity : BaseActivity2() {
                                         bottomMargin = 5.dp
                                     }
                                 ) {
-                                    text = "关闭 CoreService\$KernelService"
+                                    text = $$"关闭 CoreService$KernelService"
                                     textColor = colorResource(R.color.colorTextGray)
                                     textSize = 15f
                                     bind(ConfigData.ENABLE_KILLE_QQ_TIM_CORESERVICE_CHILD) { showNeedRestartTip() }
@@ -542,7 +542,7 @@ class ConfigActivity : BaseActivity2() {
                 }
             }
         }
-        /** 检查更新 */
+        // 检查更新
         GithubReleaseTool.checkingForUpdate(context = this, ModuleVersion.NAME) { version, function ->
             updateVersionText.apply {
                 text = "点击更新 $version"
@@ -552,7 +552,7 @@ class ConfigActivity : BaseActivity2() {
         }
         refreshCurrentModeText()
         refreshConfigItems()
-        /** 推广、恰饭 */
+        // 推广、恰饭
         ProjectPromote.show(activity = this, ModuleVersion.toString())
     }
 
