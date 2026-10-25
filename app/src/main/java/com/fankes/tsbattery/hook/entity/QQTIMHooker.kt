@@ -528,7 +528,7 @@ object QQTIMHooker : YukiBaseHooker() {
         fun createTSEntryItem(context: Context): Any {
             // 为了使用图标资源 ID - 这里需要重新注入模块资源防止不生效
             context.injectModuleResources()
-            val iconResId = if (context.isQQNightMode()) R.mipmap.ic_tsbattery_entry_night else R.mipmap.ic_tsbattery_entry_day
+            val iconResId = if (context.isQQNightMode()) R.drawable.ic_tsbattery_entry_night else R.drawable.ic_tsbattery_entry_day
             return (
                 simpleItemProcessorClass.createInstanceOrNull(context, R.id.tsbattery_qq_entry_item_id, "TSBattery", iconResId, null)
                     ?: simpleItemProcessorClass.createInstanceOrNull(context, R.id.tsbattery_qq_entry_item_id, "TSBattery", iconResId)
