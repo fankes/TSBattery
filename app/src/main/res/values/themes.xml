@@ -10,7 +10,13 @@
         <item name="colorSecondaryVariant">@color/colorPrimaryAccent</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/colorThemeBackground</item>
+        <!-- Dialog background color. -->
+        <item name="colorSurfaceContainerHigh">@color/colorCard</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Widget.TSBattery.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/colorNavIndicator</item>
     </style>
 </resources>

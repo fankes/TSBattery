@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorThemeBackground">#FFFFFFFF</color>
+    <color name="colorThemeBackground">#FFF7F7F7</color>
     <color name="colorTextDark">#FF777777</color>
     <color name="colorTextGray">#FF323B42</color>
+    <color name="colorCard">#FFFFFFFF</color>
+    <color name="colorCardButton">#FFF2F2F2</color>
+    <color name="colorStatusActive">#FF36D167</color>
+    <color name="colorStatusActiveContainer">#FFDFFAE4</color>
+    <color name="colorStatusInactive">#FFFF453A</color>
+    <color name="colorStatusInactiveContainer">#FFFFEBEA</color>
+    <color name="colorNavIndicator">#FFE4E4E4</color>
 </resources>

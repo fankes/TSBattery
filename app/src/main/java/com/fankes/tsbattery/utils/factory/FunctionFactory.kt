@@ -37,10 +37,12 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.net.toUri
+import com.fankes.tsbattery.R
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
@@ -113,7 +115,7 @@ val Context.appVersionCode get() = getPackageInfoCompat(packageName)?.versionCod
  * @return [String]
  */
 fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.let { "${it.versionName}(${it.versionCodeCompat})" } ?: ""
+    getPackageInfoCompat(packageName)?.let { "${it.versionName} (${it.versionCodeCompat})" } ?: ""
 
 /**
  * 得到 APP 名称
@@ -183,6 +185,8 @@ fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).s
  */
 fun Context.snake(msg: String, actionText: String = "", callback: () -> Unit = {}) =
     Snackbar.make((this as Activity).findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).apply {
+        // 有底栏时显示在底栏上方，避免挡住底栏
+        findViewById<View>(R.id.main_bottom_nav)?.let { anchorView = it }
         if (actionText.isBlank()) return@apply
         setActionTextColor(if (isSystemInDarkMode) Color.BLACK else Color.WHITE)
         setAction(actionText) { callback() }

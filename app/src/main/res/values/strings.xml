@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">TSBattery</string>
-    <string name="module_description">Tencent 社交毒瘤一键省电模块。\n目前支持 QQ、TIM、微信\n开发者：酷安 @星夜不荟</string>
+    <string name="module_description">Tencent 社交应用一键省电模块。目前支持 QQ、TIM、微信 by fankes@github</string>
 </resources>

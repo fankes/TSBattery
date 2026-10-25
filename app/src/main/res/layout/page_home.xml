@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdgeLength="10dp"
+    android:fillViewport="true"
+    android:requiresFadingEdge="vertical"
+    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/main_lin_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            app:cardBackgroundColor="@color/colorStatusInactiveContainer"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/main_img_status"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="-27dp"
+                android:layout_marginBottom="-31dp"
+                android:src="@drawable/ic_status_error" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/main_text_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="未激活"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|start"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/main_text_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="..."
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/main_text_release_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_orange_round"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="点击更新 ..."
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadingEdgeLength="10dp"
+                    android:fillViewport="true"
+                    android:requiresFadingEdge="horizontal"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/main_qq_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginEnd="5dp"
+                                android:src="@mipmap/ic_qq_icon" />
+
+                            <TextView
+                                android:id="@+id/main_text_qq_ver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.8"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="..."
+                                android:textColor="@color/colorTextGray"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/main_tim_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginEnd="5dp"
+                                android:src="@mipmap/ic_tim_icon" />
+
+                            <TextView
+                                android:id="@+id/main_text_tim_ver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.8"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="..."
+                                android:textColor="@color/colorTextGray"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/main_wechat_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginEnd="5dp"
+                                android:src="@mipmap/ic_wechat_icon" />
+
+                            <TextView
+                                android:id="@+id/main_text_wechat_ver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.8"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="..."
+                                android:textColor="@color/colorTextGray"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/main_text_api_way"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:alpha="0.6"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="..."
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_permotion_round"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="15dp"
+                android:alpha="0.85"
+                android:src="@drawable/ic_about"
+                android:tint="@color/colorTextDark" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:lineSpacingExtra="5dp"
+                android:text="你可以点击上述每个图标查看最佳兼容的应用版本。\n没有标注的版本在适配范围内的应用适用性都将有效，但可能不能达到最佳使用效果，建议保持使用适配内的版本。"
+                android:textColor="@color/colorTextGray"
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/quick_action_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="8dp"
+                android:alpha="0.6"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="快捷操作"
+                android:textColor="@color/colorTextGray"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bg_permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/quick_qq_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="QQ"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/quick_tim_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="TIM"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/quick_wechat_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_round"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="微信"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/display_setting_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="8dp"
+                android:alpha="0.6"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="显示设置"
+                android:textColor="@color/colorTextGray"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bg_permotion_round"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp">
+
+                <com.fankes.tsbattery.ui.widget.MaterialSwitch
+                    android:id="@+id/hide_icon_in_launcher_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="8dp"
+                    android:singleLine="true"
+                    android:text="在桌面隐藏模块图标"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:lineSpacingExtra="6dp"
+                    android:text="隐藏模块图标后界面可能会被关闭，将不会再在桌面显示，你可以在 Xposed 管理器中找到模块设置并打开。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.6"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="LSPosed 请务必在管理器中关闭 “强制显示桌面图标” 功能。"
+                    android:textColor="#FF5722"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

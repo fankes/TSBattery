@@ -74,5 +74,8 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
         )
         isSingleLine = true
         ellipsize = TextUtils.TruncateAt.END
+        // Material3 主题的开关样式自带 48dp 最小高度，会把一行撑高，这里去掉让高度跟随内容
+        minHeight = 0
+        minimumHeight = 0
     }
 }

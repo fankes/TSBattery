@@ -70,5 +70,5 @@ object ModuleVersion {
     /** 当前版本名称后缀 */
     val suffix = GITHUB_COMMIT_ID.let { if (it.isNotBlank()) "-$it" else "" }
 
-    override fun toString() = "$NAME$suffix($CODE)"
+    override fun toString() = "$NAME$suffix ($CODE)"
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingTop="10dp"
+    android:paddingRight="20dp"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/restart_qq_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_button_round"
+        android:gravity="center"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="QQ"
+        android:textColor="@color/colorTextGray"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/restart_tim_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_button_round"
+        android:gravity="center"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="TIM"
+        android:textColor="@color/colorTextGray"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/restart_wechat_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/bg_button_round"
+        android:gravity="center"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="微信"
+        android:textColor="@color/colorTextGray"
+        android:textSize="15sp" />
+</LinearLayout>

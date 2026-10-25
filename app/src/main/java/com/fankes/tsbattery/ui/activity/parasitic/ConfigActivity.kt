@@ -158,7 +158,7 @@ class ConfigActivity : BaseActivity2() {
                                     }.onFailure {
                                         runCatching {
                                             startActivity<MainActivity>()
-                                        }.onFailure { snake(msg = "打开失败，请确认你已安装模块 APP 或在模块更新后重启过$appName\n$it") }
+                                        }.onFailure { snake(msg = "打开失败，请确认你已安装模块应用或在模块更新后重启过$appName\n$it") }
                                     }
                                 }
                                 cancelButton()
@@ -198,7 +198,7 @@ class ConfigActivity : BaseActivity2() {
                                 textSize = 13f
                                 textColor = colorResource(R.color.white)
                                 text = when (index) {
-                                    0 -> "点击更新 %1"
+                                    0 -> "点击更新 ..."
                                     else -> "新的设置需要重新启动${appName}才能生效"
                                 }
                                 isVisible = false
@@ -269,7 +269,7 @@ class ConfigActivity : BaseActivity2() {
                                         isSingleLine = true
                                         textColor = colorResource(R.color.colorTextGray)
                                         textSize = 12f
-                                        text = "$appVersionName($appVersionCode)"
+                                        text = "$appVersionName ($appVersionCode)"
                                         alpha = 0.85f
                                     }
                                     TextView(
@@ -412,10 +412,9 @@ class ConfigActivity : BaseActivity2() {
                                 }
                             ) {
                                 MaterialSwitch(
-                                    lparams = LayoutParams(widthMatchParent = true, height = 35.dp) {
-                                        bottomMargin = 5.dp
-                                    }
+                                    lparams = LayoutParams(widthMatchParent = true)
                                 ) {
+                                    updatePadding(top = 5.dp, bottom = 8.dp)
                                     text = "停用省电策略"
                                     textColor = colorResource(R.color.colorTextGray)
                                     textSize = 15f
@@ -458,10 +457,9 @@ class ConfigActivity : BaseActivity2() {
                                 }
                             ) {
                                 MaterialSwitch(
-                                    lparams = LayoutParams(widthMatchParent = true, height = 35.dp) {
-                                        bottomMargin = 5.dp
-                                    }
+                                    lparams = LayoutParams(widthMatchParent = true)
                                 ) {
+                                    updatePadding(top = 5.dp, bottom = 8.dp)
                                     text = "启用保守模式"
                                     textColor = colorResource(R.color.colorTextGray)
                                     textSize = 15f
@@ -495,10 +493,9 @@ class ConfigActivity : BaseActivity2() {
                                 }
                             ) {
                                 MaterialSwitch(
-                                    lparams = LayoutParams(widthMatchParent = true, height = 35.dp) {
-                                        bottomMargin = 5.dp
-                                    }
+                                    lparams = LayoutParams(widthMatchParent = true)
                                 ) {
+                                    updatePadding(top = 5.dp, bottom = 8.dp)
                                     text = "关闭 CoreService"
                                     textColor = colorResource(R.color.colorTextGray)
                                     textSize = 15f
@@ -517,10 +514,9 @@ class ConfigActivity : BaseActivity2() {
                                     text = "关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务 (HMS) 或 (MIPUSH) 可以尝试关闭。"
                                 }
                                 MaterialSwitch(
-                                    lparams = LayoutParams(widthMatchParent = true, height = 35.dp) {
-                                        bottomMargin = 5.dp
-                                    }
+                                    lparams = LayoutParams(widthMatchParent = true)
                                 ) {
+                                    updatePadding(top = 5.dp, bottom = 8.dp)
                                     text = $$"关闭 CoreService$KernelService"
                                     textColor = colorResource(R.color.colorTextGray)
                                     textSize = 15f

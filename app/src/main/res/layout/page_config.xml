@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdgeLength="10dp"
+    android:fillViewport="true"
+    android:requiresFadingEdge="vertical"
+    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.6"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="使用帮助 &amp; 说明"
+            android:textColor="@color/colorTextGray"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_permotion_round"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 这个模块是做什么的？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 此模块的诞生来源于国内厂商社交应用强行霸占后台耗电，QQ 在 8.6.0 版本以后也只是接入了 HMS 推送，但是可笑的是开发组却并没有删除之前疯狂耗电的接收消息方法，于是这个模块就因此而诞生了。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 原理是什么？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 模块有两套工作方式，一种是针对 QQ、TIM Hook 掉系统自身的电源锁 “WakeLock” 使其不能影响系统休眠，这样子在锁屏的时候 QQ、TIM 就可以进入睡眠状态。第二种就是针对 QQ、TIM 删除其自身的无用耗电疯狂循环检测后台强行保活服务。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 如何使用？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 目前模块支持 LSPosed 以及一些常见的免 Root 框架，在 LSPosed 的作用域中，只需勾选 QQ、TIM、微信即可，模块可以做到即插即用，激活后无需重启手机，重启 QQ、TIM 或微信就可以了，如果你安装的是标有 “modern” 版本的模块，在 LSPosed 2.1.0+，模块支持热重载，后续更新模块不再需要重启对应作用域的应用。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 配置界面在哪里？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 从 4.0 版本开始模块已将配置界面转移到目标应用中，你可以从以下途径找到模块配置界面：\nQQ: 设置 > TSBattery\nTIM: 设置 > TSBattery\n微信: 设置 > 右上角 TSBattery 图标\n你还可以从主页上方的 “快捷操作” 中快速进入指定配置界面。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 激活后一定可以非常省电吗？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 并不，模块只能减少 QQ、TIM、微信的耗电，但是请务必记住这一点，省电只是一个理论上的东西，实际水平由你使用的系统和硬件决定，如果你在前台疯狂使用 QQ、TIM，那么照样会耗电，模块只能保证后台运行和锁屏时应用不会消耗过多的无用的电量，仅此而已。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 模块是否需要挂后台？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 模块完全不需要挂后台，模块只是一个控制和显示的工具，真正的任务交由 Hook 处理，若出现失效的情况请发送模块运行日志给我们而不是将模块挂后台。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="Q. 关于目前微信的适配情况？"
+                    android:textColor="@color/colorTextGray"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:alpha="0.8"
+                    android:lineSpacingExtra="6dp"
+                    android:text="A. 微信适配尚在实验阶段，敬请期待。"
+                    android:textColor="@color/colorTextDark"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
