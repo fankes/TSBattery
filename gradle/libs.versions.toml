@@ -11,7 +11,7 @@ hikage-plugin = "1.0.1"
 hikage-bom = "1.1.1"
 dexkit = "2.3.0"
 drawabletoolbox = "1.0.7"
-okhttp = "5.5.0"
+okhttp = "5.5.1"
 androidx-core-ktx = "1.19.0"
 androidx-appcompat = "1.8.0"
 # noinspection GradleDependency
