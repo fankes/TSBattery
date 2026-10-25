@@ -7,32 +7,27 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/Xposed-Modules-Repo/com.fankes.tsbattery/total?label=LSPosed%20downloads&labelColor=F48FB1&style=flat-square)
 
 [![Telegram CI](https://img.shields.io/badge/CI%20builds-Telegram-blue.svg?logo=telegram&style=flat-square)](https://t.me/TSBattery_CI)
+[![Telegram Channel](https://img.shields.io/badge/channel-Telegram-blue.svg?logo=telegram&style=flat-square)](https://t.me/XiaofangDaily)
 [![Telegram](https://img.shields.io/badge/discussion-Telegram-blue.svg?logo=telegram&style=flat-square)](https://t.me/XiaofangInternet)
 [![QQ](https://img.shields.io/badge/discussion-QQ-blue.svg?logo=tencent-qq&logoColor=red&style=flat-square)](https://qm.qq.com/cgi-bin/qm/qr?k=dp2h5YhWiga9WWb_Oh7kSHmx01X8I8ii&jump_from=webapi&authKey=Za5CaFP0lk7+Zgsk2KpoBD7sSaYbeXbsDgFjiWelOeH4VSionpxFJ7V0qQBSqvFM)
 [![QQ 频道](https://img.shields.io/badge/discussion-QQ%20频道-blue.svg?logo=tencent-qq&logoColor=red&style=flat-square)](https://pd.qq.com/s/44gcy28h)
 
 <img src="app/src/main/ic_launcher-playstore.png" width = "100" height = "100" alt="LOGO"/>
 
-A new way to save your battery avoid cancer apps hacker it.
-
 TSBattery 是一个旨在使 QQ、TIM、微信 变得更省电的开源 Xposed 模块。
 
 ## For Non-Chinese Users
 
-This Xposed Module is for use by specific apps for users in mainland China, you should not need it.
+This Xposed module is for use by specific apps for users in mainland China, you should not need it.
 
 ## 适配说明
 
 - 解锁 BootLoader 并安装 **KernelSU**、**Magisk** 的设备建议使用 [LSPosed](https://github.com/LSPosed/LSPosed)
+- 太极和 LSPatch 已停更，我们未再测试其是否依然能够使用
+- 支持一些第三方 Xposed 框架或免 Root 卡框架，但是不保证其稳定性
 
-- ~~**太极 (无极)** 支持性不是很好，建议使用 [LSPatch](https://github.com/LSPosed/LSPatch)~~
-
-- 支持一些第三方 Xposed 框架，但是不保证其稳定性
-
-- ~~支持一些第三方免 Root 框架例如**应用转生**、**SandVXposed**，但是不推荐使用，可能会造成封号风险~~
-
-- 如果在微信设置界面右上角你无法找到 **TSBattery**
-  的图标，请尝试同时激活 [WeXposed (微X模块)](https://github.com/Xposed-Modules-Repo/com.fkzhang.wechatxposed)
+如果在微信设置界面右上角你无法找到 **TSBattery**
+的图标，请尝试同时激活 [WAuxiliary](https://github.com/HdShare/WAuxiliary_Public)
 
 ## 发行渠道
 
@@ -48,20 +43,29 @@ This Xposed Module is for use by specific apps for users in mainland China, you 
 | <img src="https://avatars.githubusercontent.com/u/78217009?s=200&v=4?raw=true" width = "30" height = "30" alt="LOGO"/> | [Xposed-Modules-Repo](https://github.com/Xposed-Modules-Repo/com.fankes.tsbattery/releases) | 正式版 (稳定版) |
 |------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-----------|
 
+| <img src="https://cdn.nlark.com/yuque/0/2023/png/39215739/1697095421529-avatar/0305d093-2687-4529-834f-505f11f1ac50.png" width = "30" height = "30" alt="LOGO"/> | [123 云盘](https://1857720810.share.123pan.cn/123pan/zdcUvd-1s6Ld?pwd=tsbt) | 正式版 (稳定版) |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|-----------|
+
 本模块发布地址仅限于上述所列出的地址，从其他非正规渠道下载到的版本或对您造成任何影响均与我们无关。
+
+### 按场景选择模块版本
+
+此项目的模块安装包采用双轨制，分为 **modern** 和 **legacy** 两个版本。
+
+- 标有 **modern** 的版本适配支持 libxposed API 的 Xposed 框架，例如 LSPosed
+- 标有 **legacy** 的版本适配支持 Xposed Framework API 的 Xposed 框架，例如旧版 LSPosed (≤ 1.9.0)、EdXposed、应用转生等
+
+**modern** 版本的模块在 LSPosed 2.1.0+ 支持自动热重载功能，在首次安装后，接下来的版本中继续更新模块，不再需要重启 QQ、TIM、微信等应用即可生效。
 
 ## 注意事项
 
-<h3>1.&nbsp;本软件免费、由兴趣驱动开发，仅供学习交流使用。如果你是从其他非官方渠道付费获得本软件，可能已遭遇欺诈，欢迎向我们举报可疑行为。</h3>
-
-<h3>2.&nbsp;本软件采用 <strong>GNU Affero General Public License (AGPL 3.0)</strong> 许可证。根据该许可证的要求：</h3>
-
-- 任何衍生作品必须采用相同的 AGPL 许可证
-- 分发本软件或其修改版本时，必须提供完整的源代码
-- 必须保留原始的版权声明及许可证信息
-- 不得额外施加限制来限制他人对本软件的自由使用
-
-<h3>3.&nbsp;我们鼓励在遵守 AGPL 3.0 条款的前提下进行自由传播和改进，但请尊重作者署名权，勿冒用原作者名义。</h3>
+1. 本软件免费、由兴趣驱动开发，仅供学习交流使用。如果你是从其他非官方渠道付费获得本软件，可能已遭遇欺诈，欢迎向我们举报可疑行为。
+2. 本软件采用 **GNU Affero General Public License (AGPL 3.0)** 许可证。根据该许可证的要求：
+    1. 任何衍生作品必须采用相同的 AGPLv3 许可证
+    2. 分发本软件或其修改版本时，必须提供完整的源代码
+    3. 必须保留原始的版权声明及许可证信息
+    4. 不得额外施加限制来限制他人对本软件的自由使用
+3. 我们鼓励在遵守 AGPLv3 条款的前提下进行自由传播和改进，但请尊重作者署名权，勿冒用原作者名义
 
 ## 更多项目
 
