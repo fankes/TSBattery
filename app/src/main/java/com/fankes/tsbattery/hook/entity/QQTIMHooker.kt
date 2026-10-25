@@ -132,6 +132,7 @@ object QQTIMHooker : YukiBaseHooker() {
     private object DexKitData {
         var BaseChatPie_RemainScreenOnMethod: Method? = null
         var BaseChatPie_CancelRemainScreenOnMethod: Method? = null
+        var NewSettingConfigProviderClass: Class<Any>? = null
         var SimpleItemProcessorClass: Class<Any>? = null
         var SimpleItemProcessorClass_OnClickMethod: MethodResolver<Any>? = null
     }
@@ -190,6 +191,10 @@ object QQTIMHooker : YukiBaseHooker() {
                         }
                     }.singleOrNull()?.getMethodInstance(classLoader)
             }
+            // QQ 9.3+ 中 NewSettingConfigProvider 被混淆 - 参考 XAutoDaily 使用字符串查找
+            DexKitData.NewSettingConfigProviderClass = findClass {
+                matcher { usingStrings("140134.140135", "功能", "隐私") }
+            }.singleOrNull()?.name?.toClassOrNull()
             val kotlinFunction0 = "kotlin.jvm.functions.Function0"
             val simpleItemProcessorClassFromClass = findClass {
                 searchPackages("${PackageName.QQ}.setting.processor")
@@ -210,11 +215,35 @@ object QQTIMHooker : YukiBaseHooker() {
             val simpleItemProcessorClassFromString = findMethod {
                 matcher { usingStrings("SimpleItemProcessor") }
             }.singleOrNull()?.getMethodInstance(classLoader)?.declaringClass?.name?.toClassOrNull()
-            findSimpleItemProcessorClass(simpleItemProcessorClassFromClass, simpleItemProcessorClassFromString)?.also { clazz ->
+            findSimpleItemProcessorClass(
+                findSimpleItemProcessorClassFromProvider(),
+                simpleItemProcessorClassFromClass,
+                simpleItemProcessorClassFromString
+            )?.also { clazz ->
                 DexKitData.SimpleItemProcessorClass = clazz
                 DexKitData.SimpleItemProcessorClass_OnClickMethod = clazz.findSimpleItemProcessorOnClickMethod(kotlinFunction0)
             }
         }
+    }
+
+    /** 全部可能存在的设置界面配置提供者类 */
+    private val settingConfigProviderClasses
+        get() = listOfNotNull(
+            MainSettingConfigProviderClass,
+            NewSettingConfigProviderClass,
+            NewSettingConfigProviderObfuscatedClass,
+            DexKitData.NewSettingConfigProviderClass
+        ).distinct()
+
+    /**
+     * 通过设置界面配置提供者中返回 `SimpleItemProcessor` 的方法查找其类
+     * @return [Class] or null
+     */
+    private fun findSimpleItemProcessorClassFromProvider() = settingConfigProviderClasses.firstNotNullOfOrNull { providerClass ->
+        providerClass.resolve().optional(silent = true).firstMethodOrNull {
+            parameters(Context::class)
+            returnType { it.name.startsWith("${PackageName.QQ}.setting.processor") }
+        }?.self?.returnType?.name?.toClassOrNull()
     }
 
     /** 查找 `SimpleItemProcessor` 的父类 */
@@ -513,8 +542,8 @@ object QQTIMHooker : YukiBaseHooker() {
                 }; onClickMethod.copy().of(item).invoke(proxyOnClick)
             } ?: error("Could not create TSBattery entry item")
         }
-        arrayOf(MainSettingConfigProviderClass, NewSettingConfigProviderClass, NewSettingConfigProviderObfuscatedClass).forEach { providerClass ->
-            providerClass?.resolve()?.optional()?.firstMethodOrNull {
+        settingConfigProviderClasses.forEach { providerClass ->
+            providerClass.resolve().optional().firstMethodOrNull {
                 parameters(Context::class)
                 returnType = List::class
             }?.hook()?.after {
@@ -525,7 +554,8 @@ object QQTIMHooker : YukiBaseHooker() {
                 val group = groupClass.createInstanceOrNull(itemList, "", "", 6, null)
                     ?: groupClass.createInstanceOrNull(itemList, "", "")
                     ?: return@after
-                val insertIndex = if (providerClass.name.contains("NewSettingConfigProvider")) 2 else 1
+                // 混淆后的类名不再包含 NewSettingConfigProvider - 除旧版设置界面外均按新版处理
+                val insertIndex = if (providerClass != MainSettingConfigProviderClass) 2 else 1
                 processor.add(insertIndex.coerceAtMost(processor.size), group)
             }
         }
