@@ -554,9 +554,9 @@ object QQTIMHooker : YukiBaseHooker() {
                 val group = groupClass.createInstanceOrNull(itemList, "", "", 6, null)
                     ?: groupClass.createInstanceOrNull(itemList, "", "")
                     ?: return@after
-                // 混淆后的类名不再包含 NewSettingConfigProvider - 除旧版设置界面外均按新版处理
-                val insertIndex = if (providerClass != MainSettingConfigProviderClass) 2 else 1
-                processor.add(insertIndex.coerceAtMost(processor.size), group)
+                // 插入到第一个分组后面 - 新版设置界面第一个分组是搜索栏, 即插入到账号与安全前面
+                // 不能按账号与安全的位置推算 - 其它模块也可能在此插入分组导致位置不固定
+                processor.add(1.coerceAtMost(processor.size), group)
             }
         }
     }
@@ -601,12 +601,37 @@ object QQTIMHooker : YukiBaseHooker() {
     }
 
     override fun onHook() {
-        searchUsingDexKit()
         withApplicationReady { application ->
+            // QQ 会通过 RFix (Tinker) 热更在 Application 创建时替换 ClassLoader
+            // 补丁中的类与原始 ClassLoader 中的类不是同一个 - 需要在此之后使用新的 ClassLoader 查找和 Hook
+            hostClassLoader = application.classLoader
+            searchUsingDexKit()
             application.registerModuleActivities(when {
                 isQQNTVersion -> GeneralSettingActivityClass
                 else -> AboutActivityClass
             }?.name)
+            // 仅注入主进程
+            withProcess(mainProcessName) {
+                // Hook 跳转事件
+                JumpActivityClass?.resolve()?.optional()?.firstMethodOrNull {
+                    name = "doOnCreate"
+                    parameters(Bundle::class)
+                }?.hook()?.after { instance<Activity>().jumpToModuleSettings() }
+                // Hook 设置界面入口点
+                if (isQQNTVersion) hookQQSettingsUi()
+                else {
+                    // 将条目注入设置界面 (Activity)
+                    QQSettingSettingActivityClass?.resolve()?.optional()?.firstMethodOrNull {
+                        name = "doOnCreate"
+                        parameters(Bundle::class)
+                    }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
+                    // 将条目注入设置界面 (Fragment)
+                    QQSettingSettingFragmentClass?.resolve()?.optional()?.firstMethodOrNull {
+                        name = "doOnCreateView"
+                        parameterCount = 3
+                    }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
+                }
+            }
             if (ConfigData.isDisableAllHook) return@withApplicationReady
             // 不注入此进程防止部分系统发生 X5 浏览器内核崩溃问题
             if (processName.startsWith(privilegedProcessName)) return@withApplicationReady
@@ -623,28 +648,6 @@ object QQTIMHooker : YukiBaseHooker() {
             onCreate {
                 hostVersionName = appVersionName
                 ConfigData.init(context = this)
-            }
-        }
-        // 仅注入主进程
-        withProcess(mainProcessName) {
-            // Hook 跳转事件
-            JumpActivityClass?.resolve()?.optional()?.firstMethodOrNull {
-                name = "doOnCreate"
-                parameters(Bundle::class)
-            }?.hook()?.after { instance<Activity>().jumpToModuleSettings() }
-            // Hook 设置界面入口点
-            if (isQQNTVersion) hookQQSettingsUi()
-            else {
-                // 将条目注入设置界面 (Activity)
-                QQSettingSettingActivityClass?.resolve()?.optional()?.firstMethodOrNull {
-                    name = "doOnCreate"
-                    parameters(Bundle::class)
-                }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
-                // 将条目注入设置界面 (Fragment)
-                QQSettingSettingFragmentClass?.resolve()?.optional()?.firstMethodOrNull {
-                    name = "doOnCreateView"
-                    parameterCount = 3
-                }?.hook()?.after { hookQQSettingsUiLegacy(instance) }
             }
         }
     }

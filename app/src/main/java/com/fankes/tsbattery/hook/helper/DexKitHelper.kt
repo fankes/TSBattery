@@ -51,6 +51,8 @@ object DexKitHelper {
      */
     fun create(param: PackageParam, initiate: DexKitBridge.() -> Unit) {
         load()
-        runCatching { DexKitBridge.create(param.appInfo.sourceDir).use { initiate(it) } }
+        // 宿主可能通过 Tinker 热更替换了 ClassLoader 加载补丁中的 Dex - 不能只搜索 base.apk
+        val classLoader = param.hostClassLoader ?: return
+        runCatching { DexKitBridge.create(classLoader, false).use { initiate(it) } }
     }
 }
