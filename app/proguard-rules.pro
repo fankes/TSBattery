@@ -28,7 +28,6 @@
 -overloadaggressively
 -allowaccessmodification
 -adaptclassstrings
--adaptresourcefilenames
 -adaptresourcefilecontents
 
 -renamesourcefileattribute P
