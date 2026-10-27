@@ -93,8 +93,10 @@ jobs:
       - name: Post Artifacts to Telegram
         run: |
           ESCAPED=`python3 -c 'import json,os,urllib.parse; msg = json.dumps(os.environ["COMMIT_MESSAGE"]); print(urllib.parse.quote(msg if len(msg) <= 1024 else json.dumps(os.environ["COMMIT_URL"])))'`
-          curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_release%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_release%22%2C%22parse_mode%22%3A%22MarkdownV2%22%2C%22caption%22:${ESCAPED}%7D%5D" \
+          # Telegram limits one request to 50MB, so debug and release APKs are sent separately
+          curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_debug%22%7D%2C%20%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_debug%22%7D%5D" \
            -F modern_debug="@${{ env.MODERN_DEBUG_APK_PATH }}" \
+           -F legacy_debug="@${{ env.LEGACY_DEBUG_APK_PATH }}"
+          curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_release%22%7D%2C%20%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_release%22%2C%22parse_mode%22%3A%22MarkdownV2%22%2C%22caption%22%3A${ESCAPED}%7D%5D" \
            -F modern_release="@${{ env.MODERN_RELEASE_APK_PATH }}" \
-           -F legacy_debug="@${{ env.LEGACY_DEBUG_APK_PATH }}" \
            -F legacy_release="@${{ env.LEGACY_RELEASE_APK_PATH }}"
