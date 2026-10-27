@@ -145,8 +145,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                           你正在使用的是 CI 自动构建版本，Commit ID 为 ${ModuleVersion.GITHUB_COMMIT_ID}。
                           
                           它是由代码提交后自动触发并构建、自动编译发布的，并未经任何稳定性测试，使用风险自负。
-                          
-                          CI 构建的版本不支持太极 (也请不要提交 CI 版本的适配，因为它们是不稳定的)，你可以使用 LSPosed / LSPatch。
                         """.trimIndent()
                         confirmButton(text = "我知道了")
                         noCancelable()
