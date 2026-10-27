@@ -584,6 +584,66 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/link_betterandroid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_betterandroid" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="BetterAndroid"
+                        android:textColor="@color/colorTextGray"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="为 Android 创造更多有用的工具扩展"
+                        android:textColor="@color/colorTextDark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="10dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/colorTextGray" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:alpha="0.15"
+                android:background="@color/colorTextGray" />
+
+            <LinearLayout
                 android:id="@+id/link_yukihook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

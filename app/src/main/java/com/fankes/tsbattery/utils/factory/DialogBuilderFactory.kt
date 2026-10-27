@@ -34,6 +34,7 @@ import androidx.appcompat.app.AlertDialog
 import com.fankes.tsbattery.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.highcapable.betterandroid.ui.extension.component.base.toPx
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 
 /**
@@ -90,14 +91,14 @@ class DialogBuilder(val context: Context) {
                     gravity = Gravity.CENTER or Gravity.START
                     addView(CircularProgressIndicator(context).apply {
                         isIndeterminate = true
-                        trackCornerRadius = 10.dp(context)
+                        trackCornerRadius = 10.toPx(context)
                     })
-                    addView(View(context).apply { layoutParams = ViewGroup.LayoutParams(20.dp(context), 5) })
+                    addView(View(context).apply { layoutParams = ViewGroup.LayoutParams(20.toPx(context), 5) })
                     addView(TextView(context).apply {
                         tag = "progressContent"
                         text = value
                     })
-                    setPadding(20.dp(context), 20.dp(context), 20.dp(context), 20.dp(context))
+                    setPadding(20.toPx(context), 20.toPx(context), 20.toPx(context), 20.toPx(context))
                 }
             else customLayoutView?.findViewWithTag<TextView>("progressContent")?.text = value
         }

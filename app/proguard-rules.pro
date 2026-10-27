@@ -55,5 +55,6 @@
 -keep class * extends android.app.Activity
 -keep class * implements androidx.viewbinding.ViewBinding {
     <init>();
-    *** inflate(android.view.LayoutInflater);
+    *** bind(android.view.View);
+    *** inflate(...);
 }

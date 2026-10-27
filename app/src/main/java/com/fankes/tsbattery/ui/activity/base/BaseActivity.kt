@@ -22,52 +22,21 @@
 package com.fankes.tsbattery.ui.activity.base
 
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.annotation.Keep
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.WindowCompat
 import androidx.viewbinding.ViewBinding
 import com.fankes.tsbattery.R
-import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
-import com.highcapable.kavaref.KavaRef.Companion.resolve
-import com.highcapable.kavaref.extension.genericSuperclassTypeArguments
-import com.highcapable.kavaref.extension.toClassOrNull
+import com.highcapable.betterandroid.ui.component.activity.AppBindingActivity
 import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
 
 @Keep
-abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), ModuleActivity {
+abstract class BaseActivity<VB : ViewBinding> : AppBindingActivity<VB>(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery
-
-    /** 获取绑定布局对象 */
-    lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         delegate.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
-        val bindingClass = javaClass.genericSuperclassTypeArguments().firstOrNull()?.toClassOrNull()
-        binding = bindingClass?.resolve()?.optional()?.firstMethodOrNull {
-            name = "inflate"
-            parameters(LayoutInflater::class)
-        }?.invoke<VB>(layoutInflater) ?: error("binding failed")
-        if (Build.VERSION.SDK_INT >= 35) binding.root.fitsSystemWindows = true
-        setContentView(binding.root)
-        // 隐藏系统的标题栏
-        supportActionBar?.hide()
-        // 初始化沉浸状态栏
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = isNotSystemInDarkMode
-            isAppearanceLightNavigationBars = isNotSystemInDarkMode
-        }
-        @Suppress("DEPRECATION")
-        ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
-            window?.statusBarColor = it
-            window?.navigationBarColor = it
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
-        }
         // 装载子类
         onCreate()
     }

@@ -25,14 +25,13 @@ package com.fankes.tsbattery.ui.activity
 
 import android.app.Dialog
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.fankes.projectpromote.ProjectPromote
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.JumpEvent
@@ -54,11 +53,15 @@ import com.fankes.tsbattery.utils.factory.openBrowser
 import com.fankes.tsbattery.utils.factory.openSelfSetting
 import com.fankes.tsbattery.utils.factory.showDialog
 import com.fankes.tsbattery.utils.factory.snake
-import com.fankes.tsbattery.utils.factory.toast
 import com.fankes.tsbattery.utils.tool.GithubReleaseTool
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.highcapable.betterandroid.ui.component.adapter.factory.bindAdapter
+import com.highcapable.betterandroid.ui.component.adapter.viewholder.delegate.base.ViewHolderDelegate
+import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
 import com.highcapable.betterandroid.ui.extension.component.runDelayed
+import com.highcapable.betterandroid.ui.extension.insets.factory.removeWindowInsetsListener
+import com.highcapable.betterandroid.ui.extension.view.toast
 import com.highcapable.yukihookapi.YukiHook
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 import com.highcapable.yukihookapi.runtime.YukiHookRuntime
@@ -83,6 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         const val COOLAPK_PROFILE_URL = "https://www.coolapk.com/u/876977"
         const val COOLAPK_PACKAGE_NAME = "com.coolapk.market"
         const val AFDIAN_URL = "https://afdian.com/a/fankes"
+        const val BETTERANDROID_URL = "https://github.com/BetterAndroid/BetterAndroid"
         const val YUKIHOOK_URL = "https://github.com/HighCapable/YukiHook"
         const val KAVAREF_URL = "https://github.com/HighCapable/KavaRef"
     }
@@ -109,7 +113,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private fun onCreate(available: Boolean) {
         // 判断 Hook 状态
         if (available && YukiHook.Status.isModuleActive) {
-            homeBinding.mainLinStatus.setCardBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorStatusActiveContainer, null))
+            homeBinding.mainLinStatus.setCardBackgroundColor(resources.getColorCompat(R.color.colorStatusActiveContainer, null))
             homeBinding.mainImgStatus.setImageResource(R.drawable.ic_status_success)
             homeBinding.mainTextStatus.text = "已激活"
             homeBinding.mainTextApiWay.isVisible = true
@@ -215,6 +219,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // 恰饭！
         aboutBinding.linkSupportMe.setOnClickListener { openBrowser(url = AFDIAN_URL) }
         // 基于项目构建
+        aboutBinding.linkBetterandroid.setOnClickListener { openBrowser(url = BETTERANDROID_URL) }
         aboutBinding.linkYukihook.setOnClickListener { openBrowser(url = YUKIHOOK_URL) }
         aboutBinding.linkKavaref.setOnClickListener { openBrowser(url = KAVAREF_URL) }
         // 设置桌面图标显示隐藏
@@ -232,15 +237,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     /** 初始化底栏和页面 (主页 | 配置 | 关于) */
     private fun initPager() {
+        // 根布局已由 SystemBarsController 处理边距，避免底栏重复追加导航栏高度
+        binding.mainBottomNav.removeWindowInsetsListener()
         val pages = listOf(homeBinding.root, configBinding.root, aboutBinding.root)
         val navIds = listOf(R.id.nav_home, R.id.nav_config, R.id.nav_about)
-        binding.mainViewPager.adapter = object : PagerAdapter() {
-            override fun getCount() = pages.size
-            override fun isViewFromObject(view: View, `object`: Any) = view === `object`
-            override fun instantiateItem(container: ViewGroup, position: Int) = pages[position].also { container.addView(it) }
-            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) = container.removeView(`object` as View)
+        // 每个页面使用独立类型并常驻，保留现有绑定和页面状态。
+        binding.mainViewPager.offscreenPageLimit = pages.lastIndex
+        binding.mainViewPager.bindAdapter<View> {
+            onBindData { pages }
+            onBindViewType { _, position -> position }
+            pages.forEachIndexed { index, page ->
+                onBindItemView(
+                    delegate = object : ViewHolderDelegate<View>() {
+                        override fun create(context: Context, parent: ViewGroup?) = page
+                        override fun getView(instance: View) = instance
+                    },
+                    viewType = index
+                )
+            }
         }
-        binding.mainViewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.mainBottomNav.selectedItemId = navIds[position]
             }

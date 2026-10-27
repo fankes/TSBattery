@@ -3,6 +3,7 @@ agp = "9.3.3"
 kotlin = "2.4.21"
 ksp = "2.3.12"
 project-promote = "1.0.1"
+betterandroid = "1.1.6"
 libxposed-api = "102.0.0"
 xposed-framework-api = "82"
 yukihook-bom = "1.5.0"
@@ -14,6 +15,8 @@ drawabletoolbox = "1.0.7"
 okhttp = "5.5.1"
 androidx-core-ktx = "1.19.0"
 androidx-appcompat = "1.8.0"
+androidx-recyclerview = "1.4.0"
+androidx-viewpager2 = "1.1.0"
 # noinspection GradleDependency
 material = "1.11.0"
 androidx-constraintlayout = "2.2.2"
@@ -29,6 +32,10 @@ kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 project-promote = { group = "com.fankes.projectpromote", name = "project-promote", version.ref = "project-promote" }
+betterandroid-ui-component = { group = "com.highcapable.betterandroid", name = "ui-component", version.ref = "betterandroid" }
+betterandroid-ui-component-adapter = { group = "com.highcapable.betterandroid", name = "ui-component-adapter", version.ref = "betterandroid" }
+betterandroid-ui-extension = { group = "com.highcapable.betterandroid", name = "ui-extension", version.ref = "betterandroid" }
+betterandroid-system-extension = { group = "com.highcapable.betterandroid", name = "system-extension", version.ref = "betterandroid" }
 libxposed-api = { module = "io.github.libxposed:api", version.ref = "libxposed-api" }
 xposed-framework-api = { module = "de.robv.android.xposed:api", version.ref = "xposed-framework-api" }
 yukihook-bom = { group = "com.highcapable.yukihookapi", name = "yukihook-bom", version.ref = "yukihook-bom" }
@@ -53,6 +60,8 @@ drawabletoolbox = { group = "com.github.duanhong169", name = "drawabletoolbox", 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidx-recyclerview" }
+androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "androidx-viewpager2" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

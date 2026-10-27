@@ -24,22 +24,16 @@
 package com.fankes.tsbattery.ui.activity.base
 
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.WindowCompat
 import com.fankes.tsbattery.R
-import com.fankes.tsbattery.utils.factory.isNotSystemInDarkMode
+import com.highcapable.betterandroid.ui.component.activity.AppViewsActivity
 import com.highcapable.yukihookapi.hook.factory.injectModuleAppResources
 import com.highcapable.yukihookapi.hook.xposed.parasitic.activity.proxy.ModuleActivity
-import android.R as Android_R
 
 @Keep
-abstract class BaseActivity2 : AppCompatActivity(), ModuleActivity {
+abstract class BaseActivity2 : AppViewsActivity(), ModuleActivity {
 
     override val moduleTheme get() = R.style.Theme_TSBattery
 
@@ -48,22 +42,8 @@ abstract class BaseActivity2 : AppCompatActivity(), ModuleActivity {
         delegate.onCreate(savedInstanceState)
         injectModuleAppResources()
         super.onCreate(savedInstanceState)
-        injectModuleAppResources()
-        // 隐藏系统的标题栏
-        supportActionBar?.hide()
-        // 初始化沉浸状态栏
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = isNotSystemInDarkMode
-            isAppearanceLightNavigationBars = isNotSystemInDarkMode
-        }
-        ResourcesCompat.getColor(resources, R.color.colorThemeBackground, null).also {
-            window?.statusBarColor = it
-            window?.navigationBarColor = it
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) window?.navigationBarDividerColor = it
-        }
         // 装载子类
         onCreate()
-        if (Build.VERSION.SDK_INT >= 35) findViewById<FrameLayout>(Android_R.id.content).getChildAt(0)?.fitsSystemWindows = true
     }
 
     /** 回调 [onCreate] 方法 */

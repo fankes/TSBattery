@@ -46,7 +46,7 @@ import com.fankes.tsbattery.hook.factory.jumpToModuleSettings
 import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.hook.helper.DexKitHelper
 import com.fankes.tsbattery.utils.factory.appVersionName
-import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.betterandroid.ui.extension.component.base.toPx
 import com.highcapable.betterandroid.ui.extension.view.ViewLayoutParams
 import com.highcapable.betterandroid.ui.extension.view.parentOrNull
 import com.highcapable.kavaref.KavaRef.Companion.asResolver
@@ -595,7 +595,7 @@ object QQTIMHooker : YukiBaseHooker() {
             (formItemRefRoot?.parent as? View?)?.layoutParams
         } else formItemRefRoot?.layoutParams) ?: ViewLayoutParams(widthMatchParent = true)
         // 设置圆角和间距
-        if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.dp(item.context), 0, 0)
+        if (isQQ) (lparam as? ViewGroup.MarginLayoutParams?)?.setMargins(0, 15.toPx(item.context), 0, 0)
         // 将 Item 添加到设置界面
         listGroup?.also { if (isQQ) it.addView(item, lparam) else it.addView(item, 0, lparam) }
     }

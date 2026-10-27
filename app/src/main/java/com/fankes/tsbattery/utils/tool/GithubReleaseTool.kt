@@ -23,7 +23,6 @@
 
 package com.fankes.tsbattery.utils.tool
 
-import android.app.Activity
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
@@ -33,6 +32,7 @@ import com.fankes.tsbattery.utils.factory.openBrowser
 import com.fankes.tsbattery.utils.factory.openSelfSetting
 import com.fankes.tsbattery.utils.factory.runInSafe
 import com.fankes.tsbattery.utils.factory.showDialog
+import com.highcapable.betterandroid.ui.extension.component.hostActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -83,7 +83,7 @@ object GithubReleaseTool {
                             confirmButton(text = "更新") { context.openBrowser(htmlUrl) }
                             cancelButton()
                         }
-                        if (name != version) (context as? Activity?)?.runOnUiThread {
+                        if (name != version) context.hostActivity?.runOnUiThread {
                             showUpdate()
                             result(name) { showUpdate() }
                         }
@@ -107,7 +107,7 @@ object GithubReleaseTool {
                     .build()
             ).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    (context as? Activity?)?.runOnUiThread {
+                    context.hostActivity?.runOnUiThread {
                         context.showDialog {
                             title = "网络不可用"
                             msg = "应用的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
@@ -119,7 +119,7 @@ object GithubReleaseTool {
                 }
 
                 override fun onResponse(call: Call, response: Response) = runInSafe {
-                    (context as? Activity?)?.runOnUiThread { runInSafe { callback() } }
+                    context.hostActivity?.runOnUiThread { runInSafe { callback() } }
                 }
             })
     }

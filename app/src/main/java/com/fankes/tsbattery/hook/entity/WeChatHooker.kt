@@ -25,7 +25,6 @@ package com.fankes.tsbattery.hook.entity
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -40,8 +39,9 @@ import com.fankes.tsbattery.hook.factory.startModuleSettings
 import com.fankes.tsbattery.utils.factory.absoluteStatusBarHeight
 import com.fankes.tsbattery.utils.factory.appVersionCode
 import com.fankes.tsbattery.utils.factory.appVersionName
-import com.fankes.tsbattery.utils.factory.dp
+import com.highcapable.betterandroid.system.extension.utils.AndroidVersion
 import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
+import com.highcapable.betterandroid.ui.extension.component.base.toPx
 import com.highcapable.betterandroid.ui.extension.view.firstChildOrNull
 import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
@@ -87,13 +87,13 @@ object WeChatHooker : YukiBaseHooker() {
         gravity = Gravity.END or Gravity.BOTTOM
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         addView(ImageView(context).apply {
-            layoutParams = ViewGroup.MarginLayoutParams(20.dp(context), 20.dp(context)).apply {
-                topMargin = context.absoluteStatusBarHeight + 15.dp(context)
-                rightMargin = 20.dp(context)
+            layoutParams = ViewGroup.MarginLayoutParams(20.toPx(context), 20.toPx(context)).apply {
+                topMargin = context.absoluteStatusBarHeight + 15.toPx(context)
+                rightMargin = 20.toPx(context)
             }
             setColorFilter(resources.getColorCompat(R.color.colorTextGray, null))
             setImageResource(R.drawable.ic_icon)
-            if (Build.VERSION.SDK_INT >= 26) tooltipText = "TSBattery 设置"
+            if (AndroidVersion.isAtLeast(AndroidVersion.O)) tooltipText = "TSBattery 设置"
             setOnClickListener { context.startModuleSettings() }
         })
     }

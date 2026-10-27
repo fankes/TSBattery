@@ -27,24 +27,24 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.getSystemService
-import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.net.toUri
 import com.fankes.tsbattery.R
 import com.fankes.tsbattery.wrapper.BuildConfigWrapper
 import com.google.android.material.snackbar.Snackbar
+import com.highcapable.betterandroid.system.extension.component.getPackageInfoOrNull
+import com.highcapable.betterandroid.system.extension.component.hasPackage
+import com.highcapable.betterandroid.system.extension.component.isComponentEnabled
+import com.highcapable.betterandroid.system.extension.component.versionCodeCompat
+import com.highcapable.betterandroid.ui.extension.view.toast
 import com.highcapable.yukihookapi.hook.xposed.application.ModuleApplication
 
 /**
@@ -72,42 +72,23 @@ val Context.isSystemInDarkMode get() = (resources.configuration.uiMode and Confi
 inline val Context.isNotSystemInDarkMode get() = !isSystemInDarkMode
 
 /**
- * 得到 APP 安装包信息 (兼容)
- * @param packageName APP 包名
- * @param flag [PackageInfoFlags]
- * @return [PackageInfo] or null
- */
-private fun Context.getPackageInfoCompat(packageName: String, flag: Number = 0) = runCatching {
-    @Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
-    if (Build.VERSION.SDK_INT >= 33)
-        packageManager?.getPackageInfo(packageName, PackageInfoFlags.of(flag.toLong()))
-    else packageManager?.getPackageInfo(packageName, flag.toInt())
-}.getOrNull()
-
-/**
- * 得到 APP 版本号 (兼容 [PackageInfo.getLongVersionCode])
- * @return [Int]
- */
-private val PackageInfo.versionCodeCompat get() = PackageInfoCompat.getLongVersionCode(this)
-
-/**
  * 判断 APP 是否安装
  * @param packageName APP 包名
  * @return [Boolean]
  */
-fun Context.isInstall(packageName: String) = getPackageInfoCompat(packageName)?.let { true } ?: false
+fun Context.isInstall(packageName: String) = packageManager.hasPackage(packageName)
 
 /**
  * 得到 APP 版本信息
  * @return [String]
  */
-val Context.appVersionName get() = getPackageInfoCompat(packageName)?.versionName ?: ""
+val Context.appVersionName get() = packageManager.getPackageInfoOrNull(packageName)?.versionName ?: ""
 
 /**
  * 得到 APP 版本号
  * @return [Int]
  */
-val Context.appVersionCode get() = getPackageInfoCompat(packageName)?.versionCodeCompat
+val Context.appVersionCode get() = packageManager.getPackageInfoOrNull(packageName)?.versionCodeCompat
 
 /**
  * 得到 APP 版本信息与版本号
@@ -115,7 +96,7 @@ val Context.appVersionCode get() = getPackageInfoCompat(packageName)?.versionCod
  * @return [String]
  */
 fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.let { "${it.versionName} (${it.versionCodeCompat})" } ?: ""
+    packageManager.getPackageInfoOrNull(packageName)?.let { "${it.versionName} (${it.versionCodeCompat})" } ?: ""
 
 /**
  * 得到 APP 名称
@@ -123,14 +104,14 @@ fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
  * @return [String]
  */
 fun Context.appNameOf(packageName: String = getPackageName()) =
-    getPackageInfoCompat(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
+    packageManager.getPackageInfoOrNull(packageName)?.applicationInfo?.loadLabel(packageManager)?.toString() ?: ""
 
 /**
  * 得到 APP 图标
  * @param packageName APP 包名 - 默认为当前 APP
  * @return [Drawable] or null
  */
-fun Context.appIconOf(packageName: String = getPackageName()) = getPackageInfoCompat(packageName)?.applicationInfo?.loadIcon(packageManager)
+fun Context.appIconOf(packageName: String = getPackageName()) = packageManager.getPackageInfoOrNull(packageName)?.applicationInfo?.loadIcon(packageManager)
 
 /**
  * 网络连接是否正常
@@ -143,20 +124,6 @@ val Context.isNetWorkSuccess
     }
 
 /**
- * dp 转换为 pxInt
- * @param context 使用的实例
- * @return [Int]
- */
-fun Number.dp(context: Context) = dpFloat(context).toInt()
-
-/**
- * dp 转换为 pxFloat
- * @param context 使用的实例
- * @return [Float]
- */
-fun Number.dpFloat(context: Context) = toFloat() * context.resources.displayMetrics.density
-
-/**
  * 获取绝对状态栏高度
  * @return [Int]
  */
@@ -164,18 +131,6 @@ val Context.absoluteStatusBarHeight
     get() = safeOfNan {
         resources.getDimensionPixelSize(resources.getIdentifier("status_bar_height", "dimen", "android"))
     }
-
-/**
- * 弹出 [Toast]
- * @param msg 提示内容
- */
-fun toast(msg: String) = ModuleApplication.requireContext().toast(msg)
-
-/**
- * 弹出 [Toast]
- * @param msg 提示内容
- */
-fun Context.toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 
 /**
  * 弹出 [Snackbar]
@@ -204,7 +159,7 @@ fun Context.openSelfSetting(packageName: String = ModuleApplication.requireConte
             data = Uri.fromParts("package", packageName, null)
         })
     else snake(msg = "你没有安装此应用")
-}.onFailure { toast(msg = "启动 $packageName 应用信息失败") }
+}.onFailure { toast("启动 $packageName 应用信息失败") }
 
 /**
  * 启动系统浏览器
@@ -243,6 +198,4 @@ fun Context.hideOrShowLauncherIcon(isShow: Boolean) {
  * @return [Boolean] 是否显示
  */
 val Context.isLauncherIconShowing
-    get() = packageManager?.getComponentEnabledSetting(
-        ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home")
-    ) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    get() = packageManager.isComponentEnabled(ComponentName(packageName, "${BuildConfigWrapper.APPLICATION_ID}.Home"))

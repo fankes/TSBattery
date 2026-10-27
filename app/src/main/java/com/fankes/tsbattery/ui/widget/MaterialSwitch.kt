@@ -30,14 +30,14 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.annotation.Keep
 import androidx.appcompat.widget.SwitchCompat
-import com.fankes.tsbattery.utils.factory.dp
 import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
+import com.highcapable.betterandroid.ui.extension.component.base.DisplayDensity
 import com.highcapable.hikage.annotation.HikageView
 import top.defaults.drawabletoolbox.DrawableBuilder
 
 @Keep
 @HikageView
-class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs) {
+class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs), DisplayDensity {
 
     private fun toColors(selected: Int, pressed: Int, normal: Int): ColorStateList {
         val colors = intArrayOf(selected, pressed, normal)
@@ -55,16 +55,16 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
             .rectangle()
             .rounded()
             .solidColor(0xFF656565.toInt())
-            .height(20.dp(context))
-            .cornerRadius(15.dp(context))
+            .height(20.dp)
+            .cornerRadius(15.dp)
             .build()
         thumbDrawable = DrawableBuilder()
             .rectangle()
             .rounded()
             .solidColor(Color.WHITE)
-            .size(20.dp(context), 20.dp(context))
-            .cornerRadius(20.dp(context))
-            .strokeWidth(8.dp(context))
+            .size(20.dp, 20.dp)
+            .cornerRadius(20.dp)
+            .strokeWidth(8.dp)
             .strokeColor(Color.TRANSPARENT)
             .build()
         trackTintList = toColors(
