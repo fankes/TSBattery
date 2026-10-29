@@ -32,9 +32,9 @@
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/title_restart_icon"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_marginEnd="5dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="6dp"
             android:alpha="0.85"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_restart"

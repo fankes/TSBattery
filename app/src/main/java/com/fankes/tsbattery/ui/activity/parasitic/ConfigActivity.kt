@@ -137,7 +137,7 @@ class ConfigActivity : BaseActivity2() {
                         },
                         attrs = {
                             android {
-                                set("src", "@drawable/ic_icon")
+                                set("src", "@drawable/ic_tsbattery_entry_day")
                                 set("tint", "@color/colorTextGray")
                             }
                         }
