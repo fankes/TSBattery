@@ -27,6 +27,10 @@ import android.app.Dialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.transition.ChangeBounds
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +65,7 @@ import com.highcapable.betterandroid.ui.component.adapter.viewholder.delegate.ba
 import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
 import com.highcapable.betterandroid.ui.extension.component.runDelayed
 import com.highcapable.betterandroid.ui.extension.insets.factory.removeWindowInsetsListener
+import com.highcapable.betterandroid.ui.extension.view.animate
 import com.highcapable.betterandroid.ui.extension.view.toast
 import com.highcapable.yukihookapi.YukiHook
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
@@ -206,6 +211,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         aboutBinding.aboutProfileItem.setOnClickListener { openBrowser(url = GITHUB_PROFILE_URL) }
         aboutBinding.aboutRepoItem.setOnClickListener { openBrowser(url = GITHUB_REPO_URL) }
         // 联系方式
+        aboutBinding.linkTelegram.setOnClickListener { toggleLinkGroup(aboutBinding.linkTelegramContent, aboutBinding.linkTelegramArrow) }
+        aboutBinding.linkQq.setOnClickListener { toggleLinkGroup(aboutBinding.linkQqContent, aboutBinding.linkQqArrow) }
         aboutBinding.linkTelegramCi.setOnClickListener { openBrowser(url = TELEGRAM_CI_URL) }
         aboutBinding.linkTelegramChannel.setOnClickListener { openBrowser(url = TELEGRAM_CHANNEL_URL) }
         aboutBinding.linkTelegramGroup.setOnClickListener { openBrowser(url = TELEGRAM_GROUP_URL) }
@@ -233,6 +240,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             homeBinding.quickActionItem.isVisible = false
             homeBinding.displaySettingItem.isVisible = false
         }
+    }
+
+    /**
+     * 展开或收起关于页面的联系方式分组
+     * @param content 分组的子条目容器
+     * @param arrow 分组右侧的箭头
+     */
+    private fun toggleLinkGroup(content: View, arrow: View) {
+        // 默认的 AutoTransition 会先淡出再变形最后淡入，这里改为同时进行
+        // 面板自身只做淡入淡出，其隐藏时保留的是旧位置，参与位移会从旧位置飘过来
+        TransitionManager.beginDelayedTransition(aboutBinding.root, TransitionSet().apply {
+            ordering = TransitionSet.ORDERING_TOGETHER
+            addTransition(Fade())
+            addTransition(ChangeBounds().excludeTarget(content, true).excludeChildren(content, true))
+        })
+        content.isVisible = content.isVisible.not()
+        arrow.animate { rotation(if (content.isVisible) 90f else 0f) }
     }
 
     /** 初始化底栏和页面 (主页 | 配置 | 关于) */

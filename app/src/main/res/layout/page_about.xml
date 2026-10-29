@@ -18,9 +18,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_permotion_round"
             android:clipToOutline="true"
@@ -89,8 +89,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:alpha="0.15"
                 android:background="@color/colorTextGray" />
 
@@ -144,9 +144,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="8dp"
             android:alpha="0.6"
             android:ellipsize="end"
@@ -158,21 +158,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/bg_permotion_round"
             android:clipToOutline="true"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/link_telegram_ci"
+                android:id="@+id/link_telegram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_telegram" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -185,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="Telegram CI 频道"
+                        android:text="Telegram"
                         android:textColor="@color/colorTextGray"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -197,12 +201,13 @@
                         android:alpha="0.8"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="获取 CI 自动构建的测试版"
+                        android:text="CI 自动构建 · 频道 · 群组"
                         android:textColor="@color/colorTextDark"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/link_telegram_arrow"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="10dp"
@@ -211,22 +216,198 @@
                     app:tint="@color/colorTextGray" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/link_telegram_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/bg_sub_card_round"
+                android:clipToOutline="true"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/link_telegram_ci"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="47dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="CI 自动构建"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="获取 CI 自动构建的测试版"
+                            android:textColor="@color/colorTextDark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_external_link"
+                        app:tint="@color/colorTextDark" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="47dp"
+                    android:alpha="0.15"
+                    android:background="@color/colorTextGray" />
+
+                <LinearLayout
+                    android:id="@+id/link_telegram_channel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="47dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="关注我的频道"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="获取我的最新日常动态"
+                            android:textColor="@color/colorTextDark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_external_link"
+                        app:tint="@color/colorTextDark" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="47dp"
+                    android:alpha="0.15"
+                    android:background="@color/colorTextGray" />
+
+                <LinearLayout
+                    android:id="@+id/link_telegram_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="47dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="加入讨论群组"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="来群里坐坐，一起交流与反馈问题"
+                            android:textColor="@color/colorTextDark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_external_link"
+                        app:tint="@color/colorTextDark" />
+                </LinearLayout>
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:alpha="0.15"
                 android:background="@color/colorTextGray" />
 
             <LinearLayout
-                android:id="@+id/link_telegram_channel"
+                android:id="@+id/link_qq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_qq" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -239,7 +420,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="Telegram 频道"
+                        android:text="QQ"
                         android:textColor="@color/colorTextGray"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -251,12 +432,13 @@
                         android:alpha="0.8"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:text="关注我的频道，获取更新动态"
+                        android:text="频道 · 群组"
                         android:textColor="@color/colorTextDark"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/link_qq_arrow"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="10dp"
@@ -264,174 +446,128 @@
                     android:src="@drawable/ic_arrow_right"
                     app:tint="@color/colorTextGray" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:alpha="0.15"
-                android:background="@color/colorTextGray" />
 
             <LinearLayout
-                android:id="@+id/link_telegram_group"
+                android:id="@+id/link_qq_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/bg_sub_card_round"
+                android:clipToOutline="true"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/link_qq_channel"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="47dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="12dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="Telegram 群组"
-                        android:textColor="@color/colorTextGray"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="加入群组交流与反馈问题"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="关注我的频道"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="在 QQ 频道中讨论"
+                            android:textColor="@color/colorTextDark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_external_link"
+                        app:tint="@color/colorTextDark" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="10dp"
-                    android:alpha="0.5"
-                    android:src="@drawable/ic_arrow_right"
-                    app:tint="@color/colorTextGray" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginStart="47dp"
+                    android:alpha="0.15"
+                    android:background="@color/colorTextGray" />
+
+                <LinearLayout
+                    android:id="@+id/link_qq_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="47dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="加入讨论群组"
+                            android:textColor="@color/colorTextGray"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:alpha="0.8"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="在 QQ 群聊天讨论"
+                            android:textColor="@color/colorTextDark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_external_link"
+                        app:tint="@color/colorTextDark" />
+                </LinearLayout>
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:alpha="0.15"
-                android:background="@color/colorTextGray" />
-
-            <LinearLayout
-                android:id="@+id/link_qq_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="QQ 群"
-                        android:textColor="@color/colorTextGray"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="加入 QQ 群聊天讨论"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="10dp"
-                    android:alpha="0.5"
-                    android:src="@drawable/ic_arrow_right"
-                    app:tint="@color/colorTextGray" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:alpha="0.15"
-                android:background="@color/colorTextGray" />
-
-            <LinearLayout
-                android:id="@+id/link_qq_channel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="QQ 频道"
-                        android:textColor="@color/colorTextGray"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:alpha="0.8"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="在 QQ 频道中讨论"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="10dp"
-                    android:alpha="0.5"
-                    android:src="@drawable/ic_arrow_right"
-                    app:tint="@color/colorTextGray" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:alpha="0.15"
                 android:background="@color/colorTextGray" />
 
@@ -443,6 +579,12 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_coolapk" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -485,9 +627,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="8dp"
             android:alpha="0.6"
             android:ellipsize="end"
@@ -499,8 +641,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_permotion_round"
             android:clipToOutline="true"
@@ -562,9 +704,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="8dp"
             android:alpha="0.6"
             android:ellipsize="end"
@@ -576,8 +718,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/bg_permotion_round"
             android:clipToOutline="true"
@@ -638,8 +780,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:alpha="0.15"
                 android:background="@color/colorTextGray" />
 
@@ -698,8 +840,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:alpha="0.15"
                 android:background="@color/colorTextGray" />
 
@@ -759,9 +901,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:alpha="0.6"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
