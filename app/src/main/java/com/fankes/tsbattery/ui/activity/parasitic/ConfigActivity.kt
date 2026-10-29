@@ -77,6 +77,7 @@ import com.highcapable.kavaref.extension.classOf
 import com.highcapable.yukihookapi.YukiHook
 import kotlin.system.exitProcess
 import android.R as Android_R
+import androidx.appcompat.R as AndroidX_R
 
 @Keep
 class ConfigActivity : BaseActivity2() {
@@ -104,36 +105,35 @@ class ConfigActivity : BaseActivity2() {
                     lparams = LayoutParams(widthMatchParent = true),
                     init = {
                         gravity = Gravity.CENTER or Gravity.START
-                        setPadding(15.dp)
+                        setPaddingRelative(15.dp, 15.dp, 20.dp, 15.dp)
                     }
                 ) {
                     ImageView(
-                        lparams = LayoutParams(20.dp, 20.dp) {
-                            marginStart = 10.dp
-                            marginEnd = 20.dp
+                        lparams = LayoutParams(25.dp, 25.dp) {
+                            marginStart = 5.dp
+                            marginEnd = 15.dp
                         }
                     ) {
                         imageTintList = stateColorResource(R.color.colorTextGray)
-                        tooltipTextCompat = "返回"
+                        tooltipTextCompat = getString(AndroidX_R.string.abc_action_bar_up_description)
                         setImageResource(R.drawable.ic_back)
                         background = getThemeAttrsDrawable(Android_R.attr.selectableItemBackgroundBorderless)
                         setOnClickListener { finish() }
                     }
                     TextView(
                         lparams = LayoutParams(width = 0) {
-                            marginEnd = 2.dp
                             weight = 1f
                         }
                     ) {
                         isSingleLine = true
-                        textSize = 19f
+                        textSize = 18f
                         textColor = colorResource(R.color.colorTextGray)
                         text = "TSBattery 设置 (${appName.trim()})"
                         updateTypeface(Typeface.BOLD)
                     }
                     ImageView(
                         lparams = LayoutParams(23.dp, 23.dp) {
-                            marginEnd = 10.dp
+                            marginStart = 15.dp
                         },
                         attrs = {
                             android {
@@ -142,7 +142,6 @@ class ConfigActivity : BaseActivity2() {
                             }
                         }
                     ) {
-                        setPadding(1.dp)
                         tooltipTextCompat = "打开模块主界面"
                         background = getThemeAttrsDrawable(Android_R.attr.selectableItemBackgroundBorderless)
                         setOnClickListener {
