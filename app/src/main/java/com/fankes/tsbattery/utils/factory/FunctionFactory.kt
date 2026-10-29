@@ -165,8 +165,9 @@ fun Context.openSelfSetting(packageName: String = ModuleApplication.requireConte
  * 启动系统浏览器
  * @param url 网址
  * @param packageName 指定包名 - 可不填
+ * @param name 指定应用名称 - 可不填，启动失败提示中使用，为空时使用包名
  */
-fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
+fun Context.openBrowser(url: String, packageName: String = "", name: String = "") = runCatching {
     startActivity(Intent().apply {
         if (packageName.isNotBlank()) setPackage(packageName)
         action = Intent.ACTION_VIEW
@@ -175,7 +176,7 @@ fun Context.openBrowser(url: String, packageName: String = "") = runCatching {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
     })
 }.onFailure {
-    if (packageName.isNotBlank()) snake(msg = "启动 $packageName 失败")
+    if (packageName.isNotBlank()) snake(msg = "启动 ${name.ifBlank { packageName }} 失败，你可能没有安装此应用")
     else snake(msg = "启动系统浏览器失败")
 }
 

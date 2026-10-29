@@ -221,7 +221,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         aboutBinding.linkQqChannel.setOnClickListener { openBrowser(url = QQ_CHANNEL_URL) }
         aboutBinding.linkFollowMe.setOnClickListener {
-            openBrowser(url = COOLAPK_PROFILE_URL, packageName = COOLAPK_PACKAGE_NAME)
+            openBrowser(url = COOLAPK_PROFILE_URL, packageName = COOLAPK_PACKAGE_NAME, name = "酷安")
         }
         // 恰饭！
         aboutBinding.linkSupportMe.setOnClickListener { openBrowser(url = AFDIAN_URL) }
