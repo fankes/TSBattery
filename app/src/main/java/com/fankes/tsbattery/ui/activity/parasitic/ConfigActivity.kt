@@ -548,7 +548,7 @@ class ConfigActivity : BaseActivity2() {
         refreshCurrentModeText()
         refreshConfigItems()
         // 推广、恰饭
-        ProjectPromote.show(activity = this, ModuleVersion.toString())
+        if (ConfigData.isShowProjectPromotion) ProjectPromote.show(activity = this, ModuleVersion.toString())
     }
 
     /** 显示需要重新启动提示 */

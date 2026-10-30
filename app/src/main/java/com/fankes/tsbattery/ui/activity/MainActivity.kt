@@ -41,6 +41,7 @@ import com.fankes.tsbattery.R
 import com.fankes.tsbattery.const.JumpEvent
 import com.fankes.tsbattery.const.ModuleVersion
 import com.fankes.tsbattery.const.PackageName
+import com.fankes.tsbattery.data.ConfigData
 import com.fankes.tsbattery.databinding.ActivityMainBinding
 import com.fankes.tsbattery.databinding.DiaRestartAppBinding
 import com.fankes.tsbattery.databinding.PageAboutBinding
@@ -116,6 +117,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun onCreate(available: Boolean) {
+        ConfigData.init(context = this)
+        initConfigBindings()
         // 判断 Hook 状态
         if (available && YukiHook.Status.isModuleActive) {
             homeBinding.mainLinStatus.setCardBackgroundColor(resources.getColorCompat(R.color.colorStatusActiveContainer, null))
@@ -124,7 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             homeBinding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
             // 推广、恰饭
-            ProjectPromote.show(activity = this, ModuleVersion.toString())
+            if (ConfigData.isShowProjectPromotion) ProjectPromote.show(activity = this, ModuleVersion.toString())
         } else
             showDialog {
                 title = "模块没有激活"
@@ -167,6 +170,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 isVisible = true
                 setOnClickListener { function() }
             }
+        }
+    }
+
+    /** 初始化配置项绑定 */
+    private fun initConfigBindings() {
+        configBinding.showProjectPromotionSwitch.isChecked = ConfigData.isShowProjectPromotion
+        configBinding.showProjectPromotionSwitch.setOnCheckedChangeListener { btn, b ->
+            if (btn.isPressed.not()) return@setOnCheckedChangeListener
+            ConfigData.isShowProjectPromotion = b
         }
     }
 

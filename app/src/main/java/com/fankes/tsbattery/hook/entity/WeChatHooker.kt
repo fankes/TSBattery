@@ -100,6 +100,7 @@ object WeChatHooker : YukiBaseHooker() {
 
     override fun onHook() {
         withApplicationReady { application ->
+            ConfigData.init(context = application)
             application.registerModuleActivities(when {
                 EmptyActivityClass != null -> EmptyActivityClass
                 WelabMainUIClass != null -> WelabMainUIClass
@@ -108,11 +109,6 @@ object WeChatHooker : YukiBaseHooker() {
             if (ConfigData.isDisableAllHook) return@withApplicationReady
             hookSystemWakeLock()
             YLog.info("All processes are completed for \"${processName.takeIf { it != packageName } ?: packageName}\"")
-        }
-        registerAppLifecycle {
-            onCreate {
-                ConfigData.init(context = this)
-            }
         }
         // 仅注入主进程
         withProcess(mainProcessName) {

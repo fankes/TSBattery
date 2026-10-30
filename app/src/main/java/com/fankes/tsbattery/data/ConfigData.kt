@@ -46,24 +46,35 @@ object ConfigData {
     /** 停用全部省电功能 (停用模块) */
     const val DISABLE_ALL_HOOK = "disable_all_hook"
 
+    /** 启动时展示项目推广 */
+    const val SHOW_PROJECT_PROMOTION = "show_project_promotion"
+
     /** 当前的 [YukiHookPreferences] */
     @SuppressLint("StaticFieldLeak")
     private var preferences: YukiHookPreferences? = null
+
+    /** 当前的模块自身的 [YukiHookPreferences]，在宿主中只读 */
+    @SuppressLint("StaticFieldLeak")
+    private var modulePreferences: YukiHookPreferences? = null
 
     /**
      * 读取 [YukiHookPreferences]
      * @param key 键值名称
      * @param value 键值内容
+     * @param native 是否读取宿主自身的存储，为 false 时读取模块自身的存储
      * @return [Boolean]
      */
-    private fun getBoolean(key: String, value: Boolean = false) = preferences?.getBoolean(key, value) ?: value
+    private fun getBoolean(key: String, value: Boolean = false, native: Boolean = true) =
+        (if (native) preferences else modulePreferences)?.getBoolean(key, value) ?: value
 
     /**
      * 存入 [YukiHookPreferences]
      * @param key 键值名称
      * @param value 键值内容
+     * @param native 是否存入宿主自身的存储，为 false 时存入模块自身的存储 (仅能在模块中使用)
      */
-    private fun putBoolean(key: String, value: Boolean = false) = preferences?.edit { putBoolean(key, value) }
+    private fun putBoolean(key: String, value: Boolean = false, native: Boolean = true) =
+        (if (native) preferences else modulePreferences)?.edit { putBoolean(key, value) }
 
     /**
      * 初始化 [YukiHookPreferences]
@@ -71,6 +82,7 @@ object ConfigData {
      */
     fun init(context: Context) {
         preferences = context.preferences(name = "tsbattery_config").native()
+        modulePreferences = context.preferences(name = "tsbattery_config")
     }
 
     /**
@@ -126,5 +138,17 @@ object ConfigData {
         get() = getBoolean(DISABLE_ALL_HOOK)
         set(value) {
             putBoolean(DISABLE_ALL_HOOK, value)
+        }
+
+    /**
+     * 是否在启动时展示项目推广
+     *
+     * 此项保存在模块自身的存储中，宿主中的配置界面需要读取它，所以不使用 native
+     * @return [Boolean]
+     */
+    var isShowProjectPromotion
+        get() = getBoolean(SHOW_PROJECT_PROMOTION, value = true, native = false)
+        set(value) {
+            putBoolean(SHOW_PROJECT_PROMOTION, value, native = false)
         }
 }

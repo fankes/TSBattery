@@ -602,6 +602,7 @@ object QQTIMHooker : YukiBaseHooker() {
 
     override fun onHook() {
         withApplicationReady { application ->
+            ConfigData.init(context = application)
             // QQ 会通过 RFix (Tinker) 热更在 Application 创建时替换 ClassLoader
             // 补丁中的类与原始 ClassLoader 中的类不是同一个 - 需要在此之后使用新的 ClassLoader 查找和 Hook
             hostClassLoader = application.classLoader
@@ -647,7 +648,6 @@ object QQTIMHooker : YukiBaseHooker() {
             }
             onCreate {
                 hostVersionName = appVersionName
-                ConfigData.init(context = this)
             }
         }
     }

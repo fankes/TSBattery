@@ -18,6 +18,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.6"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="推广设置"
+            android:textColor="@color/colorTextGray"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/bg_permotion_round"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp">
+
+            <com.fankes.tsbattery.ui.widget.MaterialSwitch
+                android:id="@+id/show_project_promotion_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:paddingTop="5dp"
+                android:paddingBottom="8dp"
+                android:singleLine="true"
+                android:text="启动时展示 “项目推广”"
+                android:textColor="@color/colorTextGray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:alpha="0.6"
+                android:lineSpacingExtra="6dp"
+                android:text="在模块首次安装以及后续版本更新后，项目推广会在启动时重复展示，你可以在这里选择永久关闭直到卸载重装模块。"
+                android:textColor="@color/colorTextDark"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="25dp"
             android:layout_marginBottom="8dp"
