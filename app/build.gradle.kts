@@ -1,3 +1,5 @@
+import com.android.build.api.variant.impl.VariantOutputImpl
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.ksp)
@@ -22,7 +24,8 @@ android {
         applicationId = gropify.project.app.packageName
         minSdk = gropify.project.android.minSdk
         targetSdk = gropify.project.android.targetSdk
-        versionName = gropify.project.app.versionName
+        versionName = gropify.project.app.versionName +
+            gropify.github.ci.commit.id.let { if (it.isNotBlank()) "-$it" else "" }
         versionCode = gropify.project.app.versionCode
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,11 +70,8 @@ androidComponents {
         it.outputs.forEach { output ->
             val currentFlavor = it.flavorName
             val currentType = it.buildType
-            val currentSuffix = gropify.github.ci.commit.id.let { suffix ->
-                if (suffix.isNotBlank()) "-$suffix" else ""
-            }
-            val currentVersion = "${output.versionName.get()}$currentSuffix(${output.versionCode.get()})"
-            if (output is com.android.build.api.variant.impl.VariantOutputImpl)
+            val currentVersion = "${output.versionName.get()}(${output.versionCode.get()})"
+            if (output is VariantOutputImpl)
                 output.outputFileName.set("${gropify.project.name}-v$currentVersion-$currentFlavor-$currentType.apk")
         }
     }

@@ -58,17 +58,17 @@ object ModuleVersion {
     /** 当前 GitHub 提交的 ID (CI 自动构建) */
     const val GITHUB_COMMIT_ID = AppProperties.GITHUB_CI_COMMIT_ID
 
+    /** 当前版本名称后缀 */
+    val suffix = GITHUB_COMMIT_ID.let { if (it.isNotBlank()) "-$it" else "" }
+
     /** 版本名称 */
-    const val NAME = BuildConfigWrapper.VERSION_NAME
+    val NAME = BuildConfigWrapper.VERSION_NAME.removeSuffix(suffix)
 
     /** 版本号 */
     const val CODE = BuildConfigWrapper.VERSION_CODE
 
     /** 是否为 CI 自动构建版本 */
     val isCiMode = GITHUB_COMMIT_ID.isNotBlank()
-
-    /** 当前版本名称后缀 */
-    val suffix = GITHUB_COMMIT_ID.let { if (it.isNotBlank()) "-$it" else "" }
 
     override fun toString() = "$NAME$suffix ($CODE)"
 }
