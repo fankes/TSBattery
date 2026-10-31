@@ -34,7 +34,9 @@ import androidx.appcompat.app.AlertDialog
 import com.fankes.tsbattery.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
 import com.highcapable.betterandroid.ui.extension.component.base.toPx
+import com.highcapable.betterandroid.ui.extension.view.textColor
 import com.highcapable.yukihookapi.hook.factory.applyModuleTheme
 
 /**
@@ -97,6 +99,7 @@ class DialogBuilder(val context: Context) {
                     addView(TextView(context).apply {
                         tag = "progressContent"
                         text = value
+                        textColor = context.getColorCompat(R.color.colorTextDark)
                     })
                     setPadding(20.toPx(context), 20.toPx(context), 20.toPx(context), 20.toPx(context))
                 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorSnackbarBackground">#FF323B42</color>
+    <color name="colorSnackbarText">#FFF7F7F7</color>
+    <color name="colorSnackbarAction">#FFAAAAAA</color>
+    <color name="colorSwitchTrackChecked">#FF656565</color>
+    <color name="colorSwitchTrackNormal">#FFCCCCCC</color>
     <color name="colorThemeBackground">#FFF7F7F7</color>
     <color name="colorTextDark">#FF777777</color>
     <color name="colorTextGray">#FF323B42</color>

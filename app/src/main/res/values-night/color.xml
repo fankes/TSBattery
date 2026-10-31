@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorSnackbarBackground">#FFD3D3D3</color>
+    <color name="colorSnackbarText">#FF323B42</color>
+    <color name="colorSnackbarAction">#FF656565</color>
+    <color name="colorSwitchTrackChecked">#FF999999</color>
+    <color name="colorSwitchTrackNormal">#FF555555</color>
+    <color name="colorPrimaryAccent">#FFAAAAAA</color>
+    <color name="colorPrimaryTint">#A6AAAAAA</color>
+    <color name="colorPrimaryTintTertiary">#29AAAAAA</color>
+    <color name="colorTextHighlight">#80AAAAAA</color>
     <color name="colorThemeBackground">#FF000000</color>
     <color name="colorTextDark">#FFCFCFCF</color>
     <color name="colorTextGray">#FFD3D3D3</color>

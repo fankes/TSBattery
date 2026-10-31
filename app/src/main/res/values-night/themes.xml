@@ -8,7 +8,22 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorPrimaryAccent</item>
         <item name="colorSecondaryVariant">@color/colorPrimaryAccent</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/colorThemeBackground</item>
+        <item name="colorAccent">@color/colorPrimaryAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimaryTint</item>
+        <item name="colorOnSurface">@color/colorTextGray</item>
+        <item name="colorSurfaceVariant">@color/colorPrimaryTint</item>
+        <item name="colorOnSurfaceVariant">@color/colorTextDark</item>
+        <item name="colorSecondaryContainer">@color/colorPrimaryTintTertiary</item>
+        <item name="colorOnSecondaryContainer">@color/colorTextGray</item>
+        <item name="checkboxStyle">@style/Widget.TSBattery.CheckBox</item>
+        <item name="radioButtonStyle">@style/Widget.TSBattery.RadioButton</item>
+        <item name="android:textColorPrimary">@color/colorTextGray</item>
+        <item name="android:textColorSecondary">@color/colorTextDark</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.TSBattery.MaterialAlertDialog</item>
+        <item name="colorSurfaceInverse">@color/colorSnackbarBackground</item>
+        <item name="colorOnSurfaceInverse">@color/colorSnackbarText</item>
+        <item name="colorPrimaryInverse">@color/colorSnackbarAction</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorThemeBackground</item>
         <!-- Dialog background color. -->

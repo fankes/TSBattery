@@ -30,8 +30,9 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.annotation.Keep
 import androidx.appcompat.widget.SwitchCompat
-import com.fankes.tsbattery.utils.factory.isSystemInDarkMode
+import com.fankes.tsbattery.R
 import com.highcapable.betterandroid.ui.extension.component.base.DisplayDensity
+import com.highcapable.betterandroid.ui.extension.component.base.getColorCompat
 import com.highcapable.hikage.annotation.HikageView
 import top.defaults.drawabletoolbox.DrawableBuilder
 
@@ -47,8 +48,6 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
         states[2] = intArrayOf()
         return ColorStateList(states, colors)
     }
-
-    private val thumbColor get() = if (context.isSystemInDarkMode) 0xFF7C7C7C else 0xFFCCCCCC
 
     init {
         trackDrawable = DrawableBuilder()
@@ -67,10 +66,11 @@ class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(cont
             .strokeWidth(8.dp)
             .strokeColor(Color.TRANSPARENT)
             .build()
+        thumbTintList = ColorStateList.valueOf(Color.WHITE)
         trackTintList = toColors(
-            0xFF656565.toInt(),
-            thumbColor.toInt(),
-            thumbColor.toInt()
+            context.getColorCompat(R.color.colorSwitchTrackChecked),
+            context.getColorCompat(R.color.colorSwitchTrackNormal),
+            context.getColorCompat(R.color.colorSwitchTrackNormal)
         )
         isSingleLine = true
         ellipsize = TextUtils.TruncateAt.END
