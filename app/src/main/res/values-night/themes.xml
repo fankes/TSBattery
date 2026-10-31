@@ -13,6 +13,8 @@
         <item name="android:statusBarColor">@color/colorThemeBackground</item>
         <!-- Dialog background color. -->
         <item name="colorSurfaceContainerHigh">@color/colorCard</item>
+        <!-- Text highlight color. -->
+        <item name="android:textColorHighlight">@color/colorTextHighlight</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
