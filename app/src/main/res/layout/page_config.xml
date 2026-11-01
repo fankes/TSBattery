@@ -41,7 +41,7 @@
             android:paddingTop="10dp"
             android:paddingRight="15dp">
 
-            <com.fankes.tsbattery.ui.widget.MaterialSwitch
+            <com.fankes.tsbattery.ui.widget.AppSwitch
                 android:id="@+id/show_project_promotion_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

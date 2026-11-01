@@ -72,7 +72,7 @@ import com.highcapable.hikage.widget.android.widget.LinearLayout
 import com.highcapable.hikage.widget.android.widget.ScrollView
 import com.highcapable.hikage.widget.android.widget.TextView
 import com.highcapable.hikage.widget.androidx.cardview.widget.CardView
-import com.highcapable.hikage.widget.com.fankes.tsbattery.ui.widget.MaterialSwitch
+import com.highcapable.hikage.widget.com.fankes.tsbattery.ui.widget.AppSwitch
 import com.highcapable.kavaref.extension.classOf
 import com.highcapable.yukihookapi.YukiHook
 import kotlin.system.exitProcess
@@ -115,7 +115,7 @@ class ConfigActivity : BaseActivity2() {
                         }
                     ) {
                         imageTintList = stateColorResource(R.color.colorTextGray)
-                        tooltipTextCompat = getString(AndroidX_R.string.abc_action_bar_up_description)
+                        tooltipTextCompat = stringResource(AndroidX_R.string.abc_action_bar_up_description)
                         setImageResource(R.drawable.ic_back)
                         background = getThemeAttrsDrawable(Android_R.attr.selectableItemBackgroundBorderless)
                         setOnClickListener { finish() }
@@ -410,7 +410,7 @@ class ConfigActivity : BaseActivity2() {
                                     updatePadding(top = 10.dp, bottom = 15.dp)
                                 }
                             ) {
-                                MaterialSwitch(
+                                AppSwitch(
                                     lparams = LayoutParams(widthMatchParent = true)
                                 ) {
                                     updatePadding(top = 5.dp, bottom = 8.dp)
@@ -455,7 +455,7 @@ class ConfigActivity : BaseActivity2() {
                                     updatePadding(top = 10.dp, bottom = 15.dp)
                                 }
                             ) {
-                                MaterialSwitch(
+                                AppSwitch(
                                     lparams = LayoutParams(widthMatchParent = true)
                                 ) {
                                     updatePadding(top = 5.dp, bottom = 8.dp)
@@ -491,7 +491,7 @@ class ConfigActivity : BaseActivity2() {
                                     updatePadding(top = 10.dp, bottom = 15.dp)
                                 }
                             ) {
-                                MaterialSwitch(
+                                AppSwitch(
                                     lparams = LayoutParams(widthMatchParent = true)
                                 ) {
                                     updatePadding(top = 5.dp, bottom = 8.dp)
@@ -512,7 +512,7 @@ class ConfigActivity : BaseActivity2() {
                                     setLineSpacing(6f.dp, 1f)
                                     text = "关闭后可能会影响消息接收与视频通话，但是会达到省电效果，如果你的系统拥有推送服务 (HMS) 或 (MIPUSH) 可以尝试关闭。"
                                 }
-                                MaterialSwitch(
+                                AppSwitch(
                                     lparams = LayoutParams(widthMatchParent = true)
                                 ) {
                                     updatePadding(top = 5.dp, bottom = 8.dp)

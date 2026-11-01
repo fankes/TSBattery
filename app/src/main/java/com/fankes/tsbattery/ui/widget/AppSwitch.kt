@@ -38,7 +38,7 @@ import top.defaults.drawabletoolbox.DrawableBuilder
 
 @Keep
 @HikageView
-class MaterialSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs), DisplayDensity {
+class AppSwitch(context: Context, attrs: AttributeSet?) : SwitchCompat(context, attrs), DisplayDensity {
 
     private fun toColors(selected: Int, pressed: Int, normal: Int): ColorStateList {
         val colors = intArrayOf(selected, pressed, normal)
