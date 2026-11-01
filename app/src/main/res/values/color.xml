@@ -6,6 +6,7 @@
     <color name="colorSwitchTrackChecked">#FF656565</color>
     <color name="colorSwitchTrackNormal">#FFCCCCCC</color>
     <color name="colorThemeBackground">#FFF7F7F7</color>
+    <color name="colorDialogBody">#FF474747</color>
     <color name="colorTextDark">#FF777777</color>
     <color name="colorTextGray">#FF323B42</color>
     <color name="colorCard">#FFFFFFFF</color>

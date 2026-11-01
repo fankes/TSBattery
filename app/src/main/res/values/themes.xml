@@ -10,7 +10,8 @@
         <item name="colorSecondaryVariant">@color/colorPrimaryAccent</item>
         <item name="colorOnSecondary">@color/colorThemeBackground</item>
         <item name="colorAccent">@color/colorPrimaryAccent</item>
-        <item name="colorControlHighlight">@color/colorPrimaryTint</item>
+        <item name="colorControlHighlight">@color/colorPrimaryTintTertiary</item>
+        <item name="android:colorControlHighlight">@color/colorPrimaryTintTertiary</item>
         <item name="colorOnSurface">@color/colorTextGray</item>
         <item name="colorSurfaceVariant">@color/colorPrimaryTint</item>
         <item name="colorOnSurfaceVariant">@color/colorTextDark</item>
@@ -34,15 +35,15 @@
     </style>
 
     <style name="MaterialAlertDialog.TSBattery.Body.Text" parent="MaterialAlertDialog.Material3.Body.Text">
-        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <style name="ThemeOverlay.TSBattery.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.TSBattery.Body.Text</item>
         <item name="colorOnSurface">@color/colorTextGray</item>
-        <item name="colorOnSurfaceVariant">@color/colorTextDark</item>
+        <item name="colorOnSurfaceVariant">@color/colorDialogBody</item>
         <item name="android:textColorPrimary">@color/colorTextGray</item>
-        <item name="android:textColorSecondary">@color/colorTextDark</item>
+        <item name="android:textColorSecondary">@color/colorDialogBody</item>
     </style>
 
     <style name="Widget.TSBattery.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
