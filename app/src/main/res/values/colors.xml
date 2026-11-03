@@ -5,4 +5,6 @@
     <color name="colorPrimaryTintTertiary">#29656565</color>
     <color name="colorTextHighlight">#80656565</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorLegacyRibbon">#FFFFB74D</color>
+    <color name="colorLegacyRibbonText">#FF4A2B00</color>
 </resources>

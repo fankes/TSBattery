@@ -144,6 +144,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     /** 初始化主页的安装状态、版本文本、CI 自动构建标识和检查更新，它们不依赖模块是否激活 */
     private fun initHomeInfo() {
+        // 仅 Legacy 版本显示缎带
+        homeBinding.mainTextLegacy.isVisible = BuildConfigWrapper.isLegacy
         // 设置安装状态
         homeBinding.mainTextQqVer.text = PackageName.QQ.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"
         homeBinding.mainTextTimVer.text = PackageName.TIM.takeIf { isInstall(it) }?.let { appVersionBrandOf(it) } ?: "未安装"

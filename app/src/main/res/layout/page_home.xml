@@ -7,7 +7,7 @@
     android:fadingEdgeLength="10dp"
     android:fillViewport="true"
     android:requiresFadingEdge="vertical"
-    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,UnusedAttribute">
+    tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription,UnusedAttribute,UselessParent,SmallSp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -190,6 +190,23 @@
                     android:textSize="11sp"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/main_text_legacy"
+                android:layout_width="64dp"
+                android:layout_height="10dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="-16dp"
+                android:background="@color/colorLegacyRibbon"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:rotation="45"
+                android:text="LEGACY"
+                android:textColor="@color/colorLegacyRibbonText"
+                android:textSize="6sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -266,9 +283,9 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_round"
+                        android:ellipsize="end"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:ellipsize="end"
                         android:singleLine="true"
                         android:text="QQ"
                         android:textColor="@color/colorTextGray"
@@ -281,9 +298,9 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_round"
+                        android:ellipsize="end"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:ellipsize="end"
                         android:singleLine="true"
                         android:text="TIM"
                         android:textColor="@color/colorTextGray"
@@ -295,9 +312,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_round"
+                        android:ellipsize="end"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:ellipsize="end"
                         android:singleLine="true"
                         android:text="微信"
                         android:textColor="@color/colorTextGray"
