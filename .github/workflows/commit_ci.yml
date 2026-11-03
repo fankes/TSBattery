@@ -10,6 +10,10 @@ on:
       - '.github/**'
       - '!.github/workflows/**'
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   build:
     name: Build CI
@@ -19,15 +23,66 @@ jobs:
       APK_OUTPUT_PATH: 'app/build/outputs/apk'
       TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      COMMIT_MESSAGE: |+
-        New push to GitHub\!
-        ```
-        ${{ github.event.head_commit.message }}
-        ```by `${{ github.event.head_commit.author.name }}`
-        See commit detail [here](${{ github.event.head_commit.url }})
-      COMMIT_URL: ${{ github.event.head_commit.url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Commit Changelog
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const branch = process.env.GITHUB_REF_NAME;
+            const sha = context.sha;
+            let previousSha;
+            // Failed builds must not hide changes from the next successful build.
+            for await (const { data } of github.paginate.iterator(github.rest.actions.listWorkflowRuns, {
+              owner, repo, workflow_id: 'commit_ci.yml', branch, status: 'success', per_page: 100
+            })) {
+              for (const run of data) {
+                if (run.run_number >= Number(process.env.GITHUB_RUN_NUMBER)) continue;
+                // Rewritten history may no longer contain an old CI commit.
+                const exists = await exec.getExecOutput('git', ['cat-file', '-e', `${run.head_sha}^{commit}`], {
+                  ignoreReturnCode: true, silent: true
+                });
+                if (exists.exitCode !== 0) continue;
+                const ancestor = await exec.getExecOutput('git', ['merge-base', '--is-ancestor', run.head_sha, sha], {
+                  ignoreReturnCode: true, silent: true
+                });
+                if (ancestor.exitCode === 0) {
+                  previousSha = run.head_sha;
+                  break;
+                }
+                if (ancestor.exitCode !== 1) throw new Error(`Cannot check CI commit ${run.head_sha}`);
+              }
+              if (previousSha) break;
+            }
+            // Without a successful ancestor build, include all reachable commits.
+            const range = previousSha ? `${previousSha}..${sha}` : sha;
+            const count = await exec.getExecOutput('git', ['rev-list', '--count', range], { silent: true });
+            const log = await exec.getExecOutput('git', ['log', '-7', '--format=%B', range], { silent: true });
+            const authorResult = await exec.getExecOutput('git', ['show', '-s', '--format=%an', sha], { silent: true });
+            const author = authorResult.stdout.trim();
+            const repoUrl = `${process.env.GITHUB_SERVER_URL}/${owner}/${repo}`;
+            const commitUrl = `${repoUrl}/commit/${sha}`;
+            const changelogUrl = `${repoUrl}/${previousSha ? `compare/${previousSha}...${sha}` : `commits/${sha}`}`;
+            const label = previousSha ? `${previousSha.slice(0, 7)}...${sha.slice(0, 7)}` : sha.slice(0, 7);
+            const header = 'New push to GitHub!';
+            let body = log.stdout.trim().replace(/\n{2,}/g, '\n') || 'No new commits.';
+            let fullChangelog = Number(count.stdout.trim()) > 7;
+            // Count visible text, including code-block newlines, without Markdown markup or link URLs.
+            const footer = `\n\nby ${author}\nSee commit detail here`;
+            if (`${header}\n${body}${footer}`.length > 1024) fullChangelog = true;
+            const fullText = fullChangelog ? `\nFull Changelog: ${label}` : '';
+            const maxLength = 1024 - `${header}\n${footer}${fullText}`.length;
+            if (body.length > maxLength)
+              body = body.slice(0, maxLength - 1).replace(/[\uD800-\uDBFF]$/, '') + '…';
+            const escapedBody = body.replace(/[\\`]/g, '\\$&');
+            const escapedAuthor = author.replace(/[\\`]/g, '\\$&');
+            let caption = `New push to GitHub\\!\n\`\`\`\n${escapedBody}\n\`\`\`by \`${escapedAuthor}\`\nSee commit detail [here](${commitUrl})`;
+            if (fullChangelog)
+              caption += `\nFull Changelog: [${label.replace(/\./g, '\\.')}](${changelogUrl})`;
+            core.exportVariable('ESCAPED', encodeURIComponent(JSON.stringify(caption)));
       - name: Prepare GitHub Env
         run: |
           GITHUB_SHA=${{ github.sha }}
@@ -74,25 +129,24 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: ${{ env.MODERN_DEBUG_APK_PATH }}
-          name: TSBattery-modern-debug-${{ github.event.head_commit.id }}
+          name: TSBattery-modern-debug-${{ github.sha }}
       - name: Upload Artifacts (Modern Release)
         uses: actions/upload-artifact@v4
         with:
           path: ${{ env.MODERN_RELEASE_APK_PATH }}
-          name: TSBattery-modern-release-${{ github.event.head_commit.id }}
+          name: TSBattery-modern-release-${{ github.sha }}
       - name: Upload Artifacts (Legacy Debug)
         uses: actions/upload-artifact@v4
         with:
           path: ${{ env.LEGACY_DEBUG_APK_PATH }}
-          name: TSBattery-legacy-debug-${{ github.event.head_commit.id }}
+          name: TSBattery-legacy-debug-${{ github.sha }}
       - name: Upload Artifacts (Legacy Release)
         uses: actions/upload-artifact@v4
         with:
           path: ${{ env.LEGACY_RELEASE_APK_PATH }}
-          name: TSBattery-legacy-release-${{ github.event.head_commit.id }}
+          name: TSBattery-legacy-release-${{ github.sha }}
       - name: Post Artifacts to Telegram
         run: |
-          ESCAPED=`python3 -c 'import json,os,urllib.parse; msg = json.dumps(os.environ["COMMIT_MESSAGE"]); print(urllib.parse.quote(msg if len(msg) <= 1024 else json.dumps(os.environ["COMMIT_URL"])))'`
           curl -v "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMediaGroup?chat_id=${TG_CHAT_ID}&media=%5B%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Fmodern_release%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_debug%22%7D%2C%7B%22type%22%3A%22document%22%2C%20%22media%22%3A%22attach%3A%2F%2Flegacy_release%22%2C%22parse_mode%22%3A%22MarkdownV2%22%2C%22caption%22:${ESCAPED}%7D%5D" \
            -F modern_debug="@${{ env.MODERN_DEBUG_APK_PATH }}" \
            -F modern_release="@${{ env.MODERN_RELEASE_APK_PATH }}" \
