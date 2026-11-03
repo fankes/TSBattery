@@ -34,6 +34,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.TSBattery.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorThemeBackground</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.TSBattery</item>
+    </style>
+
     <style name="MaterialAlertDialog.TSBattery.Body.Text" parent="MaterialAlertDialog.Material3.Body.Text">
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
@@ -49,6 +55,7 @@
     <style name="Widget.TSBattery.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/colorNavIndicator</item>
     </style>
+
     <style name="Widget.TSBattery.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="android:textColor">@color/colorTextGray</item>
     </style>
@@ -56,5 +63,4 @@
     <style name="Widget.TSBattery.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
         <item name="android:textColor">@color/colorTextGray</item>
     </style>
-
 </resources>

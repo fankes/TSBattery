@@ -101,6 +101,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val configBinding by lazy { PageConfigBinding.inflate(layoutInflater, binding.mainViewPager, false) }
     private val aboutBinding by lazy { PageAboutBinding.inflate(layoutInflater, binding.mainViewPager, false) }
 
+    override val showSplashScreen = true
+
     override fun onCreate() {
         initPager()
         initHomeInfo()
@@ -121,20 +123,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         initConfigBindings()
         // 判断 Hook 状态
         if (available && YukiHook.Status.isModuleActive) {
-            homeBinding.mainLinStatus.setCardBackgroundColor(resources.getColorCompat(R.color.colorStatusActiveContainer, null))
+            homeBinding.mainLinStatus.setCardBackgroundColor(resources.getColorCompat(R.color.colorStatusActiveContainer))
             homeBinding.mainImgStatus.setImageResource(R.drawable.ic_status_success)
             homeBinding.mainTextStatus.text = "已激活"
             homeBinding.mainTextApiWay.isVisible = true
             refreshActivateExecutor()
             // 推广、恰饭
-            if (ConfigData.isShowProjectPromotion) ProjectPromote.show(activity = this, ModuleVersion.toString())
+            if (ConfigData.isShowProjectPromotion) afterStartup { ProjectPromote.show(activity = this, ModuleVersion.toString()) }
         } else
-            showDialog {
-                title = "模块没有激活"
-                msg = "检测到模块没有激活，若你正在使用免 Root 框架，你可以忽略此提示。"
-                confirmButton(text = "我知道了")
-                noCancelable()
+            afterStartup {
+                showDialog {
+                    title = "模块没有激活"
+                    msg = "检测到模块没有激活，若你正在使用免 Root 框架，你可以忽略此提示。"
+                    confirmButton(text = "我知道了")
+                    noCancelable()
+                }
             }
+        startupReady()
     }
 
     /** 初始化主页的安装状态、版本文本、CI 自动构建标识和检查更新，它们不依赖模块是否激活 */

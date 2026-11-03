@@ -14,6 +14,7 @@ dexkit = "2.3.0"
 drawabletoolbox = "1.0.7"
 okhttp = "5.5.1"
 androidx-core-ktx = "1.19.0"
+androidx-core-splashscreen = "1.2.0"
 androidx-appcompat = "1.8.0"
 androidx-recyclerview = "1.4.0"
 androidx-viewpager2 = "1.1.0"
@@ -59,6 +60,7 @@ dexkit = { group = "org.luckypray", name = "dexkit", version.ref = "dexkit" }
 drawabletoolbox = { group = "com.github.duanhong169", name = "drawabletoolbox", version.ref = "drawabletoolbox" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidx-recyclerview" }
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "androidx-viewpager2" }

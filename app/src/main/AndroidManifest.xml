@@ -37,7 +37,8 @@
         <activity
             android:name="com.fankes.tsbattery.ui.activity.MainActivity"
             android:exported="true"
-            android:screenOrientation="behind">
+            android:screenOrientation="behind"
+            android:theme="@style/Theme.TSBattery.Starting">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
