@@ -95,7 +95,7 @@ val Context.appVersionCode get() = packageManager.getPackageInfoOrNull(packageNa
  * @return [String]
  */
 fun Context.appVersionBrandOf(packageName: String = getPackageName()) =
-    packageManager.getPackageInfoOrNull(packageName)?.let { "${it.versionName} (${it.versionCodeCompat})" } ?: ""
+    packageManager.getPackageInfoOrNull(packageName)?.let { "${it.versionName ?: "unknown"} (${it.versionCodeCompat})" } ?: ""
 
 /**
  * 得到 APP 名称
