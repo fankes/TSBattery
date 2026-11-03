@@ -46,7 +46,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppBindingActivity<VB>(), Module
         const val SPLASH_SCREEN_ANIMATION_DURATION = 200L
     }
 
-    /** 是否显示启动屏，开启后需要在页面状态确定时调用 [startupReady] */
+    /** 是否显示启动屏，开启后需要在页面状态确定时调用 [callStartupReady] */
     protected open val showSplashScreen = false
 
     /** 页面状态是否已经确定 */
@@ -78,7 +78,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppBindingActivity<VB>(), Module
     abstract fun onCreate()
 
     /** 页面状态确定后调用，启动屏会在此之后结束 */
-    protected fun startupReady() {
+    protected fun callStartupReady() {
         isStartupReady = true
         revealStartupCover()
     }

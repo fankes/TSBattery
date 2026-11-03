@@ -139,7 +139,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     noCancelable()
                 }
             }
-        startupReady()
+        callStartupReady()
     }
 
     /** 初始化主页的安装状态、版本文本、CI 自动构建标识和检查更新，它们不依赖模块是否激活 */
