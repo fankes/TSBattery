@@ -69,19 +69,20 @@ jobs:
             const label = previousSha ? `${previousSha.slice(0, 7)}...${sha.slice(0, 7)}` : sha.slice(0, 7);
             const header = 'New push to GitHub!';
             let body = log.stdout.trim().replace(/\n{2,}/g, '\n') || 'No new commits.';
-            let fullChangelog = Number(count.stdout.trim()) > 7;
+            const fullChangelog = Number(count.stdout.trim()) > 1;
+            const fullText = fullChangelog ? `Full Changelog: ${label}` : 'See commit detail here';
             // Count visible text, including code-block newlines, without Markdown markup or link URLs.
-            const footer = `\n\nby ${author}\nSee commit detail here`;
-            if (`${header}\n${body}${footer}`.length > 1024) fullChangelog = true;
-            const fullText = fullChangelog ? `\nFull Changelog: ${label}` : '';
-            const maxLength = 1024 - `${header}\n${footer}${fullText}`.length;
+            const footer = `\n\nby ${author}\n${fullText}`;
+            const maxLength = 1024 - `${header}\n${footer}`.length;
             if (body.length > maxLength)
               body = body.slice(0, maxLength - 1).replace(/[\uD800-\uDBFF]$/, '') + '…';
             const escapedBody = body.replace(/[\\`]/g, '\\$&');
             const escapedAuthor = author.replace(/[\\`]/g, '\\$&');
-            let caption = `New push to GitHub\\!\n\`\`\`\n${escapedBody}\n\`\`\`by \`${escapedAuthor}\`\nSee commit detail [here](${commitUrl})`;
+            let caption = `New push to GitHub\\!\n\`\`\`\n${escapedBody}\n\`\`\`by \`${escapedAuthor}\``;
             if (fullChangelog)
               caption += `\nFull Changelog: [${label.replace(/\./g, '\\.')}](${changelogUrl})`;
+            else
+              caption += `\nSee commit detail [here](${commitUrl})`;
             core.exportVariable('ESCAPED', encodeURIComponent(JSON.stringify(caption)));
       - name: Prepare GitHub Env
         run: |
