@@ -54,11 +54,17 @@ class DialogBuilder(val context: Context) {
     /** 实例对象 */
     private var instance: AlertDialog.Builder? = null
 
+    /** 对话框取消监听 */
+    private var onCancel: (() -> Unit)? = null
+
     /** 对话框实例 */
     private var dialogInstance: Dialog? = null
 
     /** 自定义布局 */
     private var customLayoutView: View? = null
+
+    /** 是否允许点击对话框外部取消 */
+    private var isCanceledOnTouchOutside = true
 
     init {
         instance = MaterialAlertDialogBuilder(context.applyModuleTheme(R.style.Theme_TSBattery))
@@ -67,6 +73,11 @@ class DialogBuilder(val context: Context) {
     /** 设置对话框不可关闭 */
     fun noCancelable() {
         instance?.setCancelable(false)
+    }
+
+    /** 禁止点击对话框外部取消，仍允许按返回键取消 */
+    fun noCancelableOnTouchOutside() {
+        isCanceledOnTouchOutside = false
     }
 
     /** 设置对话框标题 */
@@ -133,6 +144,14 @@ class DialogBuilder(val context: Context) {
         instance?.setNeutralButton(text) { _, _ -> callback() }
     }
 
+    /**
+     * 当对话框取消时
+     * @param callback 回调
+     */
+    fun onCancel(callback: () -> Unit) {
+        onCancel = callback
+    }
+
     /** 取消对话框 */
     fun cancel() = dialogInstance?.cancel()
 
@@ -141,6 +160,8 @@ class DialogBuilder(val context: Context) {
         instance?.create()?.apply {
             customLayoutView?.let { setView(it) }
             dialogInstance = this
+            if (!isCanceledOnTouchOutside) setCanceledOnTouchOutside(false)
+            setOnCancelListener { onCancel?.invoke() }
         }?.show()
     }
 }

@@ -113,7 +113,7 @@ object GithubReleaseTool {
                             msg = "应用的联网权限可能已被禁用，请开启联网权限以定期检查更新。"
                             confirmButton(text = "去开启") { context.openSelfSetting() }
                             cancelButton()
-                            noCancelable()
+                            noCancelableOnTouchOutside()
                         }
                     }
                 }

@@ -166,7 +166,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                           它是由代码提交后自动触发并构建、自动编译发布的，并未经任何稳定性测试，使用风险自负。
                         """.trimIndent()
                         confirmButton(text = "我知道了")
-                        noCancelable()
                     }
                 }
             }
