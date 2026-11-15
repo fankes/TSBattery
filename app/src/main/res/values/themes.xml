@@ -25,6 +25,7 @@
         <item name="colorSurfaceInverse">@color/colorSnackbarBackground</item>
         <item name="colorOnSurfaceInverse">@color/colorSnackbarText</item>
         <item name="colorPrimaryInverse">@color/colorSnackbarAction</item>
+        <item name="viewInflaterClass">com.fankes.tsbattery.ui.widget.AppViewInflater</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorThemeBackground</item>
         <!-- Dialog background color. -->
