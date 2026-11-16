@@ -269,6 +269,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // 默认的 AutoTransition 会先淡出再变形最后淡入，这里改为同时进行
         // 面板自身只做淡入淡出，其隐藏时保留的是旧位置，参与位移会从旧位置飘过来
         TransitionManager.beginDelayedTransition(aboutBinding.root, TransitionSet().apply {
+            duration = 200
             ordering = TransitionSet.ORDERING_TOGETHER
             addTransition(Fade())
             addTransition(ChangeBounds().excludeTarget(content, true).excludeChildren(content, true))
