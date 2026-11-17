@@ -35,19 +35,12 @@
                 android:orientation="horizontal"
                 android:padding="15dp">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="12dp"
-                    app:cardBackgroundColor="@android:color/transparent"
-                    app:cardCornerRadius="50dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@mipmap/ic_fankes_avatar" />
-                </androidx.cardview.widget.CardView>
+                    android:src="@mipmap/ic_fankes_avatar"
+                    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
                 <LinearLayout
                     android:layout_width="0dp"
